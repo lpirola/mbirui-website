@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+
+const premios = (await getCollection('premios'))
+  .sort((a, b) => b.data.ano - a.data.ano);
+
+const metadata = {
+  title: 'Prêmios e Editais — Projeto Mbiru\'i',
+  description: 'Prêmios e editais contemplados pelo projeto.',
+};
+---
+
+<Layout metadata={metadata}>
+  <Hero>
+    <Fragment slot="title">
+      Prêmios e <span class="text-accent dark:text-white">Editais</span>
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      Reconhecimento e apoio institucional.
+    </Fragment>
+  </Hero>
+
+  <section class="py-12 sm:py-16 lg:py-20">
+    <div class="container mx-auto px-4 max-w-4xl">
+      <ul class="space-y-6">
+        {premios.map(({ slug, data }) => (
+          <li class="border rounded-lg p-6 hover:shadow-lg transition-shadow">
+            <div class="flex justify-between items-start mb-3">
+              <h3 class="text-xl font-semibold">
+                <a href={`/premios/${slug}`}>
+                  {data.titulo}
+                </a>
+              </h3>
+              <span class="text-sm px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                {data.ano}
+              </span>
+            </div>
+            <p class="text-gray-600 dark:text-gray-300 mb-2">
+              Financiador: {data.financiador}
+            </p>
+            {data.descricao && (
+              <p class="text-gray-600 dark:text-gray-300">{data.descricao}</p>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Layout>

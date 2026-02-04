@@ -1,0 +1,72 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+
+const producoes = (await getCollection('producoes'))
+  .sort((a, b) => b.data.ano - a.data.ano);
+
+const tipos = ['livro', 'cartilha', 'relatorio', 'documento'] as const;
+
+const metadata = {
+  title: 'Produções — Projeto Mbiru\'i',
+  description: 'Livros, cartilhas, relatórios e documentos do projeto.',
+};
+---
+
+<Layout metadata={metadata}>
+  <Hero>
+    <Fragment slot="title">
+      Produções do <span class="text-accent dark:text-white">Mbiru'i</span>
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      Livros, cartilhas, relatórios e documentos técnicos.
+    </Fragment>
+  </Hero>
+
+  <section class="py-12 sm:py-16 lg:py-20">
+    <div class="container mx-auto px-4">
+      <div class="mb-8">
+        <h2 class="text-3xl font-bold mb-4">Filtrar por tipo</h2>
+        <div class="flex flex-wrap gap-2">
+          <a href="/producoes" class="px-4 py-2 rounded-full bg-blue-600 text-white">
+            Todos
+          </a>
+          {tipos.map((tipo) => (
+            <a href={`#tipo-${tipo}`} class="px-4 py-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600">
+              {tipo.charAt(0).toUpperCase() + tipo.slice(1)}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <ul class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {producoes.map(({ slug, data }) => (
+          <li id={`tipo-${data.tipo}`} class="border rounded-lg p-6 hover:shadow-lg transition-shadow">
+            <strong class="block text-lg mb-2">
+              <a href={`/producoes/${slug}`}>
+                {data.title}
+              </a>
+            </strong>
+            <span class="text-sm text-gray-500 dark:text-gray-400 block mb-2">
+              ({data.tipo}, {data.ano})
+            </span>
+            {data.descricao && (
+              <p class="text-gray-600 dark:text-gray-300 mb-4">{data.descricao}</p>
+            )}
+            {data.arquivo && (
+              <a
+                href={data.arquivo}
+                target="_blank"
+                class="inline-block text-blue-600 hover:text-blue-700 dark:text-blue-400"
+              >
+                Acessar arquivo &rarr;
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Layout>

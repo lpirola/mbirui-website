@@ -1,0 +1,75 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Features2 from '~/components/widgets/Features2.astro';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+
+const metadata = {
+  title: 'Chatbot — Projeto Mbiru\'i',
+  description: 'Acesse o chatbot do projeto Mbiru\'i para tradução e informação em saúde indígena.',
+};
+---
+
+<Layout metadata={metadata}>
+  <HeroText tagline="IA em Saúde" title="Chatbot Mbiru'i" />
+
+  <section class="py-12 sm:py-16 lg:py-20 bg-gray-50 dark:bg-gray-800">
+    <div class="container mx-auto px-4 max-w-4xl">
+      <h2 class="text-3xl font-bold mb-6 text-center">Sobre o Chatbot</h2>
+
+      <p class="text-lg text-gray-600 dark:text-gray-300 mb-6 text-center">
+        O chatbot Mbiru'i é uma ferramenta de inteligência artificial desenvolvida para facilitar o acesso à informação em saúde indígena, com suporte para tradução entre português e idiomas indígenas.
+      </p>
+
+      <div class="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-400 p-6 mb-8">
+        <h3 class="text-lg font-semibold text-yellow-800 dark:text-yellow-200 mb-2">
+          ⚠️ Aviso Ético
+        </h3>
+        <p class="text-yellow-700 dark:text-yellow-300">
+          O chatbot é uma ferramenta de apoio e não substitui a avaliação médica profissional. Em casos de emergência, procure atendimento médico imediato.
+        </p>
+      </div>
+
+      <div class="text-center">
+        <a
+          href="#"
+          class="inline-block px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-lg font-semibold transition-colors"
+        >
+          Acessar o Chatbot
+        </a>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mt-4">
+          O chatbot será acessível em breve.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <Features2
+    title="Funcionalidades"
+    items={[
+      {
+        title: 'Tradução Multilíngue',
+        description: 'Tradução entre português e idiomas indígenas suportados.',
+        icon: 'tabler:language',
+      },
+      {
+        title: 'Informações de Saúde',
+        description: 'Acesso a conteúdo sobre saúde, prevenção e tratamento.',
+        icon: 'tabler:heart',
+      },
+      {
+        title: 'Fácil de Usar',
+        description: 'Interface simples e acessível para diferentes públicos.',
+        icon: 'tabler:device-mobile',
+      },
+    ]}
+  />
+
+  <CallToAction
+    title="Precisa de ajuda?"
+    subtitle="Entre em contato com nossa equipe para mais informações sobre o projeto ou para colaborar."
+    actions={[
+      { text: 'Entrar em contato', href: '/contact', variant: 'primary' },
+    ]}
+  />
+</Layout>

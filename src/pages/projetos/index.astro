@@ -1,0 +1,106 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+
+const projetos = await getCollection('projetos');
+
+const projetosAtivos = projetos.filter(p => p.data.status === 'ativo');
+const projetosInativos = projetos.filter(p => p.data.status === 'inativo');
+const projetosConcluidos = projetos.filter(p => p.data.status === 'concluido');
+
+const metadata = {
+  title: 'Projetos — Projeto Mbiru\'i',
+  description: 'Conheça os projetos do Mbiru\'i.',
+};
+---
+
+<Layout metadata={metadata}>
+  <Hero>
+    <Fragment slot="title">
+      Projetos do <span class="text-accent dark:text-white">Mbiru'i</span>
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      Inovação em inteligência artificial e tradução para saúde indígena.
+    </Fragment>
+  </Hero>
+
+  {projetosAtivos.length > 0 && (
+    <section class="py-12 sm:py-16 lg:py-20">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-8">Projetos Ativos</h2>
+
+        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projetosAtivos.map(({ slug, data }) => (
+            <li class="border rounded-lg p-6 hover:shadow-lg transition-shadow">
+              <h3 class="text-xl font-semibold mb-2">
+                <a href={`/projetos/${slug}`}>
+                  {data.title}
+                </a>
+              </h3>
+
+              <p class="text-gray-600 dark:text-gray-300 mb-4">{data.descricao_curta}</p>
+
+              <span class="inline-block text-sm px-3 py-1 rounded-full bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
+                {data.status}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {projetosConcluidos.length > 0 && (
+    <section class="py-12 sm:py-16 lg:py-20 bg-gray-50 dark:bg-gray-800">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-8">Projetos Concluídos</h2>
+
+        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projetosConcluidos.map(({ slug, data }) => (
+            <li class="border rounded-lg p-6 hover:shadow-lg transition-shadow">
+              <h3 class="text-xl font-semibold mb-2">
+                <a href={`/projetos/${slug}`}>
+                  {data.title}
+                </a>
+              </h3>
+
+              <p class="text-gray-600 dark:text-gray-300 mb-4">{data.descricao_curta}</p>
+
+              <span class="inline-block text-sm px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                {data.status}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {projetosInativos.length > 0 && (
+    <section class="py-12 sm:py-16 lg:py-20">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-8">Projetos Inativos</h2>
+
+        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {projetosInativos.map(({ slug, data }) => (
+            <li class="border rounded-lg p-6 hover:shadow-lg transition-shadow opacity-75">
+              <h3 class="text-xl font-semibold mb-2">
+                <a href={`/projetos/${slug}`}>
+                  {data.title}
+                </a>
+              </h3>
+
+              <p class="text-gray-600 dark:text-gray-300 mb-4">{data.descricao_curta}</p>
+
+              <span class="inline-block text-sm px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                {data.status}
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+</Layout>

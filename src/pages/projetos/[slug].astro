@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '~/layouts/PageLayout.astro';
+
+export async function getStaticPaths() {
+  const projetos = await getCollection('projetos');
+
+  return projetos.map((projeto) => ({
+    params: { slug: projeto.slug },
+    props: { projeto },
+  }));
+}
+
+const { projeto } = Astro.props;
+const { Content } = await projeto.render();
+const data = projeto.data;
+
+const metadata = {
+  title: `${data.title} — Projeto Mbiru\'i`,
+  description: data.descricao_curta || data.descricao,
+};
+---
+
+<Layout metadata={metadata}>
+  <article class="py-12 sm:py-16 lg:py-20">
+    <div class="container mx-auto px-4 max-w-4xl">
+      <div class="mb-8">
+        <a href="/projetos" class="text-blue-600 hover:text-blue-700 dark:text-blue-400">
+          &larr; Voltar para projetos
+        </a>
+      </div>
+
+      <h1 class="text-4xl font-bold mb-4">{data.title}</h1>
+
+      <div class="flex flex-wrap gap-4 mb-8">
+        <span class="text-sm px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+          Status: {data.status}
+        </span>
+        <span class="text-sm px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+          Início: {data.inicio}
+        </span>
+      </div>
+
+      <Content />
+    </div>
+  </article>
+</Layout>

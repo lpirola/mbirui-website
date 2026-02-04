@@ -1,0 +1,96 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '~/layouts/PageLayout.astro';
+import Hero from '~/components/widgets/Hero.astro';
+
+const equipeAtual = (await getCollection('equipe'))
+  .filter(p => p.data.periodo === 'atual');
+
+const equipeAnterior = (await getCollection('equipe'))
+  .filter(p => p.data.periodo === 'anterior');
+
+const metadata = {
+  title: 'Equipe — Projeto Mbiru\'i',
+  description: 'Conheça a equipe do projeto Mbiru\'i.',
+};
+---
+
+<Layout metadata={metadata}>
+  <Hero>
+    <Fragment slot="title">
+      Equipe do <span class="text-accent dark:text-white">Mbiru'i</span>
+    </Fragment>
+
+    <Fragment slot="subtitle">
+      Pessoas dedicadas à inovação em saúde indígena.
+    </Fragment>
+  </Hero>
+
+  {equipeAtual.length > 0 && (
+    <section class="py-12 sm:py-16 lg:py-20">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-8">Equipe Atual</h2>
+
+        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {equipeAtual.map(({ slug, data }) => (
+            <li class="text-center border rounded-lg p-6 hover:shadow-lg transition-shadow">
+              {data.foto && (
+                <img
+                  src={data.foto}
+                  alt={data.nome}
+                  class="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
+                />
+              )}
+
+              <h3 class="text-lg font-semibold mb-2">
+                <a href={`/equipe/${slug}`}>
+                  {data.nome}
+                </a>
+              </h3>
+              <span class="text-sm text-gray-600 dark:text-gray-400 block mb-3">
+                {data.papel}
+              </span>
+              {data.bio && (
+                <p class="text-sm text-gray-600 dark:text-gray-300">{data.bio}</p>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {equipeAnterior.length > 0 && (
+    <section class="py-12 sm:py-16 lg:py-20 bg-gray-50 dark:bg-gray-800">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-8">Equipes Anteriores</h2>
+
+        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {equipeAnterior.map(({ slug, data }) => (
+            <li class="text-center border rounded-lg p-6 hover:shadow-lg transition-shadow opacity-75">
+              {data.foto && (
+                <img
+                  src={data.foto}
+                  alt={data.nome}
+                  class="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
+                />
+              )}
+
+              <h3 class="text-lg font-semibold mb-2">
+                <a href={`/equipe/${slug}`}>
+                  {data.nome}
+                </a>
+              </h3>
+              <span class="text-sm text-gray-600 dark:text-gray-400 block mb-3">
+                {data.papel}
+              </span>
+              {data.bio && (
+                <p class="text-sm text-gray-600 dark:text-gray-300">{data.bio}</p>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+</Layout>

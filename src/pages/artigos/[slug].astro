@@ -1,0 +1,69 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '~/layouts/PageLayout.astro';
+
+export async function getStaticPaths() {
+  const artigos = await getCollection('artigos');
+
+  return artigos.map((artigo) => ({
+    params: { slug: artigo.slug },
+    props: { artigo },
+  }));
+}
+
+const { artigo } = Astro.props;
+const { Content } = await artigo.render();
+const data = artigo.data;
+
+const metadata = {
+  title: `${data.title} — Projeto Mbiru\'i`,
+  description: data.excerpt,
+};
+---
+
+<Layout metadata={metadata}>
+  <article class="py-12 sm:py-16 lg:py-20">
+    <div class="container mx-auto px-4 max-w-4xl">
+      <div class="mb-8">
+        <a href="/artigos" class="text-blue-600 hover:text-blue-700 dark:text-blue-400">
+          &larr; Voltar para artigos
+        </a>
+      </div>
+
+      <header class="mb-8">
+        <h1 class="text-4xl font-bold mb-4">{data.title}</h1>
+
+        <div class="flex flex-wrap gap-4 mb-4">
+          <small class="text-gray-500 dark:text-gray-400">
+            {new Date(data.data).toLocaleDateString('pt-BR')}
+          </small>
+          {data.autor && (
+            <small class="text-gray-500 dark:text-gray-400">
+              • {data.autor}
+            </small>
+          )}
+        </div>
+
+        {data.tags && data.tags.length > 0 && (
+          <div class="flex flex-wrap gap-2 mb-4">
+            {data.tags.map((tag) => (
+              <span class="text-sm px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        )}
+
+        {data.image && (
+          <img
+            src={data.image}
+            alt={data.title}
+            class="w-full h-auto rounded-lg mb-8"
+          />
+        )}
+      </header>
+
+      <Content class="prose prose-lg dark:prose-invert max-w-none" />
+    </div>
+  </article>
+</Layout>

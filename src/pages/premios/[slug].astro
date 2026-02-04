@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '~/layouts/PageLayout.astro';
+
+export async function getStaticPaths() {
+  const premios = await getCollection('premios');
+
+  return premios.map((premio) => ({
+    params: { slug: premio.slug },
+    props: { premio },
+  }));
+}
+
+const { premio } = Astro.props;
+const { Content } = await premio.render();
+const data = premio.data;
+
+const metadata = {
+  title: `${data.titulo} — Projeto Mbiru\'i`,
+  description: data.descricao,
+};
+---
+
+<Layout metadata={metadata}>
+  <article class="py-12 sm:py-16 lg:py-20">
+    <div class="container mx-auto px-4 max-w-4xl">
+      <div class="mb-8">
+        <a href="/premios" class="text-blue-600 hover:text-blue-700 dark:text-blue-400">
+          &larr; Voltar para prêmios
+        </a>
+      </div>
+
+      <h1 class="text-4xl font-bold mb-4">{data.titulo}</h1>
+
+      <div class="flex flex-wrap gap-4 mb-8">
+        <span class="text-sm px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+          {data.ano}
+        </span>
+        <span class="text-sm px-3 py-1 rounded-full bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
+          {data.financiador}
+        </span>
+      </div>
+
+      <Content class="prose prose-lg dark:prose-invert max-w-none" />
+    </div>
+  </article>
+</Layout>

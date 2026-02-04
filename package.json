@@ -1,7 +1,7 @@
 {
-  "name": "website-astro",
-  "version": "1.0.0-beta.52",
-  "description": "AstroWind: A free template using Astro 5.0 and Tailwind CSS. Astro starter theme.",
+  "name": "mbirui-website",
+  "version": "0.0.1",
+  "description": "Simple website",
   "type": "module",
   "engines": {
     "node": "^18.17.1 || ^20.3.0 || >= 21.0.0"
