@@ -3,119 +3,79 @@ import { getPermalink, getBlogPermalink, getAsset } from './utils/permalinks';
 export const headerData = {
   links: [
     {
-      text: 'Homes',
+      text: 'O Projeto',
       links: [
         {
-          text: 'SaaS',
-          href: getPermalink('/homes/saas'),
-        },
-        {
-          text: 'Startup',
-          href: getPermalink('/homes/startup'),
-        },
-        {
-          text: 'Mobile App',
-          href: getPermalink('/homes/mobile-app'),
-        },
-        {
-          text: 'Personal',
-          href: getPermalink('/homes/personal'),
-        },
-      ],
-    },
-    {
-      text: 'Pages',
-      links: [
-        {
-          text: 'Features (Anchor Link)',
-          href: getPermalink('/#features'),
-        },
-        {
-          text: 'Services',
-          href: getPermalink('/services'),
-        },
-        {
-          text: 'Pricing',
-          href: getPermalink('/pricing'),
-        },
-        {
-          text: 'About us',
+          text: 'Objetivos',
           href: getPermalink('/about'),
         },
         {
-          text: 'Contact',
-          href: getPermalink('/contact'),
+          text: 'Visão e Missão',
+          href: getPermalink('/sobre'),
         },
         {
-          text: 'Terms',
-          href: getPermalink('/terms'),
-        },
-        {
-          text: 'Privacy policy',
-          href: getPermalink('/privacy'),
-        },
-      ],
+          text: 'Projetos',
+          href: getPermalink('/projetos'),
+        }
+      ]
     },
     {
-      text: 'Landing',
+      text: 'Produções',
       links: [
         {
-          text: 'Lead Generation',
-          href: getPermalink('/landing/lead-generation'),
+          text: 'Livros',
+          href: getPermalink('/producoes'),
         },
         {
-          text: 'Long-form Sales',
-          href: getPermalink('/landing/sales'),
+          text: 'Cartilhas',
+          href: getPermalink('/producoes/cartilhas'),
         },
         {
-          text: 'Click-Through',
-          href: getPermalink('/landing/click-through'),
-        },
-        {
-          text: 'Product Details (or Services)',
-          href: getPermalink('/landing/product'),
-        },
-        {
-          text: 'Coming Soon or Pre-Launch',
-          href: getPermalink('/landing/pre-launch'),
-        },
-        {
-          text: 'Subscription',
-          href: getPermalink('/landing/subscription'),
-        },
-      ],
+          text: 'Relatórios',
+          href: getPermalink('/producoes/relatorios'),
+        }
+      ]
     },
     {
-      text: 'Blog',
+      text: 'Pesquisa',
+      href: getPermalink('/pesquisa'),
       links: [
         {
-          text: 'Blog List',
-          href: getBlogPermalink(),
-        },
-        {
-          text: 'Article',
-          href: getPermalink('get-started-website-with-astro-tailwind-css', 'post'),
-        },
-        {
-          text: 'Article (with MDX)',
-          href: getPermalink('markdown-elements-demo-post', 'post'),
-        },
-        {
-          text: 'Category Page',
-          href: getPermalink('tutorials', 'category'),
-        },
-        {
-          text: 'Tag Page',
-          href: getPermalink('astro', 'tag'),
-        },
-      ],
+          text: 'Saúde Indígena',
+          href: getPermalink('/pesquisa/saude-indigena'),
+        }
+      ]
     },
     {
-      text: 'Widgets',
-      href: '#',
+      text: 'Equipe',
+      href: getPermalink('/equipe'),
+      links: [
+        {
+          text: 'Equipe Atual',
+          href: getPermalink('/equipe/atual'),
+        },
+        {
+          text: 'Colaboradores',
+          href: getPermalink('/equipe/colaboradores'),
+        }
+      ]
     },
+    {
+      text: 'Artigos',
+      href: getPermalink('/artigos'),
+    },
+    {
+      text: 'Prêmios',
+      href: getPermalink('/premios'),
+    }
   ],
-  actions: [{ text: 'Download', href: 'https://github.com/arthelokyo/astrowind', target: '_blank' }],
+  actions: [
+    { 
+      text: 'Chatbot', 
+      href: getPermalink('/chatbot'), 
+      variant: 'primary'
+    }
+  ],
 };
 
 export const footerData = {
