@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Layout from '~/layouts/PageLayout.astro';
 import Hero from '~/components/widgets/Hero.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
+import logoImage from '~/assets/images/logo.png';
 
 const projetos = (await getCollection('projetos'))
   .filter(p => p.data.status === 'ativo')
@@ -27,6 +28,7 @@ const metadata = {
 
 <Layout metadata={metadata}>
   <Hero
+    image={{ src: logoImage, alt: "Logo Projeto Mbiru'i - Bacilos de tuberculose" }}
     actions={[
       { text: 'Acessar o chatbot', href: '/chatbot', variant: 'primary' },
       { text: 'Conheça os projetos', href: '/projetos' },
@@ -57,7 +59,7 @@ const metadata = {
               </h3>
 
               <p class="text-gray-600 dark:text-gray-300">{data.descricao_curta}</p>
-              <span class="inline-block mt-2 text-sm px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+              <span class="inline-block mt-2 text-sm px-3 py-1 rounded-full bg-secondary/30 dark:bg-primary/20 text-primary dark:text-accent">
                 {data.status}
               </span>
             </li>
@@ -68,7 +70,7 @@ const metadata = {
   )}
 
   {producoes.length > 0 && (
-    <section class="py-12 sm:py-16 lg:py-20 bg-gray-50 dark:bg-gray-800">
+    <section class="py-12 sm:py-16 lg:py-20 bg-secondary/20 dark:bg-gray-800">
       <div class="container mx-auto px-4">
         <h2 class="text-3xl font-bold mb-8">Produções do projeto</h2>
 
@@ -84,7 +86,7 @@ const metadata = {
                 <a
                   href={data.arquivo}
                   target="_blank"
-                  class="inline-block mt-4 text-blue-600 hover:text-blue-700 dark:text-blue-400"
+                  class="inline-block mt-4 text-primary hover:text-accent dark:text-accent dark:hover:text-white"
                 >
                   Acessar &rarr;
                 </a>
@@ -94,7 +96,7 @@ const metadata = {
         </ul>
 
         <div class="mt-8 text-center">
-          <a href="/producoes" class="text-blue-600 hover:text-blue-700 dark:text-blue-400">
+          <a href="/producoes" class="text-primary hover:text-accent dark:text-accent dark:hover:text-white">
             Ver todas as produções &rarr;
           </a>
         </div>
@@ -112,7 +114,7 @@ const metadata = {
             <li class="border-b pb-4">
               <a
                 href={`/artigos/${slug}`}
-                class="text-xl font-semibold hover:text-blue-600 dark:hover:text-blue-400"
+                class="text-xl font-semibold hover:text-primary dark:hover:text-accent"
               >
                 {data.title}
               </a>
@@ -126,7 +128,7 @@ const metadata = {
         </ul>
 
         <div class="mt-8">
-          <a href="/artigos" class="text-blue-600 hover:text-blue-700 dark:text-blue-400">
+          <a href="/artigos" class="text-primary hover:text-accent dark:text-accent dark:hover:text-white">
             Ver todos os artigos &rarr;
           </a>
         </div>
@@ -135,7 +137,7 @@ const metadata = {
   )}
 
   {equipe.length > 0 && (
-    <section class="py-12 sm:py-16 lg:py-20 bg-gray-50 dark:bg-gray-800">
+    <section class="py-12 sm:py-16 lg:py-20 bg-secondary/20 dark:bg-gray-800">
       <div class="container mx-auto px-4">
         <h2 class="text-3xl font-bold mb-8">Equipe</h2>
 
@@ -157,7 +159,7 @@ const metadata = {
         </ul>
 
         <div class="mt-8 text-center">
-          <a href="/equipe" class="text-blue-600 hover:text-blue-700 dark:text-blue-400">
+          <a href="/equipe" class="text-primary hover:text-accent dark:text-accent dark:hover:text-white">
             Conheça toda a equipe &rarr;
           </a>
         </div>

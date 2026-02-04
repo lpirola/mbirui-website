@@ -1,9 +1,20 @@
 ---
 import { SITE } from 'astrowind:config';
+import { Image } from 'astro:assets';
+import logoImage from '~/assets/images/logo.png';
 ---
 
-<span
-  class="self-center ml-2 rtl:ml-0 rtl:mr-2 text-2xl md:text-xl font-bold text-gray-900 whitespace-nowrap dark:text-white"
->
-  🚀 {SITE?.name}
+<span class="flex items-center">
+  <Image
+    src={logoImage}
+    alt={SITE?.name || "Projeto Mbiru'i"}
+    width={48}
+    height={48}
+    class="h-10 w-10 md:h-12 md:w-12 rounded-full object-cover"
+  />
+  <span
+    class="self-center ml-2 rtl:ml-0 rtl:mr-2 text-xl md:text-lg font-bold text-gray-900 whitespace-nowrap dark:text-white"
+  >
+    {SITE?.name}
+  </span>
 </span>

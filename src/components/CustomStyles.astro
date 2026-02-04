@@ -1,22 +1,17 @@
 ---
 import '@fontsource-variable/inter';
 
-// 'DM Sans'
-// Nunito
-// Dosis
-// Outfit
-// Roboto
-// Literata
-// 'IBM Plex Sans'
-// Karla
-// Poppins
-// 'Fira Sans'
-// 'Libre Franklin'
-// Inconsolata
-// Raleway
-// Oswald
-// 'Space Grotesk'
-// Urbanist
+/*
+  Paleta de cores do Projeto Mbiru'i
+  Baseada na imagem do logo (bacilos de tuberculose)
+
+  | Cor                          | RGB             | HEX     |
+  |------------------------------|-----------------|---------|
+  | Bacilos (vermelho vibrante)  | 252, 72, 49     | #fc4821 |
+  | Fundo médio (bege)           | 211, 178, 168   | #d3b2a8 |
+  | Fundo dominante (off-white)  | 252, 247, 241   | #fcf7f1 |
+  | Bordas/acentos (vermelho escuro) | 184, 15, 29 | #b80f1d |
+*/
 ---
 
 <style is:inline>
@@ -25,19 +20,20 @@ import '@fontsource-variable/inter';
     --aw-font-serif: 'Inter Variable';
     --aw-font-heading: 'Inter Variable';
 
-    --aw-color-primary: rgb(1 97 239);
-    --aw-color-secondary: rgb(1 84 207);
-    --aw-color-accent: rgb(109 40 217);
+    /* Cores principais - Projeto Mbiru'i */
+    --aw-color-primary: rgb(184 15 29);      /* #b80f1d - vermelho escuro */
+    --aw-color-secondary: rgb(211 178 168);  /* #d3b2a8 - bege médio */
+    --aw-color-accent: rgb(252 72 49);       /* #fc4821 - vermelho vibrante */
 
-    --aw-color-text-heading: rgb(0 0 0);
-    --aw-color-text-default: rgb(16 16 16);
-    --aw-color-text-muted: rgb(16 16 16 / 66%);
-    --aw-color-bg-page: rgb(255 255 255);
+    --aw-color-text-heading: rgb(60 30 30);
+    --aw-color-text-default: rgb(45 35 35);
+    --aw-color-text-muted: rgb(45 35 35 / 66%);
+    --aw-color-bg-page: rgb(252 247 241);    /* #fcf7f1 - off-white */
 
-    --aw-color-bg-page-dark: rgb(3 6 32);
+    --aw-color-bg-page-dark: rgb(35 20 20);
 
     ::selection {
-      background-color: lavender;
+      background-color: rgb(252 72 49 / 30%);
     }
   }
 
@@ -46,17 +42,18 @@ import '@fontsource-variable/inter';
     --aw-font-serif: 'Inter Variable';
     --aw-font-heading: 'Inter Variable';
 
-    --aw-color-primary: rgb(1 97 239);
-    --aw-color-secondary: rgb(1 84 207);
-    --aw-color-accent: rgb(109 40 217);
+    /* Cores principais - Projeto Mbiru'i (modo escuro) */
+    --aw-color-primary: rgb(252 72 49);      /* #fc4821 - vermelho vibrante */
+    --aw-color-secondary: rgb(184 15 29);    /* #b80f1d - vermelho escuro */
+    --aw-color-accent: rgb(252 120 100);     /* versão mais clara do accent */
 
-    --aw-color-text-heading: rgb(247, 248, 248);
-    --aw-color-text-default: rgb(229 236 246);
-    --aw-color-text-muted: rgb(229 236 246 / 66%);
-    --aw-color-bg-page: rgb(3 6 32);
+    --aw-color-text-heading: rgb(252 247 241);
+    --aw-color-text-default: rgb(240 230 225);
+    --aw-color-text-muted: rgb(240 230 225 / 66%);
+    --aw-color-bg-page: rgb(35 20 20);
 
     ::selection {
-      background-color: black;
+      background-color: rgb(252 72 49 / 50%);
       color: snow;
     }
   }
