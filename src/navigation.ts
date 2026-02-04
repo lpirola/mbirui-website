@@ -81,62 +81,70 @@ export const headerData = {
 export const footerData = {
   links: [
     {
-      title: 'Product',
+      title: 'O Projeto',
       links: [
-        { text: 'Features', href: '#' },
-        { text: 'Security', href: '#' },
-        { text: 'Team', href: '#' },
-        { text: 'Enterprise', href: '#' },
-        { text: 'Customer stories', href: '#' },
-        { text: 'Pricing', href: '#' },
-        { text: 'Resources', href: '#' },
+        { text: 'Objetivos', href: getPermalink('/about') },
+        { text: 'Visão e Missão', href: getPermalink('/sobre') },
+        { text: 'Projetos', href: getPermalink('/projetos') },
+        { text: 'Equipe', href: getPermalink('/equipe') },
       ],
     },
     {
-      title: 'Platform',
+      title: 'Produções',
       links: [
-        { text: 'Developer API', href: '#' },
-        { text: 'Partners', href: '#' },
-        { text: 'Atom', href: '#' },
-        { text: 'Electron', href: '#' },
-        { text: 'AstroWind Desktop', href: '#' },
+        { text: 'Livros', href: getPermalink('/producoes') },
+        { text: 'Cartilhas', href: getPermalink('/producoes/cartilhas') },
+        { text: 'Relatórios', href: getPermalink('/producoes/relatorios') },
+        { text: 'Artigos', href: getPermalink('/artigos') },
       ],
     },
     {
-      title: 'Support',
+      title: 'Pesquisa',
       links: [
-        { text: 'Docs', href: '#' },
-        { text: 'Community Forum', href: '#' },
-        { text: 'Professional Services', href: '#' },
-        { text: 'Skills', href: '#' },
-        { text: 'Status', href: '#' },
+        { text: 'Saúde Indígena', href: getPermalink('/pesquisa/saude-indigena') },
+        { text: 'Estratégias de Prevenção', href: getPermalink('/pesquisa/estrategias-prevencao') },
+        { text: 'Tuberculose', href: getPermalink('/pesquisa/tuberculose') },
       ],
     },
     {
-      title: 'Company',
+      title: 'Colaboração',
       links: [
-        { text: 'About', href: '#' },
-        { text: 'Blog', href: '#' },
-        { text: 'Careers', href: '#' },
-        { text: 'Press', href: '#' },
-        { text: 'Inclusion', href: '#' },
-        { text: 'Social Impact', href: '#' },
-        { text: 'Shop', href: '#' },
+        { text: 'Chatbot', href: getPermalink('/chatbot') },
+        { text: 'Prêmios', href: getPermalink('/premios') },
+        { text: 'Contato', href: getPermalink('/contato') },
+        { text: 'Quero Colaborar', href: getPermalink('/colaborar') },
       ],
     },
   ],
   secondaryLinks: [
-    { text: 'Terms', href: getPermalink('/terms') },
-    { text: 'Privacy Policy', href: getPermalink('/privacy') },
+    { text: 'Termos de Uso', href: getPermalink('/terms') },
+    { text: 'Política de Privacidade', href: getPermalink('/privacy') },
   ],
   socialLinks: [
-    { ariaLabel: 'X', icon: 'tabler:brand-x', href: '#' },
-    { ariaLabel: 'Instagram', icon: 'tabler:brand-instagram', href: '#' },
-    { ariaLabel: 'Facebook', icon: 'tabler:brand-facebook', href: '#' },
-    { ariaLabel: 'RSS', icon: 'tabler:rss', href: getAsset('/rss.xml') },
-    { ariaLabel: 'Github', icon: 'tabler:brand-github', href: 'https://github.com/arthelokyo/astrowind' },
+    { 
+      ariaLabel: 'Fiocruz', 
+      icon: 'tabler:building-hospital', 
+      href: 'https://portal.fiocruz.br/' 
+    },
+    { 
+      ariaLabel: 'Instagram', 
+      icon: 'tabler:brand-instagram', 
+      href: '#' 
+    },
+    { 
+      ariaLabel: 'WhatsApp', 
+      icon: 'tabler:brand-whatsapp', 
+      href: '#' 
+    },
+    { 
+      ariaLabel: 'E-mail', 
+      icon: 'tabler:mail', 
+      href: 'mailto:mbirui@fiocruz.br' 
+    },
   ],
   footNote: `
-    Made by <a class="text-blue-600 underline dark:text-muted" href="https://github.com/arthelokyo"> Arthelokyo</a> · All rights reserved.
+    © ${new Date().getFullYear()} Projeto Mbiru'i · 
+    Desenvolvido por <a class="text-primary underline dark:text-accent" href="https://portal.fiocruz.br/">Fiocruz</a> · 
+    Todos os direitos reservados.
   `,
 };
