@@ -1,4 +1,23 @@
-import { getPermalink, getBlogPermalink, getAsset } from './utils/permalinks';
+import { getPermalink } from './utils/permalinks';
+import type { CallToAction } from './types';
+
+type HeaderLink = {
+  text?: string;
+  href?: string;
+  links?: HeaderLink[];
+};
+
+type FooterLink = {
+  text?: string;
+  href?: string;
+  ariaLabel?: string;
+  icon?: string;
+};
+
+type FooterSection = {
+  title?: string;
+  links: FooterLink[];
+};
 
 export const headerData = {
   links: [
@@ -75,7 +94,10 @@ export const headerData = {
       href: getPermalink('/chatbot'), 
       variant: 'primary'
     }
-  ],
+  ] satisfies CallToAction[],
+} satisfies {
+  links: HeaderLink[];
+  actions: CallToAction[];
 };
 
 export const footerData = {
@@ -147,4 +169,9 @@ export const footerData = {
     Desenvolvido por <a class="text-primary underline dark:text-accent" href="https://portal.fiocruz.br/">Fiocruz</a> · 
     Todos os direitos reservados.
   `,
+} satisfies {
+  links: FooterSection[];
+  secondaryLinks: FooterLink[];
+  socialLinks: FooterLink[];
+  footNote: string;
 };

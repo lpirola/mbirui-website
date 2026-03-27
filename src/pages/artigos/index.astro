@@ -4,7 +4,7 @@ import Layout from '~/layouts/PageLayout.astro';
 import Hero from '~/components/widgets/Hero.astro';
 
 const artigos = (await getCollection('artigos'))
-  .sort((a, b) => b.data.data - a.data.data);
+  .sort((a, b) => new Date(b.data.data).getTime() - new Date(a.data.data).getTime());
 
 const metadata = {
   title: 'Artigos — Projeto Mbiru\'i',

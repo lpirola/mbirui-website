@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import Layout from '~/layouts/PageLayout.astro';
 import Hero from '~/components/widgets/Hero.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
+import { chatbotWhatsappUrl } from '~/utils/chatbot';
 import logoImage from '~/assets/images/logo.png';
 
 const projetos = (await getCollection('projetos'))
@@ -14,7 +15,7 @@ const producoes = (await getCollection('producoes'))
   .slice(0, 4);
 
 const artigos = (await getCollection('artigos'))
-  .sort((a, b) => b.data.data - a.data.data)
+  .sort((a, b) => new Date(b.data.data).getTime() - new Date(a.data.data).getTime())
   .slice(0, 3);
 
 const equipe = (await getCollection('equipe'))
@@ -30,7 +31,7 @@ const metadata = {
   <Hero
     image={{ src: logoImage, alt: "Logo Projeto Mbiru'i - Bacilos de tuberculose" }}
     actions={[
-      { text: 'Acessar o chatbot', href: '/chatbot', variant: 'primary' },
+      { text: 'Acessar o chatbot', href: chatbotWhatsappUrl, variant: 'primary' },
       { text: 'Conheça os projetos', href: '/projetos' },
     ]}
   >
