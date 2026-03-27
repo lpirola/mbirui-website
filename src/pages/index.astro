@@ -1,178 +1,186 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '~/layouts/PageLayout.astro';
-import Hero from '~/components/widgets/Hero.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import { chatbotWhatsappUrl } from '~/utils/chatbot';
 import logoImage from '~/assets/images/logo.png';
 
-const projetos = (await getCollection('projetos'))
-  .filter(p => p.data.status === 'ativo')
-  .slice(0, 3);
+const resultados = (await getCollection('resultados')).filter((item) => item.data.destaque).slice(0, 3);
 
-const producoes = (await getCollection('producoes'))
-  .sort((a, b) => b.data.ano - a.data.ano)
-  .slice(0, 4);
-
-const artigos = (await getCollection('artigos'))
-  .sort((a, b) => new Date(b.data.data).getTime() - new Date(a.data.data).getTime())
-  .slice(0, 3);
-
-const equipe = (await getCollection('equipe'))
-  .filter(p => p.data.periodo === 'atual');
+const equipe = (await getCollection('equipe')).filter((pessoa) => pessoa.data.periodo === 'atual').slice(0, 3);
 
 const metadata = {
-  title: 'Projeto Mbiru\'i — IA para Saúde Indígena',
-  description: 'Inteligência Artificial, tradução e acesso à informação em saúde indígena.',
+  title: "Projeto Mbiru'i — IA, tradução e pesquisa em saúde indígena",
+  description:
+    'Projeto de pesquisa voltado à inteligência artificial, tradução, formação e diagnóstico em saúde indígena.',
 };
 ---
 
 <Layout metadata={metadata}>
-  <Hero
-    image={{ src: logoImage, alt: "Logo Projeto Mbiru'i - Bacilos de tuberculose" }}
-    actions={[
-      { text: 'Acessar o chatbot', href: chatbotWhatsappUrl, variant: 'primary' },
-      { text: 'Conheça os projetos', href: '/projetos' },
-    ]}
-  >
-    <Fragment slot="title">
-      Projeto <span class="text-accent dark:text-white">Mbiru'i</span>
-    </Fragment>
+  <section class="py-16 sm:py-20 lg:py-24">
+    <div class="container mx-auto px-4">
+      <div class="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+        <div class="max-w-3xl">
+          <p class="mb-4 text-sm font-semibold uppercase tracking-[0.2em] text-primary dark:text-accent">
+            Projeto Mbiru'i
+          </p>
+          <h1 class="text-4xl font-bold tracking-tight sm:text-5xl">
+            Pesquisa aplicada para ampliar o acesso à informação e ao cuidado em saúde indígena.
+          </h1>
+          <p class="mt-6 text-lg leading-8 text-gray-700 dark:text-gray-300">
+            O site reúne as principais frentes do projeto, com destaque para o eixo de IA e tradução em saúde indígena e
+            para o eixo de mNGS voltado ao fortalecimento do diagnóstico e da formação técnica.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a
+              href="/pesquisa"
+              class="inline-flex items-center rounded-full bg-primary px-5 py-3 font-medium text-white transition hover:bg-accent"
+            >
+              Conhecer a pesquisa
+            </a>
+            <a
+              href="/resultados"
+              class="inline-flex items-center rounded-full border border-gray-300 px-5 py-3 font-medium text-gray-900 transition hover:border-primary hover:text-primary dark:border-gray-700 dark:text-white dark:hover:border-accent dark:hover:text-accent"
+            >
+              Ver resultados
+            </a>
+          </div>
+        </div>
 
-    <Fragment slot="subtitle">
-      Inteligência Artificial, tradução e acesso à informação
-      em saúde indígena.
-    </Fragment>
-  </Hero>
-
-  {projetos.length > 0 && (
-    <section class="py-12 sm:py-16 lg:py-20">
-      <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold mb-8">Projetos</h2>
-
-        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projetos.map(({ slug, data }) => (
-            <li class="border rounded-lg p-6 hover:shadow-lg transition-shadow">
-              <h3 class="text-xl font-semibold mb-2">
-                <a href={`/projetos/${slug}`}>
-                  {data.title}
-                </a>
-              </h3>
-
-              <p class="text-gray-600 dark:text-gray-300">{data.descricao_curta}</p>
-              <span class="inline-block mt-2 text-sm px-3 py-1 rounded-full bg-secondary/30 dark:bg-primary/20 text-primary dark:text-accent">
-                {data.status}
-              </span>
-            </li>
-          ))}
-        </ul>
+        <div class="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-slate-900">
+          <img src={logoImage.src} alt="Logo do Projeto Mbiru'i" class="mx-auto mb-6 w-48" />
+          <p class="text-sm leading-7 text-gray-600 dark:text-gray-300">
+            O projeto atua na interface entre ciência, comunicação em saúde, formação de equipes e colaboração com
+            territórios indígenas, com atenção especial às populações Guarani e Kaiowá.
+          </p>
+        </div>
       </div>
-    </section>
-  )}
+    </div>
+  </section>
 
-  {producoes.length > 0 && (
-    <section class="py-12 sm:py-16 lg:py-20 bg-secondary/20 dark:bg-gray-800">
-      <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold mb-8">Produções do projeto</h2>
+  <section class="pb-12 sm:pb-16 lg:pb-20">
+    <div class="container mx-auto px-4">
+      <div class="grid gap-6 md:grid-cols-2">
+        <article
+          class="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-slate-900"
+        >
+          <p class="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-primary dark:text-accent">Eixo 1</p>
+          <h2 class="text-2xl font-bold">IA / Mbiru'i</h2>
+          <p class="mt-4 text-gray-700 dark:text-gray-300">
+            Desenvolvimento de ferramentas, processos de tradução e materiais de comunicação em saúde pensados para
+            contextos linguísticos e culturais indígenas.
+          </p>
+          <a href="/pesquisa#ia-mbirui" class="mt-6 inline-flex text-sm font-semibold text-primary hover:text-accent">
+            Explorar este eixo &rarr;
+          </a>
+        </article>
 
-        <ul class="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {producoes.map(({ data }) => (
-            <li class="border rounded-lg p-6 hover:shadow-lg transition-shadow">
-              <strong class="block text-lg mb-2">{data.title}</strong>
-              <span class="text-sm text-gray-500 dark:text-gray-400">
-                ({data.tipo}, {data.ano})
-              </span>
+        <article
+          class="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-slate-900"
+        >
+          <p class="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-primary dark:text-accent">Eixo 2</p>
+          <h2 class="text-2xl font-bold">mNGS</h2>
+          <p class="mt-4 text-gray-700 dark:text-gray-300">
+            Pesquisa e formação voltadas a diagnóstico, coleta, processamento e circulação de conhecimento técnico
+            ligado a infecções pulmonares e saúde indígena.
+          </p>
+          <a href="/pesquisa#mngs" class="mt-6 inline-flex text-sm font-semibold text-primary hover:text-accent">
+            Explorar este eixo &rarr;
+          </a>
+        </article>
+      </div>
+    </div>
+  </section>
 
+  <section class="bg-secondary/20 py-12 sm:py-16 lg:py-20 dark:bg-gray-900/60">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+        <div class="max-w-2xl">
+          <p class="text-sm font-semibold uppercase tracking-[0.18em] text-primary dark:text-accent">Resultados</p>
+          <h2 class="mt-3 text-3xl font-bold">Apresentações, materiais e circulação pública</h2>
+          <p class="mt-4 text-gray-700 dark:text-gray-300">
+            Uma seleção inicial de materiais públicos, apresentações e registros de circulação do projeto.
+          </p>
+        </div>
+        <a href="/resultados" class="text-sm font-semibold text-primary hover:text-accent">
+          Ver página completa &rarr;
+        </a>
+      </div>
+
+      <div class="mt-8 grid gap-6 md:grid-cols-3">
+        {
+          resultados.map(({ data }) => (
+            <article class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-slate-900">
+              <p class="text-sm font-semibold uppercase tracking-[0.16em] text-primary dark:text-accent">
+                {data.categoria.replace('-', ' ')}
+              </p>
+              <h3 class="mt-3 text-xl font-semibold">{data.title}</h3>
+              {data.descricao && <p class="mt-3 text-sm text-gray-600 dark:text-gray-300">{data.descricao}</p>}
               {data.arquivo && (
                 <a
                   href={data.arquivo}
                   target="_blank"
-                  class="inline-block mt-4 text-primary hover:text-accent dark:text-accent dark:hover:text-white"
+                  class="mt-5 inline-flex text-sm font-semibold text-primary hover:text-accent"
                 >
-                  Acessar &rarr;
+                  Abrir material &rarr;
                 </a>
               )}
-            </li>
-          ))}
-        </ul>
-
-        <div class="mt-8 text-center">
-          <a href="/producoes" class="text-primary hover:text-accent dark:text-accent dark:hover:text-white">
-            Ver todas as produções &rarr;
-          </a>
-        </div>
+            </article>
+          ))
+        }
       </div>
-    </section>
-  )}
+    </div>
+  </section>
 
-  {artigos.length > 0 && (
-    <section class="py-12 sm:py-16 lg:py-20">
-      <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold mb-8">Artigos e publicações</h2>
-
-        <ul class="space-y-4">
-          {artigos.map(({ slug, data }) => (
-            <li class="border-b pb-4">
-              <a
-                href={`/artigos/${slug}`}
-                class="text-xl font-semibold hover:text-primary dark:hover:text-accent"
-              >
-                {data.title}
-              </a>
-              <br />
-              <small class="text-gray-500 dark:text-gray-400">
-                {new Date(data.data).toLocaleDateString('pt-BR')}
-                {data.autor && ` • ${data.autor}`}
-              </small>
-            </li>
-          ))}
-        </ul>
-
-        <div class="mt-8">
-          <a href="/artigos" class="text-primary hover:text-accent dark:text-accent dark:hover:text-white">
-            Ver todos os artigos &rarr;
+  <section class="py-12 sm:py-16 lg:py-20">
+    <div class="container mx-auto px-4">
+      <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
+        <article
+          class="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-slate-900"
+        >
+          <p class="text-sm font-semibold uppercase tracking-[0.18em] text-primary dark:text-accent">Galeria</p>
+          <h2 class="mt-3 text-3xl font-bold">Imagens organizadas por território, formação e circulação pública</h2>
+          <p class="mt-4 text-gray-700 dark:text-gray-300">
+            A galeria reúne registros de campo, capacitações, congressos, encontros institucionais e materiais do
+            projeto em uma curadoria inicial.
+          </p>
+          <a href="/galeria" class="mt-6 inline-flex text-sm font-semibold text-primary hover:text-accent">
+            Acessar galeria &rarr;
           </a>
-        </div>
-      </div>
-    </section>
-  )}
+        </article>
 
-  {equipe.length > 0 && (
-    <section class="py-12 sm:py-16 lg:py-20 bg-secondary/20 dark:bg-gray-800">
-      <div class="container mx-auto px-4">
-        <h2 class="text-3xl font-bold mb-8">Equipe</h2>
-
-        <ul class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {equipe.map(({ data }) => (
-            <li class="text-center border rounded-lg p-6 hover:shadow-lg transition-shadow">
-              {data.foto && (
-                <img
-                  src={data.foto}
-                  alt={data.nome}
-                  class="w-32 h-32 rounded-full mx-auto mb-4 object-cover"
-                />
-              )}
-
-              <strong class="block text-lg">{data.nome}</strong>
-              <span class="text-sm text-gray-600 dark:text-gray-400">{data.papel}</span>
-            </li>
-          ))}
-        </ul>
-
-        <div class="mt-8 text-center">
-          <a href="/equipe" class="text-primary hover:text-accent dark:text-accent dark:hover:text-white">
-            Conheça toda a equipe &rarr;
+        <article
+          class="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-slate-900"
+        >
+          <p class="text-sm font-semibold uppercase tracking-[0.18em] text-primary dark:text-accent">Equipe</p>
+          <h2 class="mt-3 text-3xl font-bold">Pesquisa interdisciplinar em rede</h2>
+          <div class="mt-6 space-y-4">
+            {
+              equipe.map(({ data }) => (
+                <div class="border-b border-gray-200 pb-4 last:border-0 last:pb-0 dark:border-gray-800">
+                  <p class="font-semibold">{data.nome}</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-300">
+                    {data.papel}
+                    {data.instituicao ? ` · ${data.instituicao}` : ''}
+                  </p>
+                </div>
+              ))
+            }
+          </div>
+          <a href="/equipe" class="mt-6 inline-flex text-sm font-semibold text-primary hover:text-accent">
+            Conhecer a equipe &rarr;
           </a>
-        </div>
+        </article>
       </div>
-    </section>
-  )}
+    </div>
+  </section>
 
   <CallToAction
-    title="Quer colaborar?"
-    subtitle="Buscamos pessoas e instituições interessadas em saúde indígena, inovação e IA responsável."
+    title="Quer colaborar com o projeto?"
+    subtitle="Entre em contato para parcerias institucionais, circulação de materiais, atividades de pesquisa ou uso do chatbot."
     actions={[
-      { text: 'Entrar em contato', href: '/contato', variant: 'primary' },
+      { text: 'Falar no WhatsApp', href: chatbotWhatsappUrl, variant: 'primary' },
+      { text: 'Ir para contato', href: '/contato' },
     ]}
   />
 </Layout>

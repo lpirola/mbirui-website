@@ -13,6 +13,7 @@
 ### Task 1: Inventariar o acervo publicável
 
 **Files:**
+
 - Review: `Materiais para o site/`
 - Create: `docs/plans/2026-03-27-site-content-inventory.md`
 
@@ -42,6 +43,7 @@ git commit -m "docs: add site content inventory"
 ### Task 2: Ajustar o schema de conteúdo
 
 **Files:**
+
 - Modify: `src/content/config.ts`
 - Create: `src/content/resultados/`
 - Create: `src/content/galeria/`
@@ -93,6 +95,7 @@ git commit -m "feat: add content collections for resultados and galeria"
 ### Task 3: Publicar ativos selecionados em caminhos estáveis
 
 **Files:**
+
 - Create: `public/media/resultados/`
 - Create: `public/media/galeria/`
 
@@ -125,6 +128,7 @@ git commit -m "feat: publish curated site media assets"
 ### Task 4: Criar o conteúdo estruturado de Resultados
 
 **Files:**
+
 - Create: `src/content/resultados/*.md`
 
 **Step 1: Criar entradas de apresentações e PDFs**
@@ -166,6 +170,7 @@ git commit -m "feat: add curated resultados content"
 ### Task 5: Criar o conteúdo estruturado da Galeria
 
 **Files:**
+
 - Create: `src/content/galeria/*.md`
 
 **Step 1: Criar arquivos por imagem**
@@ -208,6 +213,7 @@ git commit -m "feat: add gallery content entries"
 ### Task 6: Reestruturar a Home
 
 **Files:**
+
 - Modify: `src/pages/index.astro`
 
 **Step 1: Reduzir a introdução**
@@ -241,6 +247,7 @@ git commit -m "feat: simplify homepage around key project areas"
 ### Task 7: Reescrever a página de Pesquisa
 
 **Files:**
+
 - Modify: `src/pages/pesquisa/index.astro`
 - Optionally modify: `src/content/pesquisa/*.md`
 
@@ -274,6 +281,7 @@ git commit -m "feat: rewrite pesquisa page around two research axes"
 ### Task 8: Transformar Produções em Resultados editoriais
 
 **Files:**
+
 - Modify: `src/pages/producoes/index.astro`
 - Optionally create: `src/pages/resultados.astro`
 
@@ -308,6 +316,7 @@ git commit -m "feat: add editorial resultados page"
 ### Task 9: Reestruturar Equipe
 
 **Files:**
+
 - Modify: `src/content/equipe/*.md`
 - Modify: `src/pages/equipe/index.astro`
 
@@ -337,6 +346,7 @@ git commit -m "feat: update equipe page with institutions"
 ### Task 10: Reescrever Contato
 
 **Files:**
+
 - Modify: `src/pages/contact.astro`
 - Optionally modify: `src/navigation.ts`
 
@@ -366,6 +376,7 @@ git commit -m "feat: localize contact page for institutional use"
 ### Task 11: Criar a página de Galeria
 
 **Files:**
+
 - Create: `src/pages/galeria.astro`
 
 **Step 1: Ler a coleção `galeria`**
@@ -399,6 +410,7 @@ git commit -m "feat: add themed gallery page"
 ### Task 12: Ajustar navegação e links institucionais
 
 **Files:**
+
 - Modify: `src/navigation.ts`
 - Optionally modify: `src/pages/about.astro`
 - Optionally modify: `src/content/pages/*.md`
@@ -429,6 +441,7 @@ git commit -m "feat: align navigation with new content architecture"
 ### Task 13: Verificar, revisar e polir
 
 **Files:**
+
 - Review: `src/pages/`
 - Review: `src/content/`
 

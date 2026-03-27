@@ -1,6 +1,7 @@
 ---
 nome: Ida Viktoria Kolte
 papel: Investigadora Principal
+instituicao: Fiocruz
 periodo: atual
 foto: /img/equipe/ida.jpg
 ---

@@ -98,6 +98,7 @@ const equipeCollection = defineCollection({
   schema: z.object({
     nome: z.string(),
     papel: z.string(),
+    instituicao: z.string().optional(),
     periodo: z.enum(['atual', 'anterior']),
     foto: z.string().optional(),
     bio: z.string().optional(),
@@ -124,6 +125,32 @@ const pesquisaCollection = defineCollection({
   }),
 });
 
+const resultadosCollection = defineCollection({
+  schema: z.object({
+    title: z.string(),
+    categoria: z.enum(['apresentacao', 'pdf', 'workshop', 'material-publico', 'instagram']),
+    ano: z.number(),
+    arquivo: z.string().optional(),
+    link: z.string().url().optional(),
+    descricao: z.string().optional(),
+    destaque: z.boolean().optional(),
+    imagem: z.string().optional(),
+    metadata: metadataDefinition(),
+  }),
+});
+
+const galeriaCollection = defineCollection({
+  schema: z.object({
+    title: z.string(),
+    categoria: z.enum(['trabalho-de-campo', 'capacitacoes', 'congressos', 'eventos', 'territorio', 'produtos']),
+    imagem: z.string(),
+    alt: z.string(),
+    ordem: z.number().optional(),
+    descricao: z.string().optional(),
+    metadata: metadataDefinition(),
+  }),
+});
+
 const pagesCollection = defineCollection({
   schema: z.object({
     title: z.string(),
@@ -140,5 +167,7 @@ export const collections = {
   equipe: equipeCollection,
   premios: premiosCollection,
   pesquisa: pesquisaCollection,
+  resultados: resultadosCollection,
+  galeria: galeriaCollection,
   pages: pagesCollection,
 };

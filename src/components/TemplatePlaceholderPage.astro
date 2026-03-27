@@ -1,0 +1,28 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+
+const metadata = {
+  title,
+  description,
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="py-16 sm:py-20 lg:py-24">
+    <div class="container mx-auto px-4 max-w-3xl">
+      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-primary dark:text-accent">Página auxiliar</p>
+      <h1 class="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">{title}</h1>
+      <p class="mt-6 text-lg leading-8 text-gray-700 dark:text-gray-300">{description}</p>
+      <a href="/" class="mt-8 inline-flex text-sm font-semibold text-primary hover:text-accent">
+        Voltar para a página inicial &rarr;
+      </a>
+    </div>
+  </section>
+</Layout>

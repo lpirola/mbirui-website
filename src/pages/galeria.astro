@@ -1,0 +1,63 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '~/layouts/PageLayout.astro';
+
+const itens = (await getCollection('galeria')).sort((a, b) => (a.data.ordem ?? 999) - (b.data.ordem ?? 999));
+
+const categorias = [
+  ['trabalho-de-campo', 'Trabalho de campo'],
+  ['capacitacoes', 'Capacitações e formação'],
+  ['congressos', 'Congressos e apresentações'],
+  ['eventos', 'Eventos e encontros'],
+  ['territorio', 'Aldeias e território'],
+  ['produtos', 'Produtos e materiais'],
+] as const;
+
+const metadata = {
+  title: "Galeria — Projeto Mbiru'i",
+  description: 'Galeria temática com imagens de campo, formação, congressos, eventos e território.',
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="py-16 sm:py-20 lg:py-24">
+    <div class="container mx-auto px-4 max-w-5xl">
+      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-primary dark:text-accent">Galeria</p>
+      <h1 class="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
+        Um recorte visual do projeto em território, formação e circulação pública.
+      </h1>
+      <p class="mt-6 text-lg leading-8 text-gray-700 dark:text-gray-300">
+        As imagens abaixo foram organizadas por tema para facilitar leitura editorial do acervo. O lote inicial exclui
+        materiais com autorização pendente e privilegia registros já coerentes com a narrativa pública do site.
+      </p>
+    </div>
+  </section>
+
+  <section class="pb-12 sm:pb-16 lg:pb-20">
+    <div class="container mx-auto px-4 max-w-6xl space-y-12">
+      {
+        categorias.map(([categoria, titulo]) => {
+          const grupo = itens.filter((item) => item.data.categoria === categoria);
+          if (grupo.length === 0) return null;
+
+          return (
+            <div>
+              <h2 class="text-2xl font-bold">{titulo}</h2>
+              <div class="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+                {grupo.map(({ data }) => (
+                  <figure class="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-slate-900">
+                    <img src={data.imagem} alt={data.alt} class="h-72 w-full object-cover" loading="lazy" />
+                    <figcaption class="p-5">
+                      <p class="font-semibold">{data.title}</p>
+                      {data.descricao && <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">{data.descricao}</p>}
+                    </figcaption>
+                  </figure>
+                ))}
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </section>
+</Layout>

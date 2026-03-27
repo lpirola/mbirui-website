@@ -13,6 +13,7 @@
 ### Task 1: Centralizar link do WhatsApp
 
 **Files:**
+
 - Create: `src/utils/chatbot.ts`
 
 **Step 1: Criar constante da saudação**
@@ -26,6 +27,7 @@ Montar a URL `https://wa.me/5512991806970?text=...` usando `encodeURIComponent`.
 ### Task 2: Atualizar CTA da home
 
 **Files:**
+
 - Modify: `src/pages/index.astro`
 
 **Step 1: Importar utilitário**
@@ -39,6 +41,7 @@ Atualizar o CTA "Acessar o chatbot" para abrir o WhatsApp direto.
 ### Task 3: Atualizar página do chatbot
 
 **Files:**
+
 - Modify: `src/pages/chatbot.astro`
 
 **Step 1: Importar utilitário**
@@ -52,6 +55,7 @@ Apontar o botão para o WhatsApp e substituir a mensagem "acessível em breve" p
 ### Task 4: Verificação
 
 **Files:**
+
 - Verify: `src/utils/chatbot.ts`
 - Verify: `src/pages/index.astro`
 - Verify: `src/pages/chatbot.astro`

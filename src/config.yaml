@@ -11,7 +11,7 @@ metadata:
   title:
     default: "Projeto Mbiru'i"
     template: "%s — Projeto Mbiru'i"
-  description: "Inteligência Artificial, tradução e acesso à informação em saúde indígena. IA para combate à tuberculose em comunidades Guarani."
+  description: 'Inteligência Artificial, tradução e acesso à informação em saúde indígena. IA para combate à tuberculose em comunidades Guarani.'
   robots:
     index: true
     follow: true
@@ -33,7 +33,7 @@ i18n:
 
 apps:
   blog:
-    isEnabled: true
+    isEnabled: false
     postsPerPage: 6
 
     post:
@@ -69,4 +69,4 @@ analytics:
       id: null # or "G-XXXXXXXXXX"
 
 ui:
-  theme: 'system' # Values: "system" | "light" | "dark" | "light:only" | "dark:only"
+  theme: 'dark' # Values: "system" | "light" | "dark" | "light:only" | "dark:only"

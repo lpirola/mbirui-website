@@ -1,0 +1,122 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '~/layouts/PageLayout.astro';
+
+const resultados = (await getCollection('resultados')).sort((a, b) => b.data.ano - a.data.ano);
+const galeria = (await getCollection('galeria')).filter(({ data }) =>
+  ['congressos', 'eventos', 'produtos'].includes(data.categoria)
+);
+
+const grupos = [
+  {
+    title: 'Apresentações e PDFs',
+    categorias: ['apresentacao', 'pdf'] as string[],
+  },
+  {
+    title: 'Workshops e eventos',
+    categorias: ['workshop'] as string[],
+  },
+  {
+    title: 'Materiais públicos',
+    categorias: ['material-publico'] as string[],
+  },
+  {
+    title: 'Instagram e presença pública',
+    categorias: ['instagram'] as string[],
+  },
+] as const;
+
+const metadata = {
+  title: "Resultados — Projeto Mbiru'i",
+  description: 'Apresentações, materiais, workshops e registros de circulação pública do projeto.',
+};
+---
+
+<Layout metadata={metadata}>
+  <section class="py-16 sm:py-20 lg:py-24">
+    <div class="container mx-auto px-4 max-w-5xl">
+      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-primary dark:text-accent">Resultados</p>
+      <h1 class="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
+        Materiais públicos, apresentações e circulação institucional do projeto.
+      </h1>
+      <p class="mt-6 text-lg leading-8 text-gray-700 dark:text-gray-300">
+        Esta página reúne um primeiro conjunto de documentos e registros públicos curados a partir do acervo do projeto.
+        Os itens foram selecionados para apresentar a circulação do trabalho sem antecipar conclusões ou publicar
+        informações ainda pendentes de validação.
+      </p>
+    </div>
+  </section>
+
+  <section class="pb-12 sm:pb-16 lg:pb-20">
+    <div class="container mx-auto px-4 max-w-6xl space-y-10">
+      {
+        grupos.map((grupo) => {
+          const itens = resultados.filter(({ data }) => grupo.categorias.includes(data.categoria));
+
+          if (itens.length === 0) return null;
+
+          return (
+            <div class="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-slate-900">
+              <h2 class="text-2xl font-bold">{grupo.title}</h2>
+              <div class="mt-6 grid gap-6 md:grid-cols-2">
+                {itens.map(({ data }) => (
+                  <article class="rounded-2xl border border-gray-200 p-6 dark:border-gray-700">
+                    <p class="text-sm font-semibold uppercase tracking-[0.16em] text-primary dark:text-accent">
+                      {data.ano}
+                    </p>
+                    <h3 class="mt-3 text-xl font-semibold">{data.title}</h3>
+                    {data.descricao && <p class="mt-3 text-gray-700 dark:text-gray-300">{data.descricao}</p>}
+                    {data.arquivo && (
+                      <a
+                        href={data.arquivo}
+                        target="_blank"
+                        class="mt-5 inline-flex text-sm font-semibold text-primary hover:text-accent"
+                      >
+                        Abrir arquivo &rarr;
+                      </a>
+                    )}
+                    {data.link && (
+                      <a
+                        href={data.link}
+                        target="_blank"
+                        class="mt-5 inline-flex text-sm font-semibold text-primary hover:text-accent"
+                      >
+                        Abrir link &rarr;
+                      </a>
+                    )}
+                  </article>
+                ))}
+              </div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </section>
+
+  <section class="bg-secondary/20 py-12 sm:py-16 lg:py-20 dark:bg-gray-900/60">
+    <div class="container mx-auto px-4 max-w-6xl">
+      <div class="max-w-3xl">
+        <h2 class="text-3xl font-bold">Destaques visuais</h2>
+        <p class="mt-4 text-gray-700 dark:text-gray-300">
+          Congressos, encontros e produtos ajudam a mostrar como o projeto circula entre pesquisa, formação e diálogo
+          institucional.
+        </p>
+      </div>
+
+      <div class="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {
+          galeria.slice(0, 6).map(({ data }) => (
+            <figure class="overflow-hidden rounded-3xl border border-gray-200 bg-white shadow-sm dark:border-gray-800 dark:bg-slate-900">
+              <img src={data.imagem} alt={data.alt} class="h-64 w-full object-cover" loading="lazy" />
+              <figcaption class="p-5">
+                <p class="font-semibold">{data.title}</p>
+                {data.descricao && <p class="mt-2 text-sm text-gray-600 dark:text-gray-300">{data.descricao}</p>}
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+</Layout>

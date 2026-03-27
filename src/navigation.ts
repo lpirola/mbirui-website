@@ -1,4 +1,5 @@
 import { getPermalink } from './utils/permalinks';
+import { chatbotWhatsappUrl } from './utils/chatbot';
 import type { CallToAction } from './types';
 
 type HeaderLink = {
@@ -21,80 +22,14 @@ type FooterSection = {
 
 export const headerData = {
   links: [
-    {
-      text: 'O Projeto',
-      links: [
-        {
-          text: 'Objetivos',
-          href: getPermalink('/about'),
-        },
-        {
-          text: 'Visão e Missão',
-          href: getPermalink('/sobre'),
-        },
-        {
-          text: 'Projetos',
-          href: getPermalink('/projetos'),
-        }
-      ]
-    },
-    {
-      text: 'Produções',
-      links: [
-        {
-          text: 'Livros',
-          href: getPermalink('/producoes'),
-        },
-        {
-          text: 'Cartilhas',
-          href: getPermalink('/producoes/cartilhas'),
-        },
-        {
-          text: 'Relatórios',
-          href: getPermalink('/producoes/relatorios'),
-        }
-      ]
-    },
-    {
-      text: 'Pesquisa',
-      href: getPermalink('/pesquisa'),
-      links: [
-        {
-          text: 'Saúde Indígena',
-          href: getPermalink('/pesquisa/saude-indigena'),
-        }
-      ]
-    },
-    {
-      text: 'Equipe',
-      href: getPermalink('/equipe'),
-      links: [
-        {
-          text: 'Equipe Atual',
-          href: getPermalink('/equipe/atual'),
-        },
-        {
-          text: 'Colaboradores',
-          href: getPermalink('/equipe/colaboradores'),
-        }
-      ]
-    },
-    {
-      text: 'Artigos',
-      href: getPermalink('/artigos'),
-    },
-    {
-      text: 'Prêmios',
-      href: getPermalink('/premios'),
-    }
+    { text: 'Início', href: getPermalink('/') },
+    { text: 'Pesquisa', href: getPermalink('/pesquisa') },
+    { text: 'Resultados', href: getPermalink('/resultados') },
+    { text: 'Equipe', href: getPermalink('/equipe') },
+    { text: 'Galeria', href: getPermalink('/galeria') },
+    { text: 'Contato', href: getPermalink('/contato') },
   ],
-  actions: [
-    { 
-      text: 'Chatbot', 
-      href: getPermalink('/chatbot'), 
-      variant: 'primary'
-    }
-  ] satisfies CallToAction[],
+  actions: [{ text: 'Chatbot', href: chatbotWhatsappUrl, variant: 'primary' }] satisfies CallToAction[],
 } satisfies {
   links: HeaderLink[];
   actions: CallToAction[];
@@ -103,38 +38,27 @@ export const headerData = {
 export const footerData = {
   links: [
     {
-      title: 'O Projeto',
+      title: 'Projeto',
       links: [
-        { text: 'Objetivos', href: getPermalink('/about') },
-        { text: 'Visão e Missão', href: getPermalink('/sobre') },
-        { text: 'Projetos', href: getPermalink('/projetos') },
+        { text: 'Início', href: getPermalink('/') },
+        { text: 'Pesquisa', href: getPermalink('/pesquisa') },
+        { text: 'Resultados', href: getPermalink('/resultados') },
+      ],
+    },
+    {
+      title: 'Conteúdo',
+      links: [
+        { text: 'Galeria', href: getPermalink('/galeria') },
         { text: 'Equipe', href: getPermalink('/equipe') },
-      ],
-    },
-    {
-      title: 'Produções',
-      links: [
-        { text: 'Livros', href: getPermalink('/producoes') },
-        { text: 'Cartilhas', href: getPermalink('/producoes/cartilhas') },
-        { text: 'Relatórios', href: getPermalink('/producoes/relatorios') },
-        { text: 'Artigos', href: getPermalink('/artigos') },
-      ],
-    },
-    {
-      title: 'Pesquisa',
-      links: [
-        { text: 'Saúde Indígena', href: getPermalink('/pesquisa/saude-indigena') },
-        { text: 'Estratégias de Prevenção', href: getPermalink('/pesquisa/estrategias-prevencao') },
-        { text: 'Tuberculose', href: getPermalink('/pesquisa/tuberculose') },
-      ],
-    },
-    {
-      title: 'Colaboração',
-      links: [
-        { text: 'Chatbot', href: getPermalink('/chatbot') },
-        { text: 'Prêmios', href: getPermalink('/premios') },
         { text: 'Contato', href: getPermalink('/contato') },
-        { text: 'Quero Colaborar', href: getPermalink('/colaborar') },
+      ],
+    },
+    {
+      title: 'Acesso rápido',
+      links: [
+        { text: 'Chatbot', href: chatbotWhatsappUrl },
+        { text: 'Projetos', href: getPermalink('/projetos') },
+        { text: 'Prêmios', href: getPermalink('/premios') },
       ],
     },
   ],
@@ -143,31 +67,25 @@ export const footerData = {
     { text: 'Política de Privacidade', href: getPermalink('/privacy') },
   ],
   socialLinks: [
-    { 
-      ariaLabel: 'Fiocruz', 
-      icon: 'tabler:building-hospital', 
-      href: 'https://portal.fiocruz.br/' 
+    {
+      ariaLabel: 'Fiocruz',
+      icon: 'tabler:building-hospital',
+      href: 'https://portal.fiocruz.br/',
     },
-    { 
-      ariaLabel: 'Instagram', 
-      icon: 'tabler:brand-instagram', 
-      href: '#' 
+    {
+      ariaLabel: 'WhatsApp',
+      icon: 'tabler:brand-whatsapp',
+      href: chatbotWhatsappUrl,
     },
-    { 
-      ariaLabel: 'WhatsApp', 
-      icon: 'tabler:brand-whatsapp', 
-      href: '#' 
-    },
-    { 
-      ariaLabel: 'E-mail', 
-      icon: 'tabler:mail', 
-      href: 'mailto:mbirui@fiocruz.br' 
+    {
+      ariaLabel: 'E-mail',
+      icon: 'tabler:mail',
+      href: 'mailto:mbirui@fiocruz.br',
     },
   ],
   footNote: `
     © ${new Date().getFullYear()} Projeto Mbiru'i · 
-    Desenvolvido por <a class="text-primary underline dark:text-accent" href="https://portal.fiocruz.br/">Fiocruz</a> · 
-    Todos os direitos reservados.
+    Conteúdo institucional e acervo curado para circulação pública.
   `,
 } satisfies {
   links: FooterSection[];

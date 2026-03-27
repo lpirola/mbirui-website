@@ -16,7 +16,7 @@ const { Content } = await artigo.render();
 const data = artigo.data;
 
 const metadata = {
-  title: `${data.title} — Projeto Mbiru\'i`,
+  title: `${data.title} — Projeto Mbiru'i`,
   description: data.excerpt,
 };
 ---
@@ -25,9 +25,7 @@ const metadata = {
   <article class="py-12 sm:py-16 lg:py-20">
     <div class="container mx-auto px-4 max-w-4xl">
       <div class="mb-8">
-        <a href="/artigos" class="text-blue-600 hover:text-blue-700 dark:text-blue-400">
-          &larr; Voltar para artigos
-        </a>
+        <a href="/artigos" class="text-blue-600 hover:text-blue-700 dark:text-blue-400"> &larr; Voltar para artigos </a>
       </div>
 
       <header class="mb-8">
@@ -37,30 +35,22 @@ const metadata = {
           <small class="text-gray-500 dark:text-gray-400">
             {new Date(data.data).toLocaleDateString('pt-BR')}
           </small>
-          {data.autor && (
-            <small class="text-gray-500 dark:text-gray-400">
-              • {data.autor}
-            </small>
-          )}
+          {data.autor && <small class="text-gray-500 dark:text-gray-400">• {data.autor}</small>}
         </div>
 
-        {data.tags && data.tags.length > 0 && (
-          <div class="flex flex-wrap gap-2 mb-4">
-            {data.tags.map((tag) => (
-              <span class="text-sm px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
-                #{tag}
-              </span>
-            ))}
-          </div>
-        )}
+        {
+          data.tags && data.tags.length > 0 && (
+            <div class="flex flex-wrap gap-2 mb-4">
+              {data.tags.map((tag) => (
+                <span class="text-sm px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )
+        }
 
-        {data.image && (
-          <img
-            src={data.image}
-            alt={data.title}
-            class="w-full h-auto rounded-lg mb-8"
-          />
-        )}
+        {data.image && <img src={data.image} alt={data.title} class="w-full h-auto rounded-lg mb-8" />}
       </header>
 
       <Content class="prose prose-lg dark:prose-invert max-w-none" />

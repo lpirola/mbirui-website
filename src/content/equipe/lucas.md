@@ -1,6 +1,7 @@
 ---
 nome: Lucas Pirola
 papel: Pesquisador em IA
+instituicao: Fiocruz
 periodo: atual
 foto: /img/equipe/lucas.jpg
 ---
