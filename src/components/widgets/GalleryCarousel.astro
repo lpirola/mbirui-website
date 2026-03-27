@@ -1,0 +1,268 @@
+---
+interface Item {
+  title: string;
+  image: string;
+  alt: string;
+  description?: string;
+  category?: string;
+}
+
+interface Props {
+  items: Item[];
+  id?: string;
+}
+
+const { items = [], id = 'gallery-carousel' } = Astro.props;
+const serializedItems = JSON.stringify(items);
+---
+
+{
+  items.length > 0 && (
+    <div id={id} class="gallery-carousel" data-gallery-items={serializedItems}>
+      <div class="relative overflow-hidden rounded-[2rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)]">
+        <div class="gallery-carousel__stage relative aspect-[4/3] sm:aspect-[16/10]">
+          {items.map((item, index) => (
+            <figure
+              class={`gallery-carousel__slide absolute inset-0 h-full w-full transition duration-500 ease-out ${
+                index === 0 ? 'opacity-100' : 'pointer-events-none opacity-0'
+              }`}
+              data-slide={index}
+            >
+              <img
+                src={item.image}
+                alt={item.alt}
+                class="h-full w-full object-cover"
+                loading={index === 0 ? 'eager' : 'lazy'}
+              />
+              <figcaption class="absolute inset-x-0 bottom-0 bg-[linear-gradient(180deg,transparent,rgba(23,15,14,0.82))] px-5 pb-5 pt-16 text-white sm:px-7 sm:pb-7">
+                {item.category && (
+                  <p class="text-xs font-semibold uppercase tracking-[0.18em] text-[rgb(247,214,194)]">
+                    {item.category}
+                  </p>
+                )}
+                <p class="mt-2 max-w-2xl text-xl font-semibold sm:text-2xl">{item.title}</p>
+                {item.description && (
+                  <p class="mt-2 max-w-2xl text-sm leading-6 text-[rgb(244,231,222)] sm:text-base">
+                    {item.description}
+                  </p>
+                )}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+
+        <div class="absolute inset-x-0 top-4 flex items-center justify-between px-4 sm:px-5">
+          <div class="rounded-full border border-white/20 bg-black/20 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-sm">
+            Acervo visual
+          </div>
+          <button
+            type="button"
+            class="gallery-carousel__fullscreen rounded-full border border-white/20 bg-black/20 px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition hover:bg-black/35"
+          >
+            Fullscreen
+          </button>
+        </div>
+
+        <button
+          type="button"
+          class="gallery-carousel__prev absolute left-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/25 text-2xl text-white backdrop-blur-sm transition hover:bg-black/40"
+          aria-label="Imagem anterior"
+        >
+          ‹
+        </button>
+        <button
+          type="button"
+          class="gallery-carousel__next absolute right-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/20 bg-black/25 text-2xl text-white backdrop-blur-sm transition hover:bg-black/40"
+          aria-label="Próxima imagem"
+        >
+          ›
+        </button>
+      </div>
+
+      <div class="mt-4 flex flex-wrap items-center gap-3">
+        <div class="gallery-carousel__dots flex flex-wrap gap-2">
+          {items.map((item, index) => (
+            <button
+              type="button"
+              class={`gallery-carousel__dot h-3 w-3 rounded-full border border-[color:var(--aw-color-primary)] transition ${
+                index === 0 ? 'bg-primary' : 'bg-transparent'
+              }`}
+              data-dot={index}
+              aria-label={`Ir para imagem ${index + 1}: ${item.title}`}
+            />
+          ))}
+        </div>
+        <p class="gallery-carousel__counter text-sm font-medium text-muted">1 / {items.length}</p>
+      </div>
+    </div>
+  )
+}
+
+<script is:inline>
+  const setupGalleryCarousel = (root) => {
+    if (!root || root.dataset.ready === 'true') return;
+    root.dataset.ready = 'true';
+
+    const slides = Array.from(root.querySelectorAll('[data-slide]'));
+    const dots = Array.from(root.querySelectorAll('[data-dot]'));
+    const counter = root.querySelector('.gallery-carousel__counter');
+    const prev = root.querySelector('.gallery-carousel__prev');
+    const next = root.querySelector('.gallery-carousel__next');
+    const fullscreen = root.querySelector('.gallery-carousel__fullscreen');
+    const items = JSON.parse(root.dataset.galleryItems || '[]');
+    let index = 0;
+
+    const render = () => {
+      slides.forEach((slide, slideIndex) => {
+        const active = slideIndex === index;
+        slide.classList.toggle('opacity-100', active);
+        slide.classList.toggle('opacity-0', !active);
+        slide.classList.toggle('pointer-events-none', !active);
+      });
+
+      dots.forEach((dot, dotIndex) => {
+        dot.classList.toggle('bg-primary', dotIndex === index);
+        dot.classList.toggle('bg-transparent', dotIndex !== index);
+      });
+
+      if (counter) counter.textContent = `${index + 1} / ${slides.length}`;
+    };
+
+    prev?.addEventListener('click', () => {
+      index = (index - 1 + slides.length) % slides.length;
+      render();
+    });
+
+    next?.addEventListener('click', () => {
+      index = (index + 1) % slides.length;
+      render();
+    });
+
+    dots.forEach((dot, dotIndex) => {
+      dot.addEventListener('click', () => {
+        index = dotIndex;
+        render();
+      });
+    });
+
+    fullscreen?.addEventListener('click', async () => {
+      const item = items[index];
+      if (!item) return;
+
+      if (document.fullscreenElement) {
+        await document.exitFullscreen();
+        return;
+      }
+
+      const overlay = document.createElement('div');
+      overlay.className = 'gallery-lightbox';
+      overlay.innerHTML = `
+        <div class="gallery-lightbox__backdrop"></div>
+        <figure class="gallery-lightbox__dialog">
+          <button type="button" class="gallery-lightbox__close" aria-label="Fechar visualização">×</button>
+          <img src="${item.image}" alt="${item.alt}" class="gallery-lightbox__image" />
+          <figcaption class="gallery-lightbox__caption">
+            <p class="gallery-lightbox__title">${item.title}</p>
+            ${item.description ? `<p class="gallery-lightbox__text">${item.description}</p>` : ''}
+          </figcaption>
+        </figure>
+      `;
+
+      const cleanup = async () => {
+        if (document.fullscreenElement === overlay) {
+          await document.exitFullscreen();
+        }
+        overlay.remove();
+      };
+
+      overlay.querySelector('.gallery-lightbox__close')?.addEventListener('click', cleanup);
+      overlay.querySelector('.gallery-lightbox__backdrop')?.addEventListener('click', cleanup);
+      document.addEventListener(
+        'keydown',
+        (event) => {
+          if (event.key === 'Escape') cleanup();
+        },
+        { once: true }
+      );
+
+      document.body.appendChild(overlay);
+      if (overlay.requestFullscreen) {
+        await overlay.requestFullscreen();
+      }
+    });
+
+    render();
+  };
+
+  const bootGalleryCarousels = () => {
+    document.querySelectorAll('.gallery-carousel').forEach(setupGalleryCarousel);
+  };
+
+  bootGalleryCarousels();
+  document.addEventListener('astro:after-swap', bootGalleryCarousels);
+</script>
+
+<style is:inline>
+  .gallery-lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    background: rgb(17 10 8 / 0.96);
+  }
+
+  .gallery-lightbox__dialog {
+    position: relative;
+    display: grid;
+    gap: 1rem;
+    width: min(100%, 90rem);
+    max-height: 100%;
+  }
+
+  .gallery-lightbox__image {
+    max-height: 78vh;
+    width: 100%;
+    object-fit: contain;
+    border-radius: 1rem;
+  }
+
+  .gallery-lightbox__caption {
+    color: rgb(244 231 222);
+  }
+
+  .gallery-lightbox__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+
+  .gallery-lightbox__text {
+    margin-top: 0.5rem;
+    line-height: 1.7;
+    color: rgb(220 201 190);
+  }
+
+  .gallery-lightbox__close {
+    position: absolute;
+    right: 0.25rem;
+    top: 0.25rem;
+    z-index: 2;
+    display: flex;
+    height: 2.5rem;
+    width: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid rgb(255 255 255 / 0.18);
+    background: rgb(17 10 8 / 0.5);
+    color: white;
+    font-size: 1.75rem;
+    line-height: 1;
+  }
+
+  .gallery-lightbox__backdrop {
+    position: absolute;
+    inset: 0;
+  }
+</style>

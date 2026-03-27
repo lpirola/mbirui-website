@@ -2,7 +2,7 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Reestruturar o site do Projeto Mbiru'i com nova home, páginas editoriais de pesquisa/resultados/equipe/contato e uma galeria temática baseada em `Materiais para o site`.
+**Goal:** Reestruturar o site do Projeto Mbiru'i como portal institucional sucinto, com acesso rápido a objetivos, projetos, produções, pesquisas em saúde indígena, equipe, colaboradores, visão institucional, artigos, prêmios, chatbot/aplicativo e contato.
 
 **Architecture:** O conteúdo continuará dirigido por Astro Content Collections e páginas `.astro`, mas passará a usar uma camada de curadoria explícita para resultados e galeria. O acervo bruto em `Materiais para o site` não será referenciado diretamente nas páginas públicas; os materiais publicados serão selecionados e copiados para caminhos estáveis em `public/` e representados por frontmatter estruturado em `src/content`.
 
@@ -210,7 +210,7 @@ git add src/content/galeria
 git commit -m "feat: add gallery content entries"
 ```
 
-### Task 6: Reestruturar a Home
+### Task 6: Reestruturar a Home como portal de acesso rápido
 
 **Files:**
 
@@ -218,19 +218,30 @@ git commit -m "feat: add gallery content entries"
 
 **Step 1: Reduzir a introdução**
 
-Trocar o hero atual por um texto institucional curto, focado em missão e navegação.
+Trocar o hero atual por um texto institucional curto, focado em identidade do projeto, contexto e navegação.
 
-**Step 2: Destacar dois eixos**
+**Step 2: Criar bloco de acesso rápido**
 
-Adicionar dois cards para `IA / Mbiru'i` e `mNGS`, cada um com descrição curta e link para `Pesquisa`.
+Adicionar um bloco visível no início da home com links para:
 
-**Step 3: Inserir atalhos editoriais**
+- `Objetivos do projeto`
+- `Conheça os projetos`
+- `Produções`
+- `Pesquisas em saúde indígena`
+- `Equipe`
+- `Colaboradores`
+- `Artigos e blog`
+- `Prêmios e editais`
+- `Chatbot / aplicativo`
+- `Contato`
 
-Adicionar blocos curtos com links para `Resultados`, `Galeria` e `Contato`.
+**Step 3: Organizar os blocos da home**
+
+Organizar a home com blocos curtos para `O Projeto`, `Conheça os projetos`, `Produções`, `Pesquisas`, `Equipe e colaboradores`, `Artigos e blog`, `Prêmios e editais`, `Chatbot / aplicativo` e `Contato`.
 
 **Step 4: Preservar CTA relevante**
 
-Manter o CTA do chatbot apenas se ainda fizer sentido editorial na home.
+Manter no máximo dois CTAs principais na primeira dobra e evitar chamadas redundantes.
 
 **Step 5: Verificar a página**
 
@@ -258,6 +269,69 @@ Trocar a listagem atual por uma página editorial com duas seções principais.
 **Step 2: Criar seção IA / Mbiru'i**
 
 Incluir objetivo, problema, abordagem e estágio atual com base no material validado.
+
+### Task 8: Consolidar a área `O Projeto`
+
+**Files:**
+
+- Create or modify: `src/pages/projetos/index.astro`
+- Modify as needed: `src/content/pages/objetivos.md`
+- Modify as needed: `src/content/pages/visao-missao-valores.md`
+- Use: `src/content/projetos/*.md`
+
+**Step 1: Reunir objetivos e visão institucional**
+
+Garantir que a área `O Projeto` concentre `Objetivos`, `Conheça os projetos` e `Visão, missão e valores`.
+
+**Step 2: Destacar projetos prioritários**
+
+Mostrar projetos com nome, síntese curta e link para detalhes.
+
+**Step 3: Evitar duplicação**
+
+Manter textos longos fora da home e concentrar aprofundamento nesta página.
+
+**Step 4: Validar navegação**
+
+Run: `npm run check`
+Expected: links internos e páginas sem erro.
+
+### Task 9: Reestruturar Equipe para separar atual, anterior e colaboradores
+
+**Files:**
+
+- Modify: `src/pages/equipe/index.astro`
+- Modify as needed: `src/content/equipe/*.md`
+
+**Step 1: Separar grupos**
+
+Organizar a página em `Equipe atual`, `Equipe anterior` e `Colaboradores`.
+
+**Step 2: Ajustar frontmatter se necessário**
+
+Garantir dados suficientes para distinguir período e tipo de participação.
+
+**Step 3: Preservar tom institucional**
+
+Usar apresentação curta e objetiva, sem bios excessivas na listagem principal.
+
+### Task 10: Ajustar navegação principal e rodapé
+
+**Files:**
+
+- Modify: `src/navigation.ts`
+
+**Step 1: Refletir a nova arquitetura**
+
+Garantir links de primeiro nível para `O Projeto`, `Produções`, `Pesquisa`, `Equipe`, `Artigos e Blog`, `Prêmios e Editais`, `Chatbot / Aplicativo` e `Contato`.
+
+**Step 2: Reduzir ruído**
+
+Remover ou rebaixar links secundários que competem com os acessos principais.
+
+**Step 3: Manter chatbot e contato visíveis**
+
+Preservar acesso rápido ao chatbot e ao canal institucional de colaboração.
 
 **Step 3: Criar seção mNGS**
 

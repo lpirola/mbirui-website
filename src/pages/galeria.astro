@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '~/layouts/PageLayout.astro';
+import GalleryCarousel from '~/components/widgets/GalleryCarousel.astro';
 
 const itens = (await getCollection('galeria')).sort((a, b) => (a.data.ordem ?? 999) - (b.data.ordem ?? 999));
 
@@ -17,6 +18,15 @@ const metadata = {
   title: "Galeria — Projeto Mbiru'i",
   description: 'Galeria temática com imagens de campo, formação, congressos, eventos e território.',
 };
+
+const categoriasFormatadas = {
+  'trabalho-de-campo': 'Trabalho de campo',
+  capacitacoes: 'Capacitações e formação',
+  congressos: 'Congressos e apresentações',
+  eventos: 'Eventos e encontros',
+  territorio: 'Aldeias e território',
+  produtos: 'Produtos e materiais',
+} as const;
 ---
 
 <Layout metadata={metadata}>
@@ -35,6 +45,19 @@ const metadata = {
 
   <section class="pb-12 sm:pb-16 lg:pb-20">
     <div class="container mx-auto px-4 max-w-6xl space-y-12">
+      <div class="editorial-frame rounded-[2rem] p-5 sm:p-7">
+        <GalleryCarousel
+          id="galeria-principal"
+          items={itens.slice(0, 8).map(({ data }) => ({
+            title: data.title,
+            image: data.imagem,
+            alt: data.alt,
+            description: data.descricao,
+            category: categoriasFormatadas[data.categoria],
+          }))}
+        />
+      </div>
+
       {
         categorias.map(([categoria, titulo]) => {
           const grupo = itens.filter((item) => item.data.categoria === categoria);

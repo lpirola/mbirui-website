@@ -23,11 +23,15 @@ type FooterSection = {
 export const headerData = {
   links: [
     { text: 'Início', href: getPermalink('/') },
+    { text: 'Objetivos', href: getPermalink('/#objetivos') },
     { text: 'Pesquisa', href: getPermalink('/pesquisa') },
-    { text: 'Resultados', href: getPermalink('/resultados') },
-    { text: 'Equipe', href: getPermalink('/equipe') },
-    { text: 'Galeria', href: getPermalink('/galeria') },
+    { text: 'Produções', href: getPermalink('/#producoes') },
+    { text: 'Equipe', href: getPermalink('/#equipe') },
+    { text: 'Artigos', href: getPermalink('/artigos') },
+    { text: 'Galeria', href: getPermalink('/#galeria') },
+    { text: 'Chatbot', href: getPermalink('/chatbot') },
     { text: 'Contato', href: getPermalink('/contato') },
+    { text: 'Resultados', href: getPermalink('/resultados') },
   ],
   actions: [{ text: 'Chatbot', href: chatbotWhatsappUrl, variant: 'primary' }] satisfies CallToAction[],
 } satisfies {
@@ -50,6 +54,7 @@ export const footerData = {
       links: [
         { text: 'Galeria', href: getPermalink('/galeria') },
         { text: 'Equipe', href: getPermalink('/equipe') },
+        { text: 'Artigos', href: getPermalink('/artigos') },
         { text: 'Contato', href: getPermalink('/contato') },
       ],
     },
@@ -57,8 +62,8 @@ export const footerData = {
       title: 'Acesso rápido',
       links: [
         { text: 'Chatbot', href: chatbotWhatsappUrl },
-        { text: 'Projetos', href: getPermalink('/projetos') },
-        { text: 'Prêmios', href: getPermalink('/premios') },
+        { text: 'Produções', href: getPermalink('/#producoes') },
+        { text: 'Objetivos', href: getPermalink('/#objetivos') },
       ],
     },
   ],
