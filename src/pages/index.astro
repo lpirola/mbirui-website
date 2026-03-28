@@ -2,9 +2,8 @@
 import { getCollection } from 'astro:content';
 import Layout from '~/layouts/PageLayout.astro';
 import { chatbotWhatsappUrl } from '~/utils/chatbot';
-import logoImage from '~/assets/images/logo.png';
 
-const email = 'nangareko@mbirui.ia.br';
+const email = 'contato@mbirui.ia.br';
 
 const projetos = (await getCollection('projetos')).filter((item) => item.data.status === 'ativo').slice(0, 2);
 const resultados = (await getCollection('resultados'))
@@ -45,50 +44,87 @@ const chatbotPoints = [
   'Funciona no WhatsApp, um canal simples para uso cotidiano.',
   'Foi pensado para apoiar AIS, comunidade e mediação local sem substituir atendimento profissional.',
 ] as const;
+
+const heroGallery = [
+  {
+    src: '/media/galeria/capacitacao-ais-coleta-sertao-amambai.jpeg',
+    alt: 'Atividade de capacitação com agentes indígenas de saúde para coleta em mNGS no posto Sertão Amambai.',
+    caption: 'AIS e formação prática',
+    classes: 'lg:col-span-8 lg:row-span-2',
+    imageClass: 'h-72 sm:h-[22rem] lg:h-full',
+  },
+  {
+    src: '/media/galeria/processo-mngs-coleta-amostras.jpg',
+    alt: 'Profissionais do projeto durante coleta de amostras com participantes em campo.',
+    caption: 'Cuidado em campo',
+    classes: 'lg:col-span-4',
+    imageClass: 'h-44 sm:h-48 lg:h-40',
+  },
+  {
+    src: '/media/galeria/rezadores-amambai-rezadoras-parteiras.jpeg',
+    alt: 'Grupo de rezadoras e parteiras reunidas em atividade comunitária em Amambai.',
+    caption: 'Comunidade e território',
+    classes: 'lg:col-span-4',
+    imageClass: 'h-44 sm:h-48 lg:h-40',
+  },
+] as const;
 ---
 
 <Layout metadata={metadata}>
-  <section class="relative overflow-hidden pb-16 pt-12 sm:pb-20 sm:pt-16 lg:pb-24 lg:pt-20">
+  <section class="relative overflow-hidden pb-16 pt-16 sm:pb-20 sm:pt-20 lg:pb-24 lg:pt-24">
     <div class="container relative mx-auto px-4">
-      <div class="grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)] lg:items-start">
-        <div class="max-w-4xl">
+      <div class="grid gap-6 lg:grid-cols-[minmax(0,1.18fr)_minmax(17rem,0.82fr)] lg:items-stretch">
+        <div class="flex h-full max-w-4xl flex-col justify-center">
           <p class="section-kicker mb-4">Projeto Mbiru'i</p>
-          <h1 class="max-w-4xl text-5xl leading-[0.94] sm:text-6xl lg:text-7xl">
+          <h1 class="max-w-[44rem] text-5xl leading-[0.9] sm:text-[4.5rem] lg:text-[5.2rem]">
             Saúde indígena, linguagem e tecnologia para enfrentar a tuberculose.
           </h1>
-          <p class="mt-6 max-w-2xl text-lg leading-8 text-[color:var(--aw-color-text-default)] sm:text-xl">
+          <p class="mt-4 max-w-[38rem] text-lg leading-8 text-[color:var(--aw-color-text-default)] sm:text-[1.15rem]">
             O Projeto Mbiru'i articula pesquisa aplicada, tradução, formação e colaboração em território para apoiar o
             cuidado em saúde entre comunidades Guarani Kaiowá. Um dos desdobramentos públicos do projeto é um agente no
             WhatsApp que explica tuberculose em Guarani Kaiowá.
           </p>
-          <div class="mt-9 flex flex-wrap gap-3">
+          <div class="mt-7 flex flex-wrap gap-3">
             <a href={chatbotWhatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">
-              Testar no WhatsApp
+              Conversar no WhatsApp
             </a>
             <a href="#como-funciona" class="btn-secondary">Entender o projeto</a>
           </div>
         </div>
 
-        <aside class="lg:pt-8">
-          <div class="editorial-frame rounded-[2.25rem] p-6 sm:p-8">
-            <div class="mx-auto w-full max-w-[15rem]">
-              <div
-                class="editorial-ring aspect-square rounded-full p-[1.05rem] shadow-[0_1.5rem_4rem_rgba(26,22,18,0.18)]"
-              >
-                <div
-                  class="flex h-full items-center justify-center rounded-full bg-[color:var(--aw-color-bg-page)] p-8"
-                >
-                  <img src={logoImage.src} alt="Logo do Projeto Mbiru'i" class="w-full max-w-[10rem]" />
-                </div>
-              </div>
+        <aside class="flex h-full flex-col gap-4 lg:pt-2">
+          <div class="editorial-frame flex-1 rounded-[2.25rem] p-4 sm:p-5">
+            <div class="grid gap-4 lg:grid-cols-12 lg:grid-rows-2">
+              {
+                heroGallery.map((item) => (
+                  <figure
+                    class:list={[
+                      item.classes,
+                      'overflow-hidden rounded-[1.6rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)]',
+                    ]}
+                  >
+                    <img
+                      src={item.src}
+                      alt={item.alt}
+                      class:list={[item.imageClass, 'w-full object-cover']}
+                      loading="lazy"
+                    />
+                    <figcaption class="px-4 py-2.5">
+                      <p class="font-mono text-[0.62rem] uppercase tracking-[0.12em] text-[color:var(--aw-color-accent)]/80">
+                        {item.caption}
+                      </p>
+                    </figcaption>
+                  </figure>
+                ))
+              }
             </div>
-            <div class="mt-8 border-t border-[color:var(--aw-color-line)] pt-6">
-              <p class="section-kicker">Tese pública</p>
-              <p class="mt-3 text-base leading-7 text-[color:var(--aw-color-text-default)]">
-                A tecnologia não é o fim do projeto. Ela é uma ferramenta para tradução, cuidado e produção de
-                conhecimento útil no território.
-              </p>
-            </div>
+          </div>
+          <div class="editorial-frame rounded-[1.9rem] px-5 py-5 sm:px-6">
+            <p class="section-kicker">Tese pública</p>
+            <p class="mt-3 text-base leading-7 text-[color:var(--aw-color-text-default)]">
+              A tecnologia não é o fim do projeto. Ela é uma ferramenta para tradução, cuidado e produção de
+              conhecimento útil no território.
+            </p>
           </div>
         </aside>
       </div>
@@ -168,11 +204,6 @@ const chatbotPoints = [
             Desenvolvido no contexto do Projeto Mbiru'i, o agente ajuda a explicar tuberculose de forma mais acessível
             em um canal simples de usar no dia a dia.
           </p>
-          <div class="mt-7">
-            <a href={chatbotWhatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">
-              Abrir no WhatsApp
-            </a>
-          </div>
         </div>
 
         <div class="mt-9 grid gap-5 lg:grid-cols-3">
@@ -185,12 +216,12 @@ const chatbotPoints = [
               </figure>
             ))
           }
-          <div class="lg:col-span-3 flex justify-start">
-            <a href={chatbotWhatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-secondary">
-              Testar no WhatsApp
+        </div>
+          <div class="mt-7">
+            <a href={chatbotWhatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">
+              Conversar no WhatsApp
             </a>
           </div>
-        </div>
       </div>
     </div>
   </section>
@@ -272,7 +303,7 @@ const chatbotPoints = [
           <div class="mt-7 flex flex-wrap gap-3">
             <a href={`mailto:${email}`} class="btn-primary">{email}</a>
             <a href={chatbotWhatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-secondary">
-              Testar no WhatsApp
+              Conversar no WhatsApp
             </a>
           </div>
         </article>

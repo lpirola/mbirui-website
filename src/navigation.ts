@@ -25,11 +25,10 @@ export const headerData = {
     { text: 'Início', href: getPermalink('/') },
     { text: 'O Projeto', href: getPermalink('/projetos') },
     { text: 'Resultados', href: getPermalink('/resultados') },
-    { text: 'Contato', href: getPermalink('/contato') },
   ],
   actions: [
     {
-      text: 'Testar no WhatsApp',
+      text: 'Conversar no WhatsApp',
       href: chatbotWhatsappUrl,
       target: '_blank',
       variant: 'primary',
@@ -56,7 +55,7 @@ export const footerData = {
       title: 'Acesso',
       links: [
         { text: 'Chatbot no WhatsApp', href: chatbotWhatsappUrl },
-        { text: 'E-mail institucional', href: 'mailto:nangareko@mbirui.ia.br' },
+        { text: 'E-mail institucional', href: 'mailto:contato@mbirui.ia.br' },
       ],
     },
     {
@@ -68,8 +67,8 @@ export const footerData = {
     },
   ],
   secondaryLinks: [
-    { text: 'nangareko@mbirui.ia.br', href: 'mailto:nangareko@mbirui.ia.br' },
-    { text: 'Testar no WhatsApp', href: chatbotWhatsappUrl },
+    { text: 'contato@mbirui.ia.br', href: 'mailto:contato@mbirui.ia.br' },
+    { text: 'Conversar no WhatsApp', href: chatbotWhatsappUrl },
   ],
   socialLinks: [
     {
@@ -85,7 +84,7 @@ export const footerData = {
     {
       ariaLabel: 'E-mail',
       icon: 'tabler:mail',
-      href: 'mailto:nangareko@mbirui.ia.br',
+      href: 'mailto:contato@mbirui.ia.br',
     },
   ],
   footNote: `
