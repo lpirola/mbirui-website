@@ -22,19 +22,24 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <article class="py-12 sm:py-16 lg:py-20">
-    <div class="container mx-auto px-4 max-w-4xl">
+  <article class="pb-20 pt-12 sm:pb-24 sm:pt-16 lg:pt-20">
+    <div class="container mx-auto max-w-4xl px-4">
       <div class="mb-8">
-        <a href="/pesquisa" class="text-blue-600 hover:text-blue-700 dark:text-blue-400">
+        <a href="/pesquisa" class="font-mono text-xs uppercase tracking-[0.14em] text-[color:var(--aw-color-accent)]">
           &larr; Voltar para pesquisa
         </a>
       </div>
 
-      <h1 class="text-4xl font-bold mb-4">{data.title}</h1>
+      <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
+        <p class="section-kicker">Pesquisa</p>
+        <h1 class="mb-4 mt-4 text-4xl sm:text-5xl">{data.title}</h1>
 
-      {data.area && <p class="text-lg text-gray-600 dark:text-gray-300 mb-8">Área: {data.area}</p>}
+        {data.area && <p class="mb-8 text-lg text-muted">Área: {data.area}</p>}
 
-      <Content class="prose prose-lg dark:prose-invert max-w-none" />
+        <Content
+          class="prose prose-lg max-w-none prose-headings:font-heading prose-headings:tracking-[-0.03em] prose-p:text-[color:var(--aw-color-text-default)] prose-a:text-[color:var(--aw-color-accent)] prose-strong:text-[color:var(--aw-color-text-heading)] dark:prose-invert"
+        />
+      </div>
     </div>
   </article>
 </Layout>

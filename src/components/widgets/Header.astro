@@ -50,7 +50,7 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
 <header
   class:list={[
     { sticky: isSticky, relative: !isSticky, dark: isDark },
-    'top-0 z-40 flex-none mx-auto w-full border-b border-gray-50/0 transition-[opacity] ease-in-out',
+    'top-0 z-40 mx-auto flex-none w-full border-b border-transparent transition-[opacity] ease-in-out',
   ]}
   {...isSticky ? { 'data-aw-sticky-header': true } : {}}
   {...id ? { id } : {}}
@@ -58,7 +58,7 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
   <div class="absolute inset-0"></div>
   <div
     class:list={[
-      'relative text-default py-3 px-3 md:px-6 mx-auto w-full',
+      'relative mx-auto w-full px-4 py-3 text-default md:px-6',
       {
         'md:flex md:justify-between': position !== 'center',
       },
@@ -79,11 +79,11 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
       </div>
     </div>
     <nav
-      class="items-center w-full md:w-auto hidden md:flex md:mx-5 text-default overflow-y-auto overflow-x-hidden md:overflow-y-visible md:overflow-x-auto md:justify-self-center"
+      class="hidden w-full items-center overflow-x-hidden overflow-y-auto text-default md:mx-5 md:flex md:w-auto md:justify-self-center md:overflow-x-auto md:overflow-y-visible"
       aria-label="Main navigation"
     >
       <ul
-        class="flex flex-col md:flex-row md:self-center w-full md:w-auto text-xl md:text-[0.9375rem] tracking-[0.01rem] font-medium md:justify-center"
+        class="flex w-full flex-col text-xl font-medium tracking-[0.01rem] md:w-auto md:flex-row md:justify-center md:self-center md:text-[0.88rem] md:uppercase md:tracking-[0.12em]"
       >
         {
           links.map(({ text, href, links }) => (
@@ -92,17 +92,17 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
                 <>
                   <button
                     type="button"
-                    class="hover:text-link dark:hover:text-white px-4 py-3 flex items-center whitespace-nowrap"
+                    class="flex items-center whitespace-nowrap px-4 py-3 text-[color:var(--aw-color-text-muted)] transition hover:text-[color:var(--aw-color-text-heading)]"
                   >
                     {text}{' '}
                     <Icon name="tabler:chevron-down" class="w-3.5 h-3.5 ml-0.5 rtl:ml-0 rtl:mr-0.5 hidden md:inline" />
                   </button>
-                  <ul class="dropdown-menu md:backdrop-blur-md dark:md:bg-dark rounded md:absolute pl-4 md:pl-0 md:hidden font-medium md:bg-white/90 md:min-w-[200px] drop-shadow-xl">
+                  <ul class="dropdown-menu rounded-[1.25rem] pl-4 font-medium md:absolute md:hidden md:min-w-[220px] md:pl-0 md:bg-[color:var(--aw-color-surface)] md:backdrop-blur-md md:shadow-[0_1.25rem_3rem_rgba(26,22,18,0.12)]">
                     {links.map(({ text: text2, href: href2 }) => (
                       <li>
                         <a
                           class:list={[
-                            'first:rounded-t last:rounded-b md:hover:bg-gray-100 hover:text-link dark:hover:text-white dark:hover:bg-gray-700 py-2 px-5 block whitespace-no-wrap',
+                            'block whitespace-no-wrap px-5 py-3 text-[color:var(--aw-color-text-default)] first:rounded-t-[1.25rem] last:rounded-b-[1.25rem] hover:bg-[color:var(--aw-color-surface-strong)] hover:text-[color:var(--aw-color-text-heading)]',
                             { 'aw-link-active': href2 === currentPath },
                           ]}
                           href={href2}
@@ -116,7 +116,7 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
               ) : (
                 <a
                   class:list={[
-                    'hover:text-link dark:hover:text-white px-4 py-3 flex items-center whitespace-nowrap',
+                    'flex items-center whitespace-nowrap px-4 py-3 text-[color:var(--aw-color-text-muted)] transition hover:text-[color:var(--aw-color-text-heading)]',
                     { 'aw-link-active': href === currentPath },
                   ]}
                   href={href}
@@ -132,7 +132,7 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
     <div
       class:list={[
         { 'ml-auto rtl:ml-0 rtl:mr-auto': position === 'left' },
-        'hidden md:self-center md:flex items-center md:mb-0 fixed w-full md:w-auto md:static justify-end left-0 rtl:left-auto rtl:right-0 bottom-0 p-3 md:p-0 md:justify-self-end',
+        'fixed bottom-0 left-0 hidden w-full items-center justify-end p-3 md:static md:mb-0 md:flex md:w-auto md:justify-self-end md:self-center md:p-0 rtl:left-auto rtl:right-0',
       ]}
     >
       <div class="items-center flex justify-between w-full md:w-auto">
@@ -154,7 +154,7 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
           actions?.length ? (
             <span class="ml-4 rtl:ml-0 rtl:mr-4">
               {actions.map((btnProps) => (
-                <Button {...btnProps} class="ml-2 py-2.5 px-5.5 md:px-6 font-semibold shadow-none text-sm w-auto" />
+                <Button {...btnProps} class="ml-2 w-auto px-5 py-2.5 text-sm font-semibold shadow-none md:px-6" />
               ))}
             </span>
           ) : (
@@ -165,3 +165,19 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
     </div>
   </div>
 </header>
+
+<style>
+  .aw-link-active {
+    color: var(--aw-color-text-heading);
+  }
+
+  .aw-link-active::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    margin-top: 0.35rem;
+    border-radius: 999px;
+    background: var(--aw-color-accent);
+  }
+</style>

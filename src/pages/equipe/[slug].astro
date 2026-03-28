@@ -22,38 +22,49 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <article class="py-12 sm:py-16 lg:py-20">
-    <div class="container mx-auto px-4 max-w-4xl">
+  <article class="pb-20 pt-12 sm:pb-24 sm:pt-16 lg:pt-20">
+    <div class="container mx-auto max-w-4xl px-4">
       <div class="mb-8">
-        <a href="/equipe" class="text-blue-600 hover:text-blue-700 dark:text-blue-400"> &larr; Voltar para equipe </a>
+        <a href="/equipe" class="font-mono text-xs uppercase tracking-[0.14em] text-[color:var(--aw-color-accent)]">
+          &larr; Voltar para equipe
+        </a>
       </div>
 
-      <div class="flex flex-col md:flex-row gap-8 mb-8">
-        {
-          data.foto && (
-            <img src={data.foto} alt={data.nome} class="w-48 h-48 rounded-full object-cover mx-auto md:mx-0" />
-          )
-        }
-
-        <div class="flex-1 text-center md:text-left">
-          <h1 class="text-4xl font-bold mb-4">{data.nome}</h1>
-          <p class="text-xl text-gray-600 dark:text-gray-300 mb-4">{data.papel}</p>
+      <div class="editorial-frame mb-8 rounded-[2.25rem] p-7 sm:p-9">
+        <div class="mb-8 flex flex-col gap-8 md:flex-row">
           {
-            data.instituicao && (
-              <p class="mb-4 text-sm font-medium uppercase tracking-[0.16em] text-primary dark:text-accent">
-                {data.instituicao}
-              </p>
+            data.foto && (
+              <img
+                src={data.foto}
+                alt={data.nome}
+                class="mx-auto h-48 w-48 rounded-[2rem] border border-[color:var(--aw-color-line)] object-cover md:mx-0"
+              />
             )
           }
-          <span
-            class="inline-block text-sm px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200"
-          >
-            Período: {data.periodo}
-          </span>
-        </div>
-      </div>
 
-      <Content class="prose prose-lg dark:prose-invert max-w-none" />
+          <div class="flex-1 text-center md:text-left">
+            <p class="section-kicker">Equipe</p>
+            <h1 class="mb-4 mt-4 text-4xl sm:text-5xl">{data.nome}</h1>
+            <p class="mb-4 text-xl text-muted">{data.papel}</p>
+            {
+              data.instituicao && (
+                <p class="mb-4 font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
+                  {data.instituicao}
+                </p>
+              )
+            }
+            <span
+              class="inline-block rounded-full border border-[color:var(--aw-color-line)] px-4 py-2 text-sm text-muted"
+            >
+              Período: {data.periodo}
+            </span>
+          </div>
+        </div>
+
+        <Content
+          class="prose prose-lg max-w-none prose-headings:font-heading prose-headings:tracking-[-0.03em] prose-p:text-[color:var(--aw-color-text-default)] prose-a:text-[color:var(--aw-color-accent)] prose-strong:text-[color:var(--aw-color-text-heading)] dark:prose-invert"
+        />
+      </div>
     </div>
   </article>
 </Layout>

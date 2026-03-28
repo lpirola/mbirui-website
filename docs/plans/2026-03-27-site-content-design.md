@@ -300,15 +300,15 @@ Objetivo:
 
 ## Interação e estados
 
-| Área | Loading | Empty | Error | Success | Partial |
-|---|---|---|---|---|---|
-| Projetos | skeleton curto | informar que novos projetos serão adicionados | mensagem breve + link para contato | lista visível com CTA | mostrar apenas os projetos disponíveis |
-| Produções | placeholders de lista | explicar ausência de publicações naquele tipo | mensagem curta + contato | itens e link para página interna | mostrar itens disponíveis por categoria |
-| Artigos | placeholders | informar que os textos serão publicados em breve | mensagem curta | lista cronológica curta | mostrar apenas os últimos artigos |
-| Equipe | skeleton de cards/lista | explicar ausência temporária de perfis | mensagem curta | grupos por período/papel | exibir apenas equipe atual se o restante não estiver pronto |
-| Prêmios | placeholder simples | informar ausência de editais publicados | mensagem curta | lista institucional | exibir somente prêmios confirmados |
-| Chatbot | botão com estado de carregamento | informar indisponibilidade temporária | oferecer contato alternativo | acesso direto | mostrar link alternativo |
-| Contato | estado de envio | orientar e-mail alternativo | mensagem de erro clara | confirmação de envio | formulário + e-mail exposto |
+| Área      | Loading                          | Empty                                            | Error                              | Success                          | Partial                                                     |
+| --------- | -------------------------------- | ------------------------------------------------ | ---------------------------------- | -------------------------------- | ----------------------------------------------------------- |
+| Projetos  | skeleton curto                   | informar que novos projetos serão adicionados    | mensagem breve + link para contato | lista visível com CTA            | mostrar apenas os projetos disponíveis                      |
+| Produções | placeholders de lista            | explicar ausência de publicações naquele tipo    | mensagem curta + contato           | itens e link para página interna | mostrar itens disponíveis por categoria                     |
+| Artigos   | placeholders                     | informar que os textos serão publicados em breve | mensagem curta                     | lista cronológica curta          | mostrar apenas os últimos artigos                           |
+| Equipe    | skeleton de cards/lista          | explicar ausência temporária de perfis           | mensagem curta                     | grupos por período/papel         | exibir apenas equipe atual se o restante não estiver pronto |
+| Prêmios   | placeholder simples              | informar ausência de editais publicados          | mensagem curta                     | lista institucional              | exibir somente prêmios confirmados                          |
+| Chatbot   | botão com estado de carregamento | informar indisponibilidade temporária            | oferecer contato alternativo       | acesso direto                    | mostrar link alternativo                                    |
+| Contato   | estado de envio                  | orientar e-mail alternativo                      | mensagem de erro clara             | confirmação de envio             | formulário + e-mail exposto                                 |
 
 ## Regras de escrita
 

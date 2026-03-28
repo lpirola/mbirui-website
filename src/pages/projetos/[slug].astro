@@ -1,7 +1,50 @@
 ---
-export function getStaticPaths() {
-  return [];
+import { getCollection } from 'astro:content';
+import Layout from '~/layouts/PageLayout.astro';
+
+export async function getStaticPaths() {
+  const projetos = await getCollection('projetos');
+
+  return projetos.map((projeto) => ({
+    params: { slug: projeto.slug },
+    props: { projeto },
+  }));
 }
 
-return Astro.redirect('/');
+const { projeto } = Astro.props;
+const { Content } = await projeto.render();
+const data = projeto.data;
+
+const metadata = {
+  title: `${data.title} — Projeto Mbiru'i`,
+  description: data.descricao_curta,
+};
 ---
+
+<Layout metadata={metadata}>
+  <article class="pb-20 pt-12 sm:pb-24 sm:pt-16 lg:pt-20">
+    <div class="container mx-auto max-w-4xl px-4">
+      <a href="/projetos" class="font-mono text-xs uppercase tracking-[0.14em] text-[color:var(--aw-color-accent)]">
+        ← Voltar para O Projeto
+      </a>
+
+      <div class="mt-8 editorial-frame rounded-[2.25rem] p-7 sm:p-9">
+        <p class="section-kicker">Projeto</p>
+        <h1 class="mt-4 text-4xl leading-tight sm:text-5xl">{data.title}</h1>
+        <p class="mt-5 max-w-3xl text-lg leading-8 text-muted">{data.descricao_curta}</p>
+
+        <div class="mt-8 flex flex-wrap gap-3 text-sm text-muted">
+          <span class="rounded-full border border-[color:var(--aw-color-line)] px-4 py-2">Início: {data.inicio}</span>
+          <span class="rounded-full border border-[color:var(--aw-color-line)] px-4 py-2">Status: {data.status}</span>
+        </div>
+
+        <div
+          class="prose prose-lg mt-10 max-w-none prose-headings:font-heading prose-headings:tracking-[-0.03em] prose-p:text-[color:var(--aw-color-text-default)] prose-a:text-[color:var(--aw-color-accent)] prose-strong:text-[color:var(--aw-color-text-heading)] dark:prose-invert"
+        >
+          {data.descricao && <p>{data.descricao}</p>}
+          <Content />
+        </div>
+      </div>
+    </div>
+  </article>
+</Layout>

@@ -1,114 +1,86 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '~/layouts/PageLayout.astro';
-import GalleryCarousel from '~/components/widgets/GalleryCarousel.astro';
-import { chatbotWhatsappUrl } from '~/utils/chatbot';
 import logoImage from '~/assets/images/logo.png';
 
-const resultados = (await getCollection('resultados')).filter((item) => item.data.destaque).slice(0, 3);
-const producoes = (await getCollection('producoes')).sort((a, b) => b.data.ano - a.data.ano);
-const artigos = (await getCollection('artigos'))
-  .sort((a, b) => new Date(b.data.data).getTime() - new Date(a.data.data).getTime())
-  .slice(0, 2);
-const equipeAtual = (await getCollection('equipe')).filter((pessoa) => pessoa.data.periodo === 'atual');
-const equipeAnterior = (await getCollection('equipe')).filter((pessoa) => pessoa.data.periodo === 'anterior');
-const galeria = (await getCollection('galeria')).sort((a, b) => (a.data.ordem ?? 999) - (b.data.ordem ?? 999));
+const email = 'nangareko@mbirui.ia.br';
+
+const projetos = (await getCollection('projetos')).filter((item) => item.data.status === 'ativo').slice(0, 2);
+const resultados = (await getCollection('resultados'))
+  .filter((item) => item.data.destaque || ['pdf', 'apresentacao', 'material-publico'].includes(item.data.categoria))
+  .slice(0, 3);
+const galeria = (await getCollection('galeria'))
+  .filter(({ data }) => ['trabalho-de-campo', 'capacitacoes', 'territorio'].includes(data.categoria))
+  .sort((a, b) => (a.data.ordem ?? 999) - (b.data.ordem ?? 999))
+  .slice(0, 3);
+const pages = await getCollection('pages');
+
+const objetivosPage = pages.find((page) => page.slug === 'objetivos');
+const objetivos = (objetivosPage?.body.split('\n').filter((line) => /^\d+\./.test(line)) ?? [])
+  .slice(0, 3)
+  .map((line) => line.replace(/^\d+\.\s*/, ''));
+
+const deepLinks = [
+  {
+    title: 'O Projeto',
+    href: '/projetos',
+    text: 'Entenda a ideia central, os compromissos do projeto e a base institucional que sustenta o trabalho.',
+  },
+  {
+    title: 'Pesquisa',
+    href: '/pesquisa',
+    text: 'Veja como os eixos de linguagem, cuidado e investigação aplicada se articulam sem promessas infladas.',
+  },
+  {
+    title: 'Resultados',
+    href: '/resultados',
+    text: 'Acesse materiais públicos, apresentações e registros de circulação institucional já selecionados para v1.',
+  },
+] as const;
+
+const howItWorks = [
+  {
+    title: 'Tradução e acesso à informação',
+    text: 'A IA entra como ferramenta para apoiar linguagem, comunicação e produção de materiais em contextos indígenas.',
+  },
+  {
+    title: 'Cuidado e colaboração em território',
+    text: 'O trabalho se conecta a agentes indígenas de saúde, formação prática e mediação local no cotidiano do cuidado.',
+  },
+  {
+    title: 'Pesquisa e circulação pública',
+    text: 'As frentes de investigação ajudam a organizar evidências, documentação e compartilhamento responsável do que o projeto produz.',
+  },
+] as const;
 
 const metadata = {
-  title: "Projeto Mbiru'i — IA, tradução e pesquisa em saúde indígena",
+  title: "Projeto Mbiru'i — portal institucional",
   description:
-    'Projeto de pesquisa voltado à inteligência artificial, tradução, formação e diagnóstico em saúde indígena.',
+    'Iniciativa em que IA apoia linguagem, cuidado e território no contexto da saúde indígena, com foco em pesquisa, tradução e circulação pública do conhecimento.',
 };
-
-const objetivos = [
-  'Desenvolver modelos de IA adaptados a idiomas indígenas.',
-  'Criar ferramentas de tradução para termos de saúde.',
-  'Promover equidade no acesso à informação em saúde.',
-  'Fortalecer a autonomia comunitária na gestão da saúde.',
-];
-
-const valores = [
-  {
-    title: 'Visão',
-    text: 'Ser referência em inovação tecnológica para saúde indígena, promovendo equidade e autonomia das comunidades por meio do acesso à informação em seus próprios idiomas.',
-  },
-  {
-    title: 'Missão',
-    text: 'Desenvolver ferramentas de inteligência artificial responsável que facilitem o acesso à informação em saúde para populações indígenas, respeitando diversidade cultural e linguística.',
-  },
-  {
-    title: 'Valores',
-    text: 'Respeito, autonomia, equidade, inovação e colaboração como base para todas as frentes do projeto.',
-  },
-];
-
-const secoes = [
-  ['objetivos', 'Objetivos'],
-  ['pesquisa', 'Pesquisas'],
-  ['producoes', 'Produções'],
-  ['equipe', 'Equipe'],
-  ['colaboradores', 'Colaboradores'],
-  ['visao', 'Visão, missão e valores'],
-  ['artigos', 'Artigos e blog'],
-  ['galeria', 'Galeria'],
-  ['chatbot', 'Chatbot'],
-  ['contato', 'Contato'],
-] as const;
-
-const producoesPorTipo = [
-  { tipo: 'livro', titulo: 'Livros' },
-  { tipo: 'cartilha', titulo: 'Cartilhas' },
-  { tipo: 'relatorio', titulo: 'Relatórios' },
-  { tipo: 'documento', titulo: 'Documentos' },
-] as const;
-
-const galeriaDestaque = galeria.slice(0, 8).map(({ data }) => ({
-  title: data.title,
-  image: data.imagem,
-  alt: data.alt,
-  description: data.descricao,
-  category:
-    {
-      'trabalho-de-campo': 'Trabalho de campo',
-      capacitacoes: 'Capacitações',
-      congressos: 'Congressos',
-      eventos: 'Eventos',
-      territorio: 'Território',
-      produtos: 'Produtos',
-    }[data.categoria] ?? 'Galeria',
-}));
 ---
 
 <Layout metadata={metadata}>
-  <section class="relative overflow-hidden pb-14 pt-10 sm:pb-18 sm:pt-14 lg:pb-24 lg:pt-20">
-    <div
-      class="absolute inset-x-0 top-0 h-[38rem] bg-[radial-gradient(circle_at_top_left,_rgba(154,45,25,0.1),_transparent_32%),radial-gradient(circle_at_78%_14%,_rgba(117,26,17,0.07),_transparent_24%)]"
-    >
-    </div>
+  <section class="relative overflow-hidden pb-16 pt-12 sm:pb-20 sm:pt-16 lg:pb-24 lg:pt-20">
     <div class="container relative mx-auto px-4">
-      <div class="grid gap-10 lg:grid-cols-[minmax(0,1.2fr)_minmax(19rem,0.8fr)] lg:items-start">
+      <div class="grid gap-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)] lg:items-start">
         <div class="max-w-4xl">
           <p class="section-kicker mb-4">Projeto Mbiru'i</p>
-          <h1 class="max-w-4xl text-5xl leading-[0.92] sm:text-6xl lg:text-7xl">
-            Saúde indígena, tradução e inteligência artificial em uma plataforma pública de pesquisa.
+          <h1 class="max-w-4xl text-5xl leading-[0.94] sm:text-6xl lg:text-7xl">
+            IA a serviço de linguagem, cuidado e território.
           </h1>
           <p class="mt-6 max-w-2xl text-lg leading-8 text-[color:var(--aw-color-text-default)] sm:text-xl">
-            Esta revisão da home organiza o site como portal principal do projeto: objetivos, pesquisas, produções,
-            equipe, colaboradores, acervo visual, artigos, chatbot e canais para novas parcerias em saúde indígena e
-            inovação.
+            Mbiru'i é uma iniciativa em saúde indígena em que tecnologia, tradução, formação e pesquisa aplicada se
+            articulam para ampliar acesso à informação, fortalecer o cuidado e sustentar circulação pública responsável
+            do conhecimento.
           </p>
-
-          <div class="mt-10 flex flex-wrap gap-3">
-            <a href="#objetivos" class="btn-primary">Explorar a estrutura</a>
-            <a href="/contato" class="btn-secondary">Colaborar com o projeto</a>
-          </div>
         </div>
 
         <aside class="lg:pt-8">
-          <div class="editorial-frame rounded-[2rem] p-6 sm:p-8">
-            <div class="mx-auto w-full max-w-[16rem]">
+          <div class="editorial-frame rounded-[2.25rem] p-6 sm:p-8">
+            <div class="mx-auto w-full max-w-[15rem]">
               <div
-                class="editorial-ring aspect-square rounded-full p-[1.1rem] shadow-[0_1.5rem_4rem_rgba(80,34,24,0.2)]"
+                class="editorial-ring aspect-square rounded-full p-[1.05rem] shadow-[0_1.5rem_4rem_rgba(26,22,18,0.18)]"
               >
                 <div
                   class="flex h-full items-center justify-center rounded-full bg-[color:var(--aw-color-bg-page)] p-8"
@@ -118,10 +90,10 @@ const galeriaDestaque = galeria.slice(0, 8).map(({ data }) => ({
               </div>
             </div>
             <div class="mt-8 border-t border-[color:var(--aw-color-line)] pt-6">
-              <p class="section-kicker">Assinatura</p>
-              <p class="mt-3 text-lg leading-8 text-[color:var(--aw-color-text-default)]">
-                O círculo ritual, a repetição gráfica e o contraste do logo viram linguagem do site inteiro: presença
-                editorial, matéria quente e leitura territorial.
+              <p class="section-kicker">Tese pública</p>
+              <p class="mt-3 text-base leading-7 text-[color:var(--aw-color-text-default)]">
+                A tecnologia não aparece como fim. Ela aparece como ferramenta para tradução, cuidado, colaboração em
+                território e produção de evidências.
               </p>
             </div>
           </div>
@@ -130,324 +102,25 @@ const galeriaDestaque = galeria.slice(0, 8).map(({ data }) => ({
     </div>
   </section>
 
-  <section class="pb-16 sm:pb-20" id="objetivos">
+  <section class="pb-16 sm:pb-20" id="como-funciona">
     <div class="container mx-auto px-4">
       <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
-        <div class="grid gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
-          <div>
-            <p class="section-kicker">Estrutura do site</p>
-            <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-              Uma home longa para apresentar o projeto como plataforma pública.
-            </h2>
-            <p class="mt-4 text-base leading-8 text-muted sm:text-lg">
-              O percurso abaixo organiza o conteúdo prioritário do projeto e substitui a lógica de páginas promocionais
-              por uma arquitetura institucional clara e navegável.
-            </p>
-          </div>
-
-          <div class="grid gap-3 sm:grid-cols-2">
-            {
-              secoes.map(([href, label], index) => (
-                <a
-                  href={`#${href}`}
-                  class="group rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-4 transition hover:-translate-y-0.5 hover:border-primary/40"
-                >
-                  <p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary">0{index + 1}</p>
-                  <p class="mt-2 text-lg font-semibold text-[color:var(--aw-color-text-heading)]">{label}</p>
-                </a>
-              ))
-            }
-          </div>
-        </div>
-
-        <div class="mt-10 border-t border-[color:var(--aw-color-line)] pt-8">
-          <p class="section-kicker">Objetivos do projeto</p>
-          <div class="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {
-              objetivos.map((objetivo) => (
-                <article class="rounded-[1.75rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
-                  <p class="text-base leading-7 text-[color:var(--aw-color-text-default)]">{objetivo}</p>
-                </article>
-              ))
-            }
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="pb-16 sm:pb-20" id="pesquisa">
-    <div class="container mx-auto px-4">
-      <div class="grid gap-6 lg:grid-cols-[0.78fr_1.22fr]">
-        <div class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-          <p class="section-kicker">Pesquisas em saúde indígena</p>
+        <div class="max-w-3xl">
+          <p class="section-kicker">Como o Mbiru'i funciona</p>
           <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-            Dois eixos complementares que conectam linguagem, cuidado e diagnóstico.
+            O projeto combina tradução, prática de cuidado e pesquisa em uma mesma arquitetura de trabalho.
           </h2>
-          <p class="mt-4 text-base leading-8 text-muted">
-            A pesquisa articula IA, tradução, produção de materiais, formação técnica, coleta, processamento e
-            circulação pública responsável de conhecimento.
-          </p>
-          <a
-            href="/pesquisa"
-            class="mt-7 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-primary"
-          >
-            Ver página de pesquisa
-            <span aria-hidden="true">→</span>
-          </a>
         </div>
 
-        <div class="grid gap-6 md:grid-cols-2">
-          <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-            <p class="section-kicker">Eixo 1</p>
-            <h3 class="mt-4 text-3xl">IA / Mbiru'i</h3>
-            <p class="mt-4 text-base leading-8 text-muted">
-              Desenvolvimento de ferramentas, traduções e materiais de comunicação em saúde pensados para contextos
-              linguísticos e culturais indígenas.
-            </p>
-            <a
-              href="/pesquisa#ia-mbirui"
-              class="mt-7 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-primary"
-            >
-              Explorar eixo
-              <span aria-hidden="true">→</span>
-            </a>
-          </article>
-
-          <article class="editorial-frame rounded-[2rem] p-7 sm:p-8 md:translate-y-10">
-            <p class="section-kicker">Eixo 2</p>
-            <h3 class="mt-4 text-3xl">mNGS</h3>
-            <p class="mt-4 text-base leading-8 text-muted">
-              Pesquisa e formação voltadas a diagnóstico, coleta e processamento em saúde indígena, com foco em
-              infecções pulmonares e fortalecimento técnico.
-            </p>
-            <a
-              href="/pesquisa#mngs"
-              class="mt-7 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-primary"
-            >
-              Explorar eixo
-              <span aria-hidden="true">→</span>
-            </a>
-          </article>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="pb-16 sm:pb-20" id="producoes">
-    <div class="container mx-auto px-4">
-      <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
-        <div
-          class="flex flex-col gap-4 border-b border-[color:var(--aw-color-line)] pb-7 sm:flex-row sm:items-end sm:justify-between"
-        >
-          <div class="max-w-3xl">
-            <p class="section-kicker">Produções do projeto</p>
-            <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-              Livros, cartilhas, relatórios e documentos em uma única leitura.
-            </h2>
-          </div>
-          <a href="/resultados" class="text-sm font-semibold uppercase tracking-[0.14em] text-primary"
-            >Ver resultados públicos</a
-          >
-        </div>
-
-        <div class="mt-8 grid gap-5 lg:grid-cols-2">
+        <div class="mt-9 grid gap-4 lg:grid-cols-3">
           {
-            producoesPorTipo.map(({ tipo, titulo }) => {
-              const itens = producoes.filter((item) => item.data.tipo === tipo);
-              return (
-                <article class="rounded-[1.75rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] p-6">
-                  <div class="flex items-center justify-between gap-4">
-                    <h3 class="text-2xl">{titulo}</h3>
-                    <span class="text-sm font-semibold uppercase tracking-[0.16em] text-primary">
-                      {itens.length.toString().padStart(2, '0')}
-                    </span>
-                  </div>
-                  {itens.length > 0 ? (
-                    <div class="mt-5 space-y-4">
-                      {itens.map(({ data }) => (
-                        <div class="border-t border-[color:var(--aw-color-line)] pt-4 first:border-t-0 first:pt-0">
-                          <p class="text-lg font-semibold text-[color:var(--aw-color-text-heading)]">{data.title}</p>
-                          <p class="mt-1 text-sm text-muted">{data.ano}</p>
-                          {data.descricao && <p class="mt-2 text-sm leading-7 text-muted">{data.descricao}</p>}
-                          {data.arquivo && (
-                            <a
-                              href={data.arquivo}
-                              target="_blank"
-                              class="mt-3 inline-flex text-sm font-semibold uppercase tracking-[0.14em] text-primary"
-                            >
-                              Abrir arquivo
-                            </a>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p class="mt-5 text-sm leading-7 text-muted">
-                      Esta categoria já faz parte da estrutura ideal do site, mas ainda não tem item público liberado no
-                      acervo.
-                    </p>
-                  )}
-                </article>
-              );
-            })
-          }
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="pb-16 sm:pb-20" id="equipe">
-    <div class="container mx-auto px-4">
-      <div class="grid gap-6 lg:grid-cols-[1.12fr_0.88fr]">
-        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-          <p class="section-kicker">Equipe</p>
-          <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-            Apresentação da equipe atual e histórico institucional.
-          </h2>
-
-          <div class="mt-7 grid gap-4">
-            {
-              equipeAtual.map(({ data }) => (
-                <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
-                  <p class="text-lg font-semibold text-[color:var(--aw-color-text-heading)]">{data.nome}</p>
-                  <p class="mt-1 text-sm font-medium text-primary">{data.papel}</p>
-                  {data.instituicao && <p class="mt-1 text-sm leading-6 text-muted">{data.instituicao}</p>}
-                  {data.bio && <p class="mt-3 text-sm leading-7 text-muted">{data.bio}</p>}
-                </div>
-              ))
-            }
-          </div>
-
-          <a
-            href="/equipe"
-            class="mt-7 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-primary"
-          >
-            Ver página da equipe
-            <span aria-hidden="true">→</span>
-          </a>
-        </article>
-
-        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-          <p class="section-kicker">Equipe anterior</p>
-          <h3 class="mt-4 text-3xl leading-tight">Memória institucional em atualização.</h3>
-          {
-            equipeAnterior.length > 0 ? (
-              <div class="mt-6 space-y-4">
-                {equipeAnterior.map(({ data }) => (
-                  <div class="border-b border-[color:var(--aw-color-line)] pb-4 last:border-b-0 last:pb-0">
-                    <p class="text-lg font-semibold text-[color:var(--aw-color-text-heading)]">{data.nome}</p>
-                    <p class="mt-1 text-sm leading-6 text-muted">
-                      {data.papel}
-                      {data.instituicao ? ` · ${data.instituicao}` : ''}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <p class="mt-5 text-base leading-8 text-muted">
-                A estrutura da home já reserva este espaço para participantes anteriores, mas o acervo nominal ainda
-                precisa ser consolidado antes de publicação.
-              </p>
-            )
-          }
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="pb-16 sm:pb-20" id="colaboradores">
-    <div class="container mx-auto px-4">
-      <div class="editorial-frame rounded-[2rem] p-7 sm:p-9">
-        <p class="section-kicker">Colaboradores</p>
-        <h2 class="mt-4 max-w-3xl text-3xl leading-tight sm:text-4xl">
-          O projeto opera em rede e precisa tornar essa colaboração mais visível.
-        </h2>
-        <div class="mt-7 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-          <article
-            class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5"
-          >
-            <p class="text-lg font-semibold text-[color:var(--aw-color-text-heading)]">Agentes indígenas de saúde</p>
-            <p class="mt-3 text-sm leading-7 text-muted">
-              Capacitação, trabalho de campo, circulação de materiais e mediação local.
-            </p>
-          </article>
-          <article
-            class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5"
-          >
-            <p class="text-lg font-semibold text-[color:var(--aw-color-text-heading)]">Equipes de pesquisa</p>
-            <p class="mt-3 text-sm leading-7 text-muted">
-              Pesquisa aplicada em IA, linguagem, diagnóstico, metodologia e produção científica.
-            </p>
-          </article>
-          <article
-            class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5"
-          >
-            <p class="text-lg font-semibold text-[color:var(--aw-color-text-heading)]">Parcerias técnicas</p>
-            <p class="mt-3 text-sm leading-7 text-muted">
-              Treinamento, processamento, capacitação e apoio institucional à circulação do projeto.
-            </p>
-          </article>
-          <article
-            class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5"
-          >
-            <p class="text-lg font-semibold text-[color:var(--aw-color-text-heading)]">Novos colaboradores</p>
-            <p class="mt-3 text-sm leading-7 text-muted">
-              A home passa a convidar explicitamente novas conexões em saúde indígena e inovação.
-            </p>
-          </article>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="pb-16 sm:pb-20" id="visao">
-    <div class="container mx-auto px-4">
-      <div class="grid gap-6 md:grid-cols-3">
-        {
-          valores.map((item) => (
-            <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-              <p class="section-kicker">{item.title}</p>
-              <p class="mt-4 text-lg leading-8 text-[color:var(--aw-color-text-default)]">{item.text}</p>
-            </article>
-          ))
-        }
-      </div>
-    </div>
-  </section>
-
-  <section class="pb-16 sm:pb-20" id="artigos">
-    <div class="container mx-auto px-4">
-      <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
-        <div
-          class="flex flex-col gap-4 border-b border-[color:var(--aw-color-line)] pb-7 sm:flex-row sm:items-end sm:justify-between"
-        >
-          <div class="max-w-3xl">
-            <p class="section-kicker">Artigos e blog</p>
-            <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-              Produção escrita, reflexão metodológica e debate público.
-            </h2>
-          </div>
-          <a href="/artigos" class="text-sm font-semibold uppercase tracking-[0.14em] text-primary">Abrir arquivos</a>
-        </div>
-
-        <div class="mt-8 grid gap-5 lg:grid-cols-2">
-          {
-            artigos.map(({ slug, data }) => (
-              <article class="rounded-[1.75rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] p-6">
-                <p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                  {new Date(data.data).toLocaleDateString('pt-BR')}
+            howItWorks.map((item, index) => (
+              <article class="rounded-[1.7rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-6">
+                <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
+                  Etapa {String(index + 1).padStart(2, '0')}
                 </p>
-                <h3 class="mt-3 text-2xl leading-tight">{data.title}</h3>
-                {data.excerpt && <p class="mt-4 text-base leading-8 text-muted">{data.excerpt}</p>}
-                <p class="mt-3 text-sm leading-6 text-muted">{data.autor}</p>
-                <a
-                  href={`/artigos/${slug}`}
-                  class="mt-6 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-primary"
-                >
-                  Ler artigo
-                  <span aria-hidden="true">→</span>
-                </a>
+                <h3 class="mt-4 text-2xl leading-tight">{item.title}</h3>
+                <p class="mt-4 text-sm leading-7 text-muted">{item.text}</p>
               </article>
             ))
           }
@@ -456,95 +129,156 @@ const galeriaDestaque = galeria.slice(0, 8).map(({ data }) => ({
     </div>
   </section>
 
-  <section class="pb-16 sm:pb-20" id="galeria">
+  <section class="pb-16 sm:pb-20" id="prova-em-territorio">
     <div class="container mx-auto px-4">
-      <div class="editorial-frame rounded-[2.25rem] p-5 sm:p-7">
-        <div class="mb-6 px-2 sm:px-3">
-          <p class="section-kicker">Galeria</p>
-          <h2 class="mt-4 max-w-3xl text-3xl leading-tight sm:text-4xl">
-            Imagens em slide com possibilidade de visualização fullscreen.
+      <div
+        class="rounded-[2.35rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-text-heading)] px-7 py-8 text-[color:var(--aw-color-bg-page)] shadow-[0_1.75rem_5rem_rgba(26,22,18,0.2)] sm:px-9 sm:py-10"
+      >
+        <div class="max-w-3xl">
+          <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-secondary)]">
+            Prova em território
+          </p>
+          <h2 class="mt-4 text-3xl leading-tight text-[color:var(--aw-color-bg-page)] sm:text-4xl">
+            Antes de parecer institucional, o trabalho precisa parecer real.
           </h2>
-          <p class="mt-4 max-w-2xl text-base leading-8 text-muted">
-            A navegação visual agora pode acontecer dentro da home, sem perder contexto, com abertura ampliada para
-            leitura do acervo.
+          <p class="mt-5 text-base leading-8 text-[color:rgb(245_241_232_/_0.82)]">
+            A dimensão pública do projeto começa no campo, na formação, na produção de materiais e na colaboração com
+            agentes indígenas de saúde. É isso que dá densidade à proposta antes de qualquer selo institucional.
           </p>
         </div>
 
-        <GalleryCarousel id="home-galeria" items={galeriaDestaque} />
-
-        <a
-          href="/galeria"
-          class="mt-7 inline-flex items-center gap-2 px-2 text-sm font-semibold uppercase tracking-[0.14em] text-primary"
-        >
-          Abrir galeria completa
-          <span aria-hidden="true">→</span>
-        </a>
+        <div class="mt-9 grid gap-5 lg:grid-cols-3">
+          {
+            galeria.map(({ data }) => (
+              <figure class="overflow-hidden rounded-[1.7rem] border border-[color:rgb(245_241_232_/_0.12)] bg-[color:rgb(245_241_232_/_0.06)]">
+                <img src={data.imagem} alt={data.alt} class="h-64 w-full object-cover" loading="lazy" />
+                <figcaption class="p-5">
+                  <p class="text-lg font-semibold text-[color:var(--aw-color-bg-page)]">{data.title}</p>
+                  {data.descricao && (
+                    <p class="mt-3 text-sm leading-7 text-[color:rgb(245_241_232_/_0.78)]">{data.descricao}</p>
+                  )}
+                </figcaption>
+              </figure>
+            ))
+          }
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="pb-16 sm:pb-20" id="chatbot">
+  <section class="pb-16 sm:pb-20" id="credibilidade">
     <div class="container mx-auto px-4">
-      <div class="grid gap-6 lg:grid-cols-[0.88fr_1.12fr]">
+      <div class="grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
         <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-          <p class="section-kicker">Chatbot e aplicativo</p>
+          <p class="section-kicker">Credibilidade de pesquisa</p>
           <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-            Acesso direto à ferramenta em uma camada clara da arquitetura.
+            A proposta pública se apoia em frentes de investigação com método e responsabilidade.
           </h2>
           <p class="mt-4 text-base leading-8 text-muted">
-            O chatbot deixa de ser apenas um botão isolado no menu e entra na narrativa principal do site como uma
-            frente pública do projeto.
+            O projeto articula um eixo ligado a linguagem, tradução e acesso à informação em saúde com outro eixo
+            voltado a formação, diagnóstico e investigação aplicada em mNGS.
           </p>
-          <div class="mt-7 flex flex-wrap gap-3">
-            <a href={chatbotWhatsappUrl} class="btn-primary">Abrir no WhatsApp</a>
-            <a href="/chatbot" class="btn-secondary">Entender a ferramenta</a>
-          </div>
+          <a
+            href="/pesquisa"
+            class="mt-7 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-primary"
+          >
+            Ver página de pesquisa
+            <span aria-hidden="true">→</span>
+          </a>
         </article>
 
+        <div class="grid gap-4">
+          {
+            objetivos.map((item, index) => (
+              <article class="rounded-[1.6rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+                <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
+                  Compromisso {String(index + 1).padStart(2, '0')}
+                </p>
+                <p class="mt-3 text-sm leading-7 text-muted">{item}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-16 sm:pb-20" id="links-principais">
+    <div class="container mx-auto px-4">
+      <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
+        <div class="max-w-3xl">
+          <p class="section-kicker">Entradas principais</p>
+          <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
+            A primeira versão pública do site se organiza em poucos caminhos, com funções claras.
+          </h2>
+        </div>
+
+        <div class="mt-8 grid gap-5 lg:grid-cols-3">
+          {
+            deepLinks.map((item) => (
+              <a
+                href={item.href}
+                class="group rounded-[1.8rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-6 py-6 transition hover:-translate-y-0.5 hover:border-primary/40"
+              >
+                <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">Abrir</p>
+                <h3 class="mt-4 text-2xl leading-tight">{item.title}</h3>
+                <p class="mt-4 text-sm leading-7 text-muted">{item.text}</p>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-20 sm:pb-24" id="resultados-selecionados">
+    <div class="container mx-auto px-4">
+      <div class="grid gap-6 lg:grid-cols-[1.02fr_0.98fr]">
         <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-          <p class="section-kicker">Materiais públicos em destaque</p>
-          <div class="mt-5 grid gap-4">
+          <p class="section-kicker">Resultados selecionados</p>
+          <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
+            Uma amostra do que já circula publicamente entre pesquisa, materiais e apresentação institucional.
+          </h2>
+          <div class="mt-7 grid gap-4">
             {
               resultados.map(({ data }) => (
-                <div class="border-b border-[color:var(--aw-color-line)] pb-4 last:border-b-0 last:pb-0">
-                  <p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary">
-                    {data.categoria.replace('-', ' ')}
+                <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+                  <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
+                    {data.ano}
                   </p>
-                  <p class="mt-2 text-lg font-semibold text-[color:var(--aw-color-text-heading)]">{data.title}</p>
+                  <p class="mt-3 text-lg font-semibold text-heading">{data.title}</p>
                   {data.descricao && <p class="mt-2 text-sm leading-7 text-muted">{data.descricao}</p>}
                 </div>
               ))
             }
           </div>
         </article>
-      </div>
-    </div>
-  </section>
 
-  <section class="pb-20 sm:pb-24" id="contato">
-    <div class="container mx-auto px-4">
-      <div class="editorial-frame relative rounded-[2.5rem] px-7 py-10 sm:px-10 sm:py-12">
-        <div
-          class="absolute right-6 top-6 hidden h-28 w-28 rounded-full border border-[color:var(--aw-color-line)] bg-[radial-gradient(circle,_rgba(214,59,34,0.16),_transparent_66%)] lg:block"
-        >
-        </div>
-        <div class="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
-          <div class="max-w-3xl">
-            <p class="section-kicker">Contato</p>
-            <h2 class="mt-4 text-4xl leading-[0.96] sm:text-5xl">
-              Um convite explícito para novos colaboradores em saúde indígena e inovação.
-            </h2>
-            <p class="mt-5 max-w-2xl text-base leading-8 text-muted sm:text-lg">
-              A nova estrutura da home transforma o contato em porta de entrada para articulações institucionais,
-              circulação de materiais, pesquisa colaborativa e novas parcerias.
+        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
+          <p class="section-kicker">Colaboração</p>
+          <h3 class="mt-4 text-3xl leading-tight">Pesquisadores, parceiros e apoiadores podem começar por aqui.</h3>
+          <p class="mt-4 text-base leading-8 text-muted">
+            Se você quer conversar sobre pesquisa, circulação de materiais, articulação institucional ou apoio ao
+            projeto, escreva para a equipe pelo canal institucional.
+          </p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href={`mailto:${email}`} class="btn-primary">{email}</a>
+            <a href="/resultados" class="btn-secondary">Ver resultados</a>
+          </div>
+
+          <div
+            class="mt-8 rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5"
+          >
+            <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
+              Páginas prioritárias
             </p>
+            <div class="mt-4 space-y-3 text-sm leading-7 text-muted">
+              <p>Projetos ativos: {projetos.map((item) => item.data.title).join(' · ')}</p>
+              <p>Canal institucional único para conversa e articulação.</p>
+              <p>Versão pública inicial mais seletiva, com menos ruído e menos dispersão.</p>
+            </div>
           </div>
-
-          <div class="flex flex-col gap-3 lg:items-start">
-            <a href="/contato" class="btn-primary w-full sm:w-auto">Entrar em contato</a>
-            <a href="mailto:mbirui@fiocruz.br" class="btn-secondary w-full sm:w-auto">mbirui@fiocruz.br</a>
-          </div>
-        </div>
+        </article>
       </div>
     </div>
   </section>

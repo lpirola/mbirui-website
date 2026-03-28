@@ -23,17 +23,11 @@ type FooterSection = {
 export const headerData = {
   links: [
     { text: 'Início', href: getPermalink('/') },
-    { text: 'Objetivos', href: getPermalink('/#objetivos') },
+    { text: 'O Projeto', href: getPermalink('/projetos') },
     { text: 'Pesquisa', href: getPermalink('/pesquisa') },
-    { text: 'Produções', href: getPermalink('/#producoes') },
-    { text: 'Equipe', href: getPermalink('/#equipe') },
-    { text: 'Artigos', href: getPermalink('/artigos') },
-    { text: 'Galeria', href: getPermalink('/#galeria') },
-    { text: 'Chatbot', href: getPermalink('/chatbot') },
-    { text: 'Contato', href: getPermalink('/contato') },
     { text: 'Resultados', href: getPermalink('/resultados') },
   ],
-  actions: [{ text: 'Chatbot', href: chatbotWhatsappUrl, variant: 'primary' }] satisfies CallToAction[],
+  actions: [] satisfies CallToAction[],
 } satisfies {
   links: HeaderLink[];
   actions: CallToAction[];
@@ -42,34 +36,32 @@ export const headerData = {
 export const footerData = {
   links: [
     {
-      title: 'Projeto',
+      title: 'Navegação',
       links: [
         { text: 'Início', href: getPermalink('/') },
+        { text: 'O Projeto', href: getPermalink('/projetos') },
         { text: 'Pesquisa', href: getPermalink('/pesquisa') },
         { text: 'Resultados', href: getPermalink('/resultados') },
       ],
     },
     {
-      title: 'Conteúdo',
+      title: 'Acesso',
       links: [
-        { text: 'Galeria', href: getPermalink('/galeria') },
-        { text: 'Equipe', href: getPermalink('/equipe') },
-        { text: 'Artigos', href: getPermalink('/artigos') },
-        { text: 'Contato', href: getPermalink('/contato') },
+        { text: 'Chatbot', href: chatbotWhatsappUrl },
+        { text: 'E-mail institucional', href: 'mailto:nangareko@mbirui.ia.br' },
       ],
     },
     {
-      title: 'Acesso rápido',
+      title: 'Legal',
       links: [
-        { text: 'Chatbot', href: chatbotWhatsappUrl },
-        { text: 'Produções', href: getPermalink('/#producoes') },
-        { text: 'Objetivos', href: getPermalink('/#objetivos') },
+        { text: 'Termos de Uso', href: getPermalink('/terms') },
+        { text: 'Política de Privacidade', href: getPermalink('/privacy') },
       ],
     },
   ],
   secondaryLinks: [
-    { text: 'Termos de Uso', href: getPermalink('/terms') },
-    { text: 'Política de Privacidade', href: getPermalink('/privacy') },
+    { text: 'nangareko@mbirui.ia.br', href: 'mailto:nangareko@mbirui.ia.br' },
+    { text: 'WhatsApp do chatbot', href: chatbotWhatsappUrl },
   ],
   socialLinks: [
     {
@@ -85,12 +77,12 @@ export const footerData = {
     {
       ariaLabel: 'E-mail',
       icon: 'tabler:mail',
-      href: 'mailto:mbirui@fiocruz.br',
+      href: 'mailto:nangareko@mbirui.ia.br',
     },
   ],
   footNote: `
-    © ${new Date().getFullYear()} Projeto Mbiru'i · 
-    Conteúdo institucional e acervo curado para circulação pública.
+    © ${new Date().getFullYear()} Projeto Mbiru'i ·
+    Plataforma institucional de pesquisa, memória e colaboração em saúde indígena.
   `,
 } satisfies {
   links: FooterSection[];

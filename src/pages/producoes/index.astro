@@ -1,26 +1,91 @@
 ---
+import { getCollection } from 'astro:content';
 import Layout from '~/layouts/PageLayout.astro';
+
+const producoes = (await getCollection('producoes')).sort((a, b) => b.data.ano - a.data.ano);
+
+const grupos = [
+  { tipo: 'livro', titulo: 'Livros', descricao: 'Publicações mais extensas e materiais de referência do projeto.' },
+  {
+    tipo: 'cartilha',
+    titulo: 'Cartilhas',
+    descricao: 'Materiais de orientação e circulação pública em linguagem acessível.',
+  },
+  {
+    tipo: 'relatorio',
+    titulo: 'Relatórios',
+    descricao: 'Registros técnicos e metodológicos de desenvolvimento e pesquisa.',
+  },
+  { tipo: 'documento', titulo: 'Documentos', descricao: 'Arquivos institucionais e materiais complementares.' },
+] as const;
 
 const metadata = {
   title: "Produções — Projeto Mbiru'i",
-  description: 'Página legada com redirecionamento editorial para Resultados.',
+  description: 'Livros, cartilhas, relatórios e documentos do Projeto Mbiru’i.',
 };
 ---
 
 <Layout metadata={metadata}>
   <section class="py-16 sm:py-20 lg:py-24">
-    <div class="container mx-auto px-4 max-w-3xl">
-      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-primary dark:text-accent">Produções</p>
-      <h1 class="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
-        Esta seção foi incorporada à página de Resultados.
+    <div class="container mx-auto max-w-5xl px-4">
+      <p class="section-kicker">Produções</p>
+      <h1 class="mt-4 text-4xl leading-tight sm:text-5xl">
+        Produções organizadas por tipo para facilitar consulta, leitura e circulação pública.
       </h1>
-      <p class="mt-6 text-lg leading-8 text-gray-700 dark:text-gray-300">
-        Para concentrar apresentações, PDFs, workshops e materiais públicos em uma única navegação editorial, o conteúdo
-        desta rota passou a ser apresentado em <a
-          href="/resultados"
-          class="font-semibold text-primary hover:text-accent">Resultados</a
-        >.
+      <p class="mt-6 text-lg leading-8 text-muted">
+        A página deixa de redirecionar para resultados e passa a apresentar a memória documental do projeto em uma
+        estrutura própria.
       </p>
+    </div>
+  </section>
+
+  <section class="pb-20 sm:pb-24">
+    <div class="container mx-auto px-4">
+      <div class="grid gap-6 lg:grid-cols-2">
+        {
+          grupos.map((grupo) => {
+            const itens = producoes.filter((item) => item.data.tipo === grupo.tipo);
+
+            return (
+              <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
+                <div class="flex items-center justify-between gap-4">
+                  <div>
+                    <p class="section-kicker">{grupo.titulo}</p>
+                    <p class="mt-3 text-base leading-7 text-muted">{grupo.descricao}</p>
+                  </div>
+                  <span class="text-sm font-semibold uppercase tracking-[0.18em] text-primary">
+                    {itens.length.toString().padStart(2, '0')}
+                  </span>
+                </div>
+
+                {itens.length > 0 ? (
+                  <div class="mt-6 space-y-4">
+                    {itens.map(({ data }) => (
+                      <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+                        <p class="text-lg font-semibold text-[color:var(--aw-color-text-heading)]">{data.title}</p>
+                        <p class="mt-1 text-sm text-muted">{data.ano}</p>
+                        {data.descricao && <p class="mt-3 text-sm leading-7 text-muted">{data.descricao}</p>}
+                        {data.arquivo && (
+                          <a
+                            href={data.arquivo}
+                            target="_blank"
+                            class="mt-4 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-primary"
+                          >
+                            Abrir arquivo
+                            <span aria-hidden="true">→</span>
+                          </a>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p class="mt-6 text-sm leading-7 text-muted">Ainda não há item público publicado nesta categoria.</p>
+                )}
+              </article>
+            );
+          })
+        }
+      </div>
     </div>
   </section>
 </Layout>

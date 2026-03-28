@@ -1,3 +1,240 @@
 ---
-return Astro.redirect('/');
+import { getCollection } from 'astro:content';
+import Layout from '~/layouts/PageLayout.astro';
+
+const projetos = await getCollection('projetos');
+const projetosAtivos = projetos.filter((item) => item.data.status === 'ativo');
+const pages = await getCollection('pages');
+
+const objetivosPage = pages.find((page) => page.slug === 'objetivos');
+const visaoPage = pages.find((page) => page.slug === 'visao-missao-valores');
+
+const objetivos = (objetivosPage?.body.split('\n').filter((line) => /^\d+\./.test(line)) ?? []).map((line) =>
+  line.replace(/^\d+\.\s*/, '')
+);
+
+const visaoBlocos = [
+  {
+    title: 'Visão',
+    text:
+      visaoPage?.body.match(/## Visão\s+([\s\S]*?)\s+## Missão/)?.[1].trim() ??
+      'Ser referência em inovação tecnológica para saúde indígena.',
+  },
+  {
+    title: 'Missão',
+    text:
+      visaoPage?.body.match(/## Missão\s+([\s\S]*?)\s+## Valores/)?.[1].trim() ??
+      'Desenvolver ferramentas de inteligência artificial responsável para acesso à informação em saúde.',
+  },
+  {
+    title: 'Valores',
+    text:
+      visaoPage?.body
+        .match(/## Valores\s+([\s\S]*)/)?.[1]
+        .replace(/- \*\*[^:]+:\*\*\s*/g, '')
+        .replace(/\n/g, ' ')
+        .trim() ?? 'Respeito, autonomia, equidade, inovação e colaboração.',
+  },
+];
+
+const colaboradores = [
+  {
+    title: 'Agentes indígenas de saúde',
+    text: 'Participam de formação, mediação local, trabalho de campo e circulação de materiais.',
+  },
+  {
+    title: 'Pesquisa e desenvolvimento',
+    text: 'Contribuem com IA, linguagem, metodologia, diagnóstico e desenvolvimento técnico.',
+  },
+  {
+    title: 'Parcerias institucionais',
+    text: 'Sustentam articulação, treinamento, circulação pública e fortalecimento da rede do projeto.',
+  },
+] as const;
+
+const email = 'nangareko@mbirui.ia.br';
+
+const metadata = {
+  title: "O Projeto — Projeto Mbiru'i",
+  description: 'Objetivos, projetos, visão, missão e valores do Projeto Mbiru’i.',
+};
 ---
+
+<Layout metadata={metadata}>
+  <section class="relative overflow-hidden pb-14 pt-12 sm:pb-18 sm:pt-16 lg:pb-24 lg:pt-20">
+    <div class="container mx-auto px-4">
+      <div class="grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(18rem,0.95fr)] lg:items-start">
+        <div class="max-w-4xl">
+          <p class="section-kicker">O Projeto</p>
+          <h1 class="mt-4 max-w-4xl text-5xl leading-[0.94] sm:text-6xl">
+            A base institucional do Mbiru'i organizada como compromisso público.
+          </h1>
+          <p class="mt-6 max-w-2xl text-lg leading-8 text-muted sm:text-xl">
+            Esta página reúne a direção do projeto em uma leitura curta: por que ele existe, quais compromissos assume e
+            como suas frentes ativas articulam linguagem, território, pesquisa e saúde indígena.
+          </p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href="#objetivos" class="btn-primary">Ler objetivos</a>
+            <a href="#projetos" class="btn-secondary">Ver projetos ativos</a>
+          </div>
+        </div>
+
+        <aside class="editorial-frame rounded-[2.25rem] p-6 sm:p-8">
+          <p class="section-kicker">Leitura rápida</p>
+          <div class="mt-6 grid gap-4 sm:grid-cols-3 lg:grid-cols-1">
+            <div
+              class="rounded-[1.4rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5"
+            >
+              <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">Objetivos</p>
+              <p class="mt-3 text-3xl font-semibold text-heading">{objetivos.length}</p>
+              <p class="mt-2 text-sm leading-7 text-muted">Frentes de compromisso institucional já descritas.</p>
+            </div>
+            <div
+              class="rounded-[1.4rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5"
+            >
+              <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">Projetos</p>
+              <p class="mt-3 text-3xl font-semibold text-heading">{projetosAtivos.length}</p>
+              <p class="mt-2 text-sm leading-7 text-muted">Iniciativas ativas apresentadas publicamente.</p>
+            </div>
+            <div
+              class="rounded-[1.4rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5"
+            >
+              <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
+                Base ética
+              </p>
+              <p class="mt-3 text-lg font-semibold text-heading">Visão, missão e valores</p>
+              <p class="mt-2 text-sm leading-7 text-muted">
+                Os blocos abaixo organizam o sentido político e metodológico do projeto.
+              </p>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-16 sm:pb-20" id="objetivos">
+    <div class="container mx-auto px-4">
+      <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
+        <div class="max-w-3xl">
+          <p class="section-kicker">Objetivos do projeto</p>
+          <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
+            O projeto se apresenta como plataforma de acesso, pesquisa aplicada e mediação institucional.
+          </h2>
+        </div>
+
+        <div class="mt-8 grid gap-4 md:grid-cols-2">
+          {
+            objetivos.map((item, index) => (
+              <article class="rounded-[1.6rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+                <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
+                  Objetivo {String(index + 1).padStart(2, '0')}
+                </p>
+                <p class="mt-3 text-base leading-7 text-[color:var(--aw-color-text-default)]">{item}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-16 sm:pb-20" id="projetos">
+    <div class="container mx-auto px-4">
+      <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
+        <div
+          class="flex flex-col gap-4 border-b border-[color:var(--aw-color-line)] pb-7 sm:flex-row sm:items-end sm:justify-between"
+        >
+          <div class="max-w-3xl">
+            <p class="section-kicker">Projetos ativos</p>
+            <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
+              Iniciativas que conectam inovação, tradução, território e pesquisa aplicada.
+            </h2>
+          </div>
+          <p class="max-w-sm text-sm leading-7 text-muted">
+            Cada frente deve ser compreendida como parte de uma arquitetura maior de colaboração em saúde indígena.
+          </p>
+        </div>
+
+        <div class="mt-8 grid gap-5 lg:grid-cols-3">
+          {
+            projetosAtivos.map(({ slug, data }) => (
+              <article class="rounded-[1.85rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] p-6">
+                <div class="flex items-center justify-between gap-3">
+                  <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
+                    {data.inicio}
+                  </p>
+                  <span class="rounded-full border border-[color:var(--aw-color-line)] px-3 py-1 text-xs uppercase tracking-[0.12em] text-muted">
+                    {data.status}
+                  </span>
+                </div>
+                <h3 class="mt-4 text-2xl leading-tight">{data.title}</h3>
+                <p class="mt-4 text-base leading-8 text-muted">{data.descricao_curta}</p>
+                <a
+                  href={`/projetos/${slug}`}
+                  class="mt-7 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-primary"
+                >
+                  Abrir projeto
+                  <span aria-hidden="true">→</span>
+                </a>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-20 sm:pb-24" id="visao">
+    <div class="container mx-auto px-4">
+      <div class="grid gap-6 md:grid-cols-3">
+        {
+          visaoBlocos.map((item) => (
+            <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
+              <p class="section-kicker">{item.title}</p>
+              <p class="mt-5 text-base leading-8 text-muted">{item.text}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-20 sm:pb-24" id="colaboracao">
+    <div class="container mx-auto px-4">
+      <div class="grid gap-6 lg:grid-cols-[1fr_1fr]">
+        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
+          <p class="section-kicker">Rede de apoio</p>
+          <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
+            O projeto depende de uma composição entre território, pesquisa e parceria.
+          </h2>
+          <div class="mt-7 space-y-4">
+            {
+              colaboradores.map((item) => (
+                <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+                  <p class="text-lg font-semibold text-heading">{item.title}</p>
+                  <p class="mt-3 text-sm leading-7 text-muted">{item.text}</p>
+                </div>
+              ))
+            }
+          </div>
+        </article>
+
+        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
+          <p class="section-kicker">Colaboração</p>
+          <h3 class="mt-4 text-3xl leading-tight">
+            Conversas institucionais, pesquisa e apoio podem começar por e-mail.
+          </h3>
+          <p class="mt-4 text-base leading-8 text-muted">
+            A primeira versão pública do site evita uma página de contato separada. Em vez disso, o convite para
+            colaboração aparece ao fim das páginas principais, onde a intenção de conversa é mais clara.
+          </p>
+          <div class="mt-7 flex flex-wrap gap-3">
+            <a href={`mailto:${email}`} class="btn-primary">{email}</a>
+            <a href="/resultados" class="btn-secondary">Ver resultados</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+</Layout>

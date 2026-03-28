@@ -22,27 +22,36 @@ const metadata = {
 ---
 
 <Layout metadata={metadata}>
-  <article class="py-12 sm:py-16 lg:py-20">
-    <div class="container mx-auto px-4 max-w-4xl">
+  <article class="pb-20 pt-12 sm:pb-24 sm:pt-16 lg:pt-20">
+    <div class="container mx-auto max-w-4xl px-4">
       <div class="mb-8">
-        <a href="/artigos" class="text-blue-600 hover:text-blue-700 dark:text-blue-400"> &larr; Voltar para artigos </a>
+        <a href="/artigos" class="font-mono text-xs uppercase tracking-[0.14em] text-[color:var(--aw-color-accent)]">
+          &larr; Voltar para artigos
+        </a>
       </div>
 
-      <header class="mb-8">
-        <h1 class="text-4xl font-bold mb-4">{data.title}</h1>
+      <header class="editorial-frame mb-8 rounded-[2.25rem] p-7 sm:p-9">
+        <p class="section-kicker">Artigo</p>
+        <h1 class="mb-4 mt-4 text-4xl sm:text-5xl">{data.title}</h1>
 
-        <div class="flex flex-wrap gap-4 mb-4">
-          <small class="text-gray-500 dark:text-gray-400">
+        <div class="mb-5 flex flex-wrap gap-3 text-sm text-muted">
+          <small class="rounded-full border border-[color:var(--aw-color-line)] px-4 py-2">
             {new Date(data.data).toLocaleDateString('pt-BR')}
           </small>
-          {data.autor && <small class="text-gray-500 dark:text-gray-400">• {data.autor}</small>}
+          {
+            data.autor && (
+              <small class="rounded-full border border-[color:var(--aw-color-line)] px-4 py-2">
+                Autoria: {data.autor}
+              </small>
+            )
+          }
         </div>
 
         {
           data.tags && data.tags.length > 0 && (
-            <div class="flex flex-wrap gap-2 mb-4">
+            <div class="mb-5 flex flex-wrap gap-2">
               {data.tags.map((tag) => (
-                <span class="text-sm px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                <span class="rounded-full border border-[color:var(--aw-color-line)] px-3 py-1 text-sm text-muted">
                   #{tag}
                 </span>
               ))}
@@ -50,10 +59,14 @@ const metadata = {
           )
         }
 
-        {data.image && <img src={data.image} alt={data.title} class="w-full h-auto rounded-lg mb-8" />}
+        {data.image && <img src={data.image} alt={data.title} class="mb-2 h-auto w-full rounded-[1.6rem]" />}
       </header>
 
-      <Content class="prose prose-lg dark:prose-invert max-w-none" />
+      <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
+        <Content
+          class="prose prose-lg max-w-none prose-headings:font-heading prose-headings:tracking-[-0.03em] prose-p:text-[color:var(--aw-color-text-default)] prose-a:text-[color:var(--aw-color-accent)] prose-strong:text-[color:var(--aw-color-text-heading)] prose-img:rounded-[1.4rem] prose-img:shadow-[0_1rem_2.5rem_rgba(26,22,18,0.08)] dark:prose-invert"
+        />
+      </div>
     </div>
   </article>
 </Layout>

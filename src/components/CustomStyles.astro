@@ -1,103 +1,105 @@
----
-import '@fontsource-variable/inter';
-
-/*
-  Paleta de cores do Projeto Mbiru'i
-  Baseada na imagem do logo (bacilos de tuberculose)
-
-  | Cor                          | RGB             | HEX     |
-  |------------------------------|-----------------|---------|
-  | Bacilos (vermelho vibrante)  | 252, 72, 49     | #fc4821 |
-  | Fundo médio (bege)           | 211, 178, 168   | #d3b2a8 |
-  | Fundo dominante (off-white)  | 252, 247, 241   | #fcf7f1 |
-  | Bordas/acentos (vermelho escuro) | 184, 15, 29 | #b80f1d |
-*/
----
-
 <style is:inline>
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&display=swap');
+
   :root {
-    --aw-font-sans: 'Inter Variable';
-    --aw-font-serif: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
-    --aw-font-heading: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+    --aw-font-sans: 'Instrument Sans';
+    --aw-font-serif: 'Fraunces';
+    --aw-font-heading: 'Fraunces';
+    --aw-font-mono: 'IBM Plex Mono';
 
-    /* Cores principais - sistema editorial derivado do logo */
-    --aw-color-primary: rgb(126 21 18);
-    --aw-color-secondary: rgb(181 115 83);
-    --aw-color-accent: rgb(214 59 34);
+    --aw-color-primary: rgb(32 74 67);
+    --aw-color-secondary: rgb(140 74 47);
+    --aw-color-accent: rgb(18 60 105);
 
-    --aw-color-text-heading: rgb(49 27 20);
-    --aw-color-text-default: rgb(65 40 30);
-    --aw-color-text-muted: rgb(94 66 54 / 78%);
-    --aw-color-bg-page: rgb(247 240 230);
+    --aw-color-text-heading: rgb(42 38 34);
+    --aw-color-text-default: rgb(65 58 51);
+    --aw-color-text-muted: rgb(101 93 85 / 86%);
+    --aw-color-text-page: rgb(42 38 34);
 
-    --aw-color-bg-page-dark: rgb(31 17 15);
-    --aw-color-surface: rgb(251 246 238 / 88%);
-    --aw-color-surface-strong: rgb(242 229 214);
-    --aw-color-line: rgb(133 69 42 / 18%);
-    --aw-color-glow: rgb(179 48 25 / 12%);
+    --aw-color-bg-page: rgb(251 250 247);
+    --aw-color-bg-page-dark: rgb(23 22 20);
+    --aw-color-surface: rgb(245 241 232 / 88%);
+    --aw-color-surface-strong: rgb(222 211 190);
+    --aw-color-line: rgb(42 38 34 / 14%);
+    --aw-color-glow: rgb(32 74 67 / 10%);
+
+    --aw-color-success: rgb(45 106 79);
+    --aw-color-warning: rgb(163 101 26);
+    --aw-color-error: rgb(156 47 47);
+    --aw-color-info: rgb(18 60 105);
+
+    --aw-radius-sm: 0.5rem;
+    --aw-radius-md: 0.875rem;
+    --aw-radius-lg: 1.5rem;
+    --aw-radius-xl: 2.25rem;
+    --aw-shadow-soft: 0 1.25rem 4rem rgb(26 22 18 / 0.1);
+    --aw-shadow-strong: 0 1.75rem 5rem rgb(26 22 18 / 0.14);
+
     --aw-pattern-ring:
-      radial-gradient(
-        circle at center,
-        transparent 63%,
-        rgb(23 15 14 / 0.86) 63.4%,
-        rgb(23 15 14 / 0.86) 64.8%,
-        transparent 65.1%
-      ),
-      radial-gradient(
-        circle at center,
-        transparent 73%,
-        rgb(132 24 15 / 0.95) 73.4%,
-        rgb(132 24 15 / 0.95) 75.5%,
-        transparent 75.8%
-      ),
+      radial-gradient(circle at center, transparent 58%, rgb(18 60 105 / 0.2) 58.5%, transparent 60.5%),
+      radial-gradient(circle at center, transparent 70%, rgb(140 74 47 / 0.22) 70.5%, transparent 72.5%),
       repeating-conic-gradient(
-        from 0deg,
-        rgb(122 17 11) 0deg 8deg,
-        rgb(248 242 234) 8deg 14deg,
-        rgb(26 18 16) 14deg 20deg,
-        rgb(248 242 234) 20deg 26deg
+        from 8deg,
+        rgb(32 74 67 / 0.92) 0deg 8deg,
+        rgb(251 250 247 / 0.98) 8deg 14deg,
+        rgb(140 74 47 / 0.78) 14deg 20deg,
+        rgb(251 250 247 / 0.98) 20deg 26deg
       );
-
-    ::selection {
-      background-color: rgb(252 72 49 / 30%);
-    }
   }
 
   .dark {
-    --aw-font-sans: 'Inter Variable';
-    --aw-font-serif: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
-    --aw-font-heading: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, serif;
+    --aw-color-primary: rgb(126 177 167);
+    --aw-color-secondary: rgb(207 137 99);
+    --aw-color-accent: rgb(127 168 214);
 
-    --aw-color-primary: rgb(224 84 56);
-    --aw-color-secondary: rgb(168 103 71);
-    --aw-color-accent: rgb(255 144 106);
+    --aw-color-text-heading: rgb(245 241 232);
+    --aw-color-text-default: rgb(224 217 207);
+    --aw-color-text-muted: rgb(193 183 168 / 84%);
+    --aw-color-text-page: rgb(245 241 232);
 
-    --aw-color-text-heading: rgb(248 236 225);
-    --aw-color-text-default: rgb(230 214 198);
-    --aw-color-text-muted: rgb(230 214 198 / 72%);
-    --aw-color-bg-page: rgb(31 17 15);
-    --aw-color-surface: rgb(53 30 25 / 88%);
-    --aw-color-surface-strong: rgb(69 38 29);
-    --aw-color-line: rgb(244 219 198 / 14%);
-    --aw-color-glow: rgb(224 84 56 / 10%);
+    --aw-color-bg-page: rgb(23 22 20);
+    --aw-color-bg-page-dark: rgb(23 22 20);
+    --aw-color-surface: rgb(33 31 28 / 88%);
+    --aw-color-surface-strong: rgb(42 39 35);
+    --aw-color-line: rgb(255 248 238 / 10%);
+    --aw-color-glow: rgb(127 168 214 / 10%);
 
-    ::selection {
-      background-color: rgb(252 72 49 / 50%);
-      color: snow;
-    }
+    --aw-color-success: rgb(122 195 155);
+    --aw-color-warning: rgb(215 157 83);
+    --aw-color-error: rgb(226 144 144);
+    --aw-color-info: rgb(127 168 214);
+
+    --aw-pattern-ring:
+      radial-gradient(circle at center, transparent 58%, rgb(127 168 214 / 0.26) 58.5%, transparent 60.5%),
+      radial-gradient(circle at center, transparent 70%, rgb(207 137 99 / 0.24) 70.5%, transparent 72.5%),
+      repeating-conic-gradient(
+        from 8deg,
+        rgb(126 177 167 / 0.82) 0deg 8deg,
+        rgb(23 22 20 / 0.98) 8deg 14deg,
+        rgb(207 137 99 / 0.78) 14deg 20deg,
+        rgb(23 22 20 / 0.98) 20deg 26deg
+      );
+  }
+
+  ::selection {
+    background-color: rgb(18 60 105 / 22%);
+    color: var(--aw-color-text-heading);
   }
 
   html {
     background:
-      radial-gradient(circle at top left, rgb(186 89 53 / 0.06), transparent 30%),
-      radial-gradient(circle at top right, rgb(128 25 18 / 0.04), transparent 24%), var(--aw-color-bg-page);
+      radial-gradient(circle at top left, rgb(140 74 47 / 0.12), transparent 28%),
+      radial-gradient(circle at 88% 12%, rgb(18 60 105 / 0.14), transparent 24%),
+      linear-gradient(180deg, var(--aw-color-bg-page), rgb(255 255 255 / 0.05));
+    color: var(--aw-color-text-page);
   }
 
   body {
     color: var(--aw-color-text-default);
     background:
-      linear-gradient(180deg, rgb(255 251 246 / 0.5), transparent 24rem),
-      radial-gradient(circle at 20% 10%, rgb(179 48 25 / 0.07), transparent 20rem), var(--aw-color-bg-page);
+      linear-gradient(180deg, rgb(255 255 255 / 0.18), transparent 20rem),
+      radial-gradient(circle at 22% 10%, rgb(140 74 47 / 0.08), transparent 22rem), var(--aw-color-bg-page);
+    font-family: var(--aw-font-sans), sans-serif;
   }
 
   body::before {
@@ -105,12 +107,12 @@ import '@fontsource-variable/inter';
     position: fixed;
     inset: 0;
     pointer-events: none;
-    opacity: 0.55;
+    opacity: 0.45;
     background-image:
-      linear-gradient(rgb(113 72 53 / 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgb(113 72 53 / 0.03) 1px, transparent 1px);
-    background-size: 2rem 2rem;
-    mask-image: linear-gradient(180deg, rgb(0 0 0 / 0.35), transparent 78%);
+      linear-gradient(rgb(42 38 34 / 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgb(42 38 34 / 0.03) 1px, transparent 1px);
+    background-size: 2.625rem 2.625rem;
+    mask-image: radial-gradient(circle at center, rgb(0 0 0 / 0.45), transparent 82%);
   }
 
   body::after {
@@ -118,8 +120,8 @@ import '@fontsource-variable/inter';
     position: fixed;
     inset: 0;
     pointer-events: none;
-    opacity: 0.08;
-    background-image: radial-gradient(rgb(92 51 36 / 0.95) 0.8px, transparent 0.8px);
+    opacity: 0.06;
+    background-image: radial-gradient(rgb(42 38 34 / 0.92) 0.8px, transparent 0.8px);
     background-size: 18px 18px;
     mix-blend-mode: multiply;
   }
@@ -131,33 +133,52 @@ import '@fontsource-variable/inter';
   h5,
   h6 {
     color: var(--aw-color-text-heading);
-    font-family: var(--aw-font-heading);
-    letter-spacing: -0.03em;
+    font-family: var(--aw-font-heading), serif;
+    font-feature-settings: 'ss01' 1;
+    font-variation-settings:
+      'SOFT' 50,
+      'WONK' 0;
+    letter-spacing: -0.035em;
+    text-wrap: balance;
+  }
+
+  strong,
+  b {
+    color: var(--aw-color-text-heading);
+  }
+
+  code,
+  pre,
+  .font-mono {
+    font-family: var(--aw-font-mono), monospace;
   }
 
   .section-kicker {
-    color: var(--aw-color-primary);
-    letter-spacing: 0.26em;
+    color: var(--aw-color-accent);
+    font-family: var(--aw-font-mono), monospace;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     font-size: 0.72rem;
-    font-weight: 700;
+    font-weight: 600;
   }
 
   .editorial-frame {
     position: relative;
     overflow: clip;
     border: 1px solid var(--aw-color-line);
-    background: linear-gradient(180deg, rgb(255 252 247 / 0.78), var(--aw-color-surface));
-    box-shadow:
-      0 25px 70px rgb(100 48 30 / 0.08),
-      inset 0 1px 0 rgb(255 255 255 / 0.35);
+    background:
+      linear-gradient(180deg, rgb(255 255 255 / 0.3), transparent 24%),
+      linear-gradient(180deg, rgb(255 255 255 / 0.55), var(--aw-color-surface));
+    box-shadow: var(--aw-shadow-soft);
+    backdrop-filter: blur(10px);
   }
 
   .editorial-frame::before {
     content: '';
     position: absolute;
-    inset: 1.1rem;
-    border: 1px solid rgb(133 69 42 / 0.1);
+    inset: 1rem;
+    border: 1px solid rgb(42 38 34 / 0.08);
+    border-radius: inherit;
     pointer-events: none;
   }
 
@@ -183,14 +204,16 @@ import '@fontsource-variable/inter';
   #header.scroll > div:first-child {
     border-bottom-color: var(--aw-color-line);
     background: color-mix(in srgb, var(--aw-color-bg-page) 86%, white 14%);
-    box-shadow: 0 0.75rem 2rem rgb(75 37 25 / 0.08);
+    box-shadow: 0 0.9rem 2.5rem rgb(26 22 18 / 0.08);
   }
 
   footer {
-    background: linear-gradient(180deg, rgb(255 250 244 / 0.72), rgb(243 232 220 / 0.86)), var(--aw-color-bg-page);
+    background:
+      linear-gradient(180deg, rgb(255 255 255 / 0.1), transparent 18%),
+      linear-gradient(180deg, rgb(245 241 232 / 0.84), rgb(222 211 190 / 0.56));
   }
 
   .dark footer {
-    background: linear-gradient(180deg, rgb(48 26 22 / 0.85), rgb(31 17 15 / 1));
+    background: linear-gradient(180deg, rgb(42 39 35 / 0.9), rgb(23 22 20));
   }
 </style>

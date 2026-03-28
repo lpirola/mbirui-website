@@ -17,12 +17,14 @@ const metadata: MetaData = {
 ---
 
 <Layout metadata={metadata}>
-  <section class="px-4 py-16 sm:px-6 mx-auto lg:px-8 lg:py-20 max-w-4xl">
-    <h1 class="font-bold font-heading text-4xl md:text-5xl leading-tighter tracking-tighter">{frontmatter.title}</h1>
-    <div
-      class="mx-auto prose prose-lg max-w-4xl dark:prose-invert dark:prose-headings:text-slate-300 prose-md prose-headings:font-heading prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-blue-600 dark:prose-a:text-blue-400 prose-img:rounded-md prose-img:shadow-lg mt-8"
-    >
-      <slot />
+  <section class="mx-auto max-w-4xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
+    <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
+      <h1 class="font-heading text-4xl font-bold leading-tight tracking-[-0.035em] md:text-5xl">{frontmatter.title}</h1>
+      <div
+        class="prose prose-lg mt-8 max-w-none prose-headings:font-heading prose-headings:leading-tight prose-headings:tracking-[-0.03em] prose-p:text-[color:var(--aw-color-text-default)] prose-a:text-[color:var(--aw-color-accent)] prose-strong:text-[color:var(--aw-color-text-heading)] prose-img:rounded-[1.4rem] prose-img:shadow-[0_1rem_2.5rem_rgba(26,22,18,0.08)] dark:prose-invert"
+      >
+        <slot />
+      </div>
     </div>
   </section>
 </Layout>

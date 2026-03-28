@@ -18,51 +18,54 @@
   .text-muted {
     color: var(--aw-color-text-muted);
   }
+  .text-heading {
+    color: var(--aw-color-text-heading);
+  }
+  .border-page {
+    border-color: var(--aw-color-line);
+  }
 }
 
 @layer components {
   .btn {
-    @apply inline-flex items-center justify-center rounded-full border text-center text-base leading-snug transition py-3.5 px-6 md:px-8 duration-300 focus:ring-2 cursor-pointer;
+    @apply inline-flex items-center justify-center rounded-full border text-center text-sm md:text-base leading-snug transition py-3.5 px-6 md:px-8 duration-300 focus:ring-2 cursor-pointer;
     border-color: var(--aw-color-line);
-    background-color: color-mix(in srgb, var(--aw-color-surface) 88%, white 12%);
+    background-color: color-mix(in srgb, var(--aw-color-surface) 90%, white 10%);
     color: var(--aw-color-text-default);
-    box-shadow:
-      0 0.75rem 2rem rgb(96 50 32 / 0.08),
-      inset 0 1px 0 rgb(255 255 255 / 0.4);
-    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    box-shadow: 0 0.85rem 2.4rem rgb(26 22 18 / 0.08);
+    transition-timing-function: cubic-bezier(0.18, 0.9, 0.22, 1);
   }
 
   .btn:hover {
     transform: translateY(-1px);
-    border-color: color-mix(in srgb, var(--aw-color-primary) 28%, transparent);
-    background-color: color-mix(in srgb, var(--aw-color-surface-strong) 80%, white 20%);
+    border-color: color-mix(in srgb, var(--aw-color-primary) 34%, transparent);
+    background-color: color-mix(in srgb, var(--aw-color-surface-strong) 76%, white 24%);
   }
 
   .btn-primary {
     @apply btn font-semibold text-white;
-    border-color: color-mix(in srgb, var(--aw-color-primary) 72%, black 8%);
+    border-color: color-mix(in srgb, var(--aw-color-primary) 76%, black 10%);
     background: linear-gradient(
       135deg,
-      color-mix(in srgb, var(--aw-color-primary) 92%, black 8%),
-      var(--aw-color-accent)
+      color-mix(in srgb, var(--aw-color-primary) 88%, black 12%),
+      var(--aw-color-primary)
     );
-    box-shadow:
-      0 1rem 2.4rem rgb(122 27 18 / 0.2),
-      inset 0 1px 0 rgb(255 255 255 / 0.12);
+    box-shadow: 0 1rem 2.8rem color-mix(in srgb, var(--aw-color-primary) 22%, transparent);
   }
 
   .btn-primary:hover {
-    border-color: color-mix(in srgb, var(--aw-color-primary) 82%, black 18%);
+    border-color: color-mix(in srgb, var(--aw-color-primary) 84%, black 16%);
     background: linear-gradient(
       135deg,
-      color-mix(in srgb, var(--aw-color-primary) 82%, black 18%),
-      var(--aw-color-accent)
+      color-mix(in srgb, var(--aw-color-primary) 80%, black 20%),
+      var(--aw-color-primary)
     );
     color: white;
   }
 
-  .btn-secondary {
-    @apply btn;
+  .btn-secondary,
+  .btn-secondary:hover {
+    color: var(--aw-color-text-heading);
   }
 
   .btn-tertiary {

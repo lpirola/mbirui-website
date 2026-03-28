@@ -1,95 +1,147 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 
+const eixos = [
+  {
+    id: 'ia-mbirui',
+    kicker: 'Eixo 1',
+    title: "IA / Mbiru'i",
+    summary:
+      'Ferramentas de tradução, produção de materiais e acesso à informação em saúde adaptadas a contextos linguísticos e culturais indígenas.',
+    items: [
+      {
+        title: 'Objetivo',
+        text: 'Apoiar tradução, produção de materiais e circulação de informação em saúde com atenção às especificidades linguísticas e culturais dos territórios.',
+      },
+      {
+        title: 'Abordagem',
+        text: 'O trabalho combina pesquisa em linguagem, processos de tradução, produção de materiais em saúde e diálogo com pessoas e equipes envolvidas no cotidiano do cuidado.',
+      },
+      {
+        title: 'Circulação pública',
+        text: 'A narrativa pública permanece conservadora: mostra pesquisa, tradução e encontros sem prometer resultados fechados ainda em processo.',
+      },
+    ],
+  },
+  {
+    id: 'mngs',
+    kicker: 'Eixo 2',
+    title: 'mNGS',
+    summary:
+      'Pesquisa e formação voltadas a coleta, processamento, diagnóstico e fortalecimento técnico em saúde indígena.',
+    items: [
+      {
+        title: 'Objetivo',
+        text: 'Fortalecer capacidades ligadas a diagnóstico, coleta, processamento e interpretação de dados em saúde, com foco em infecções pulmonares e desigualdades no acesso ao cuidado.',
+      },
+      {
+        title: 'Formação e campo',
+        text: 'O acervo documenta capacitações com agentes indígenas de saúde, trabalho de campo, grupos focais, processamento de amostras e treinamento internacional em parceria técnica.',
+      },
+      {
+        title: 'Publicação responsável',
+        text: 'A apresentação pública evita afirmar resultados encerrados quando os materiais disponíveis ainda apontam para processos em andamento.',
+      },
+    ],
+  },
+] as const;
+
 const metadata = {
   title: "Pesquisa — Projeto Mbiru'i",
   description: 'Dois eixos principais de pesquisa: IA/Mbiru’i e mNGS.',
 };
+
+const email = 'nangareko@mbirui.ia.br';
 ---
 
 <Layout metadata={metadata}>
-  <section class="py-16 sm:py-20 lg:py-24">
-    <div class="container mx-auto px-4 max-w-5xl">
-      <p class="text-sm font-semibold uppercase tracking-[0.2em] text-primary dark:text-accent">Pesquisa</p>
-      <h1 class="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">
-        Dois eixos complementares para ampliar acesso à informação e fortalecer o cuidado.
-      </h1>
-      <p class="mt-6 text-lg leading-8 text-gray-700 dark:text-gray-300">
-        O programa articula desenvolvimento de materiais e processos de tradução em saúde indígena com formação e
-        pesquisa aplicada em mNGS, conectando linguagem, território, diagnóstico e circulação pública do conhecimento.
-      </p>
-    </div>
-  </section>
-
-  <section id="ia-mbirui" class="pb-12 sm:pb-16 lg:pb-20">
-    <div class="container mx-auto px-4 max-w-5xl">
-      <article class="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-slate-900">
-        <p class="text-sm font-semibold uppercase tracking-[0.18em] text-primary dark:text-accent">Eixo 1</p>
-        <h2 class="mt-3 text-3xl font-bold">IA / Mbiru'i</h2>
-        <div class="mt-6 grid gap-6 md:grid-cols-2">
-          <div>
-            <h3 class="text-lg font-semibold">Objetivo</h3>
-            <p class="mt-2 text-gray-700 dark:text-gray-300">
-              Apoiar a tradução, a produção de materiais e o acesso à informação em saúde em contextos indígenas, com
-              atenção às especificidades linguísticas e culturais dos territórios.
-            </p>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold">Abordagem</h3>
-            <p class="mt-2 text-gray-700 dark:text-gray-300">
-              O trabalho reúne pesquisa em linguagem, processos de tradução, produção de materiais em saúde e diálogo
-              com pessoas e equipes envolvidas no cotidiano do cuidado.
-            </p>
-          </div>
+  <section class="relative overflow-hidden pb-14 pt-12 sm:pb-18 sm:pt-16 lg:pb-24 lg:pt-20">
+    <div class="container mx-auto px-4">
+      <div class="grid gap-6 lg:grid-cols-[minmax(0,1.08fr)_minmax(18rem,0.92fr)]">
+        <div class="max-w-4xl">
+          <p class="section-kicker">Pesquisa</p>
+          <h1 class="mt-4 max-w-4xl text-5xl leading-[0.94] sm:text-6xl">
+            Dois eixos complementares para ampliar acesso à informação e fortalecer o cuidado.
+          </h1>
+          <p class="mt-6 max-w-2xl text-lg leading-8 text-muted sm:text-xl">
+            A pesquisa articula desenvolvimento de materiais e processos de tradução em saúde indígena com formação e
+            investigação aplicada em mNGS, conectando linguagem, território, diagnóstico e circulação pública do
+            conhecimento.
+          </p>
         </div>
-        <p class="mt-6 text-gray-700 dark:text-gray-300">
-          Os materiais do acervo mostram reuniões de pesquisa, processos de tradução, gravações em guarani e
-          apresentações públicas do projeto. A narrativa pública será mantida conservadora, evitando promessas ainda não
-          entregues e números que variam entre diferentes apresentações.
-        </p>
-      </article>
+
+        <aside class="editorial-frame rounded-[2.25rem] p-6 sm:p-8">
+          <p class="section-kicker">Leitura do programa</p>
+          <div class="mt-6 grid gap-4">
+            <div
+              class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5"
+            >
+              <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">Estrutura</p>
+              <p class="mt-3 text-lg font-semibold text-heading">Linguagem + cuidado + evidência</p>
+              <p class="mt-2 text-sm leading-7 text-muted">
+                O desenho do programa evita separar comunicação, formação e pesquisa aplicada.
+              </p>
+            </div>
+            <div
+              class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5"
+            >
+              <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
+                Método público
+              </p>
+              <p class="mt-3 text-sm leading-7 text-muted">
+                A apresentação do trabalho privilegia processos, parcerias e frentes de atuação sem inflar métricas ou
+                antecipar resultados.
+              </p>
+            </div>
+          </div>
+        </aside>
+      </div>
     </div>
   </section>
 
-  <section id="mngs" class="bg-secondary/20 py-12 sm:py-16 lg:py-20 dark:bg-gray-900/60">
-    <div class="container mx-auto px-4 max-w-5xl">
-      <article class="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-slate-900">
-        <p class="text-sm font-semibold uppercase tracking-[0.18em] text-primary dark:text-accent">Eixo 2</p>
-        <h2 class="mt-3 text-3xl font-bold">mNGS</h2>
-        <div class="mt-6 grid gap-6 md:grid-cols-2">
-          <div>
-            <h3 class="text-lg font-semibold">Objetivo</h3>
-            <p class="mt-2 text-gray-700 dark:text-gray-300">
-              Fortalecer capacidades ligadas a diagnóstico, coleta, processamento e interpretação de dados em saúde, com
-              foco em infecções pulmonares e contextos de desigualdade no acesso ao cuidado.
-            </p>
-          </div>
-          <div>
-            <h3 class="text-lg font-semibold">Formação e campo</h3>
-            <p class="mt-2 text-gray-700 dark:text-gray-300">
-              O acervo documenta capacitações com agentes indígenas de saúde, trabalho de campo, grupos focais,
-              processamento de amostras e treinamento internacional em parceria técnica.
-            </p>
-          </div>
+  <section class="pb-12 sm:pb-16 lg:pb-20">
+    <div class="container mx-auto max-w-6xl px-4">
+      <div class="grid gap-6 lg:grid-cols-2">
+        {
+          eixos.map((eixo) => (
+            <article id={eixo.id} class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
+              <p class="section-kicker">{eixo.kicker}</p>
+              <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">{eixo.title}</h2>
+              <p class="mt-4 text-base leading-8 text-muted">{eixo.summary}</p>
+
+              <div class="mt-7 grid gap-4">
+                {eixo.items.map((item: (typeof eixo.items)[number]) => (
+                  <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+                    <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
+                      {item.title}
+                    </p>
+                    <p class="mt-3 text-sm leading-7 text-muted">{item.text}</p>
+                  </div>
+                ))}
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-20 sm:pb-24">
+    <div class="container mx-auto max-w-5xl px-4">
+      <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
+        <p class="section-kicker">Conexão entre os eixos</p>
+        <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
+          A força do projeto está na articulação entre linguagem, cuidado e produção de evidências.
+        </h2>
+        <p class="mt-5 text-base leading-8 text-muted">
+          O eixo de IA / Mbiru'i amplia o acesso à informação em saúde e organiza processos de tradução e comunicação. O
+          eixo de mNGS reforça capacidades técnicas, trabalho de campo e investigação. Juntos, eles estruturam uma
+          agenda de pesquisa aplicada baseada em território, colaboração e circulação pública responsável.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/resultados" class="btn-secondary">Ver resultados públicos</a>
+          <a href={`mailto:${email}`} class="btn-primary">{email}</a>
         </div>
-        <p class="mt-6 text-gray-700 dark:text-gray-300">
-          Nesta página, o eixo de mNGS é apresentado como frente de pesquisa e formação. A publicação pública evita
-          afirmar resultados fechados quando o material disponível aponta ainda para processos em andamento.
-        </p>
-      </article>
-    </div>
-  </section>
-
-  <section class="py-12 sm:py-16 lg:py-20">
-    <div class="container mx-auto px-4 max-w-5xl">
-      <div class="rounded-3xl border border-gray-200 bg-white p-8 shadow-sm dark:border-gray-800 dark:bg-slate-900">
-        <h2 class="text-2xl font-bold">Como os eixos se conectam</h2>
-        <p class="mt-4 text-gray-700 dark:text-gray-300">
-          A força do projeto está na articulação entre linguagem, cuidado e produção de evidências. O eixo de IA /
-          Mbiru'i ajuda a ampliar o acesso à informação em saúde, enquanto o eixo de mNGS reforça capacidades técnicas e
-          de investigação. Juntos, eles estruturam uma agenda de pesquisa aplicada com base em território, colaboração e
-          circulação pública responsável.
-        </p>
       </div>
     </div>
   </section>
