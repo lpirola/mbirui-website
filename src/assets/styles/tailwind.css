@@ -63,8 +63,16 @@
     color: white;
   }
 
-  .btn-secondary,
+  .btn-secondary {
+    @apply btn font-semibold;
+    border-color: color-mix(in srgb, var(--aw-color-line) 90%, transparent);
+    background: color-mix(in srgb, var(--aw-color-surface) 78%, white 22%);
+    color: var(--aw-color-text-heading);
+  }
+
   .btn-secondary:hover {
+    border-color: color-mix(in srgb, var(--aw-color-secondary) 44%, transparent);
+    background: color-mix(in srgb, var(--aw-color-surface-strong) 72%, white 28%);
     color: var(--aw-color-text-heading);
   }
 

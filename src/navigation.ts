@@ -24,10 +24,18 @@ export const headerData = {
   links: [
     { text: 'Início', href: getPermalink('/') },
     { text: 'O Projeto', href: getPermalink('/projetos') },
-    { text: 'Pesquisa', href: getPermalink('/pesquisa') },
     { text: 'Resultados', href: getPermalink('/resultados') },
+    { text: 'Contato', href: getPermalink('/contato') },
   ],
-  actions: [] satisfies CallToAction[],
+  actions: [
+    {
+      text: 'Testar no WhatsApp',
+      href: chatbotWhatsappUrl,
+      target: '_blank',
+      variant: 'primary',
+      icon: 'tabler:brand-whatsapp',
+    },
+  ] satisfies CallToAction[],
 } satisfies {
   links: HeaderLink[];
   actions: CallToAction[];
@@ -40,14 +48,14 @@ export const footerData = {
       links: [
         { text: 'Início', href: getPermalink('/') },
         { text: 'O Projeto', href: getPermalink('/projetos') },
-        { text: 'Pesquisa', href: getPermalink('/pesquisa') },
         { text: 'Resultados', href: getPermalink('/resultados') },
+        { text: 'Contato', href: getPermalink('/contato') },
       ],
     },
     {
       title: 'Acesso',
       links: [
-        { text: 'Chatbot', href: chatbotWhatsappUrl },
+        { text: 'Chatbot no WhatsApp', href: chatbotWhatsappUrl },
         { text: 'E-mail institucional', href: 'mailto:nangareko@mbirui.ia.br' },
       ],
     },
@@ -61,7 +69,7 @@ export const footerData = {
   ],
   secondaryLinks: [
     { text: 'nangareko@mbirui.ia.br', href: 'mailto:nangareko@mbirui.ia.br' },
-    { text: 'WhatsApp do chatbot', href: chatbotWhatsappUrl },
+    { text: 'Testar no WhatsApp', href: chatbotWhatsappUrl },
   ],
   socialLinks: [
     {
