@@ -4,44 +4,112 @@ import { chatbotWhatsappUrl } from '~/utils/chatbot';
 
 const metadata = {
   title: "Chatbot — Projeto Mbiru'i",
-  description: 'Agente no WhatsApp do Projeto Mbiru’i para explicar tuberculose em Guarani Kaiowá.',
+  description:
+    'Chatbot no WhatsApp com n8n, OpenAI e Pinecone para mediação linguística em saúde indígena Guarani Kaiowá.',
 };
 
-const whatItDoes = [
-  'Explica dúvidas sobre tuberculose em linguagem mais acessível.',
-  'Responde em Guarani Kaiowá no canal do WhatsApp.',
-  'Ajuda a circular informação em saúde no cotidiano.',
+const productPoints = [
+  'Atende no WhatsApp como ponto de entrada simples para Agentes Indígenas de Saúde e comunidade.',
+  'Usa RAG para responder com base em documentos revisados, dicionários, traduções e FAQs.',
+  'Combina mediação linguística e apoio informacional em saúde sem substituir avaliação clínica.',
 ] as const;
 
-const audiencePoints = [
-  'Agentes Indígenas de Saúde que precisam de apoio rápido de informação.',
-  'Pessoas da comunidade que querem um canal simples para perguntar e entender melhor.',
-  'Parceiros e mediadores locais que ajudam a circular informação em território.',
+const stackPoints = [
+  'n8n como orquestrador dos fluxos de ingestão, recuperação e resposta.',
+  'OpenAI para embeddings e geração das respostas contextualizadas.',
+  'Pinecone como banco vetorial para busca semântica.',
+  'Google Drive como repositório documental com revisão humana.',
+  'Evolution API para operação do canal no WhatsApp.',
+] as const;
+
+const pipelineCards = [
+  {
+    kicker: 'Pipeline 01',
+    title: 'Ingestão documental',
+    file: '../n8n/workflow-indexacao-docs.json',
+    steps: [
+      'Google Drive Trigger',
+      'Normalize File Metadata',
+      'Download File',
+      'Load Binary Document',
+      'Split Document',
+      'OpenAI Embeddings',
+      'Pinecone Upsert Documents',
+    ],
+    description:
+      'Monitora documentos aprovados, carrega o conteúdo, fragmenta o texto em chunks e atualiza a base vetorial usada pelo chatbot.',
+  },
+  {
+    kicker: 'Pipeline 02',
+    title: 'Atendimento via WhatsApp',
+    file: '../n8n/workflow-chatbot-evolution.json',
+    steps: [
+      'Evolution Webhook',
+      'Extract Message',
+      'Enforce Idempotency',
+      'Should Reply?',
+      'Answer with RAG',
+      'Retrieve Knowledge',
+      'OpenAI Chat Model',
+      'Conversation Memory',
+      'Query Embeddings',
+      'Format Outbound Message',
+      'Send Evolution Reply',
+    ],
+    description:
+      'Recebe a mensagem do usuário, aplica controles operacionais, consulta o Pinecone e devolve a resposta formatada no canal do WhatsApp.',
+  },
+  {
+    kicker: 'Pipeline 03',
+    title: 'Teste interno no n8n',
+    file: '../n8n/workflow-chatbot-ui.json',
+    steps: [
+      'Chat Trigger',
+      'Extract Chat Input',
+      'Has Message?',
+      'Answer with RAG',
+      'Retrieve Knowledge',
+      'OpenAI Chat Model',
+      'Conversation Memory',
+      'Query Embeddings',
+      'Prepare Chat Response',
+    ],
+    description:
+      'Replica a lógica do atendimento em um ambiente de teste dentro do ecossistema do n8n, sem depender da Evolution API.',
+  },
 ] as const;
 
 const usageSteps = [
   'Abra o WhatsApp pelo botão da página.',
-  'Escreva sua dúvida sobre tuberculose em Guarani Kaiowá ou português.',
-  'Use a resposta como apoio inicial e procure atendimento quando precisar de avaliação profissional.',
+  'Envie sua dúvida em Guarani Kaiowá ou português.',
+  'Use a resposta como apoio inicial e procure atendimento profissional em caso de sintomas, urgência ou necessidade de diagnóstico.',
+] as const;
+
+const governancePoints = [
+  'Documentos passam por revisão humana antes de entrar na base vetorial.',
+  'O fluxo prioriza fontes aprovadas, não resposta livre sem contexto.',
+  'O chatbot oferece apoio informacional e não substitui cuidado clínico.',
 ] as const;
 ---
 
 <Layout metadata={metadata}>
   <section class="py-16 sm:py-20 lg:py-24">
     <div class="container mx-auto max-w-5xl px-4">
-      <p class="section-kicker">Agente no WhatsApp</p>
+      <p class="section-kicker">Produto</p>
       <h1 class="mt-4 text-4xl leading-tight sm:text-5xl">
-        Um agente no WhatsApp para explicar tuberculose em Guarani Kaiowá.
+        Chatbot no WhatsApp com n8n, OpenAI e RAG para mediação linguística em saúde indígena.
       </h1>
       <p class="mt-6 max-w-3xl text-lg leading-8 text-muted">
-        Desenvolvido no contexto do Projeto Mbiru'i, o agente ajuda a explicar tuberculose de forma mais acessível em um
-        canal simples de usar no dia a dia.
+        O produto foi desenhado para apoiar a comunicação em Guarani Kaiowá entre comunidade e Agentes Indígenas de
+        Saúde, usando recuperação semântica sobre documentos curados e resposta contextualizada no WhatsApp.
       </p>
       <div class="mt-8 flex flex-wrap gap-3">
         <a href={chatbotWhatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">
           Conversar no WhatsApp
         </a>
-        <a href="mailto:contato@mbirui.ia.br" class="btn-secondary">E-mail institucional</a>
+        <a href="/docs/estudo-de-caso-chatbot-rag-guarani-kaiowa.docx" class="btn-secondary" target="_blank" rel="noopener noreferrer">
+          Baixar estudo de caso
+        </a>
       </div>
     </div>
   </section>
@@ -50,10 +118,10 @@ const usageSteps = [
     <div class="container mx-auto px-4">
       <div class="grid gap-6 lg:grid-cols-[1fr_1fr]">
         <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-          <p class="section-kicker">O que ele faz</p>
+          <p class="section-kicker">O que o produto entrega</p>
           <div class="mt-4 grid gap-4">
             {
-              whatItDoes.map((item) => (
+              productPoints.map((item) => (
                 <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
                   <p class="text-base leading-7 text-[color:var(--aw-color-text-default)]">{item}</p>
                 </div>
@@ -63,10 +131,10 @@ const usageSteps = [
         </article>
 
         <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-          <p class="section-kicker">Para quem foi pensado</p>
+          <p class="section-kicker">Stack do sistema</p>
           <div class="mt-4 grid gap-4">
             {
-              audiencePoints.map((item) => (
+              stackPoints.map((item) => (
                 <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
                   <p class="text-base leading-7 text-[color:var(--aw-color-text-default)]">{item}</p>
                 </div>
@@ -81,15 +149,20 @@ const usageSteps = [
   <section class="pb-20 sm:pb-24">
     <div class="container mx-auto px-4">
       <div class="editorial-frame rounded-[2rem] p-7 sm:p-9">
-        <p class="section-kicker">Como usar</p>
-        <div class="mt-6 grid gap-4 md:grid-cols-3">
+        <p class="section-kicker">Pipelines do repositório n8n</p>
+        <div class="mt-6 grid gap-4 lg:grid-cols-3">
           {
-            usageSteps.map((item, index) => (
+            pipelineCards.map((pipeline) => (
               <article class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
                 <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
-                  Passo {String(index + 1).padStart(2, '0')}
+                  {pipeline.kicker}
                 </p>
-                <p class="mt-3 text-base leading-7 text-[color:var(--aw-color-text-default)]">{item}</p>
+                <h2 class="mt-3 text-xl font-semibold text-[color:var(--aw-color-text-heading)]">{pipeline.title}</h2>
+                <p class="mt-2 text-sm leading-7 text-muted">{pipeline.description}</p>
+                <p class="mt-3 font-mono text-xs text-muted">{pipeline.file}</p>
+                <ul class="mt-4 space-y-2 text-sm leading-6 text-[color:var(--aw-color-text-default)]">
+                  {pipeline.steps.map((step) => <li>{step}</li>)}
+                </ul>
               </article>
             ))
           }
@@ -98,15 +171,36 @@ const usageSteps = [
     </div>
   </section>
 
-  <section class="pb-16 sm:pb-20">
+  <section class="pb-20 sm:pb-24">
     <div class="container mx-auto px-4">
       <div class="grid gap-6 lg:grid-cols-[1fr_1fr]">
         <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-          <p class="section-kicker">Uso responsável</p>
-          <p class="mt-4 text-base leading-8 text-muted">
-            A ferramenta oferece apoio informacional e não substitui avaliação clínica, diagnóstico ou atendimento em
-            situações de urgência.
-          </p>
+          <p class="section-kicker">Como usar</p>
+          <div class="mt-6 grid gap-4">
+            {
+              usageSteps.map((item, index) => (
+                <article class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+                  <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
+                    Passo {String(index + 1).padStart(2, '0')}
+                  </p>
+                  <p class="mt-3 text-base leading-7 text-[color:var(--aw-color-text-default)]">{item}</p>
+                </article>
+              ))
+            }
+          </div>
+        </article>
+
+        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
+          <p class="section-kicker">Governança e uso responsável</p>
+          <div class="mt-4 grid gap-4">
+            {
+              governancePoints.map((item) => (
+                <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+                  <p class="text-base leading-7 text-[color:var(--aw-color-text-default)]">{item}</p>
+                </div>
+              ))
+            }
+          </div>
         </article>
       </div>
     </div>
@@ -115,16 +209,19 @@ const usageSteps = [
   <section class="pb-20 sm:pb-24">
     <div class="container mx-auto px-4">
       <div class="editorial-frame rounded-[2rem] p-7 sm:p-9">
-        <p class="section-kicker">Sobre o projeto</p>
+        <p class="section-kicker">Base científica</p>
         <p class="mt-4 max-w-3xl text-base leading-8 text-muted">
-          O chatbot faz parte de uma frente maior do Projeto Mbiru'i, que articula pesquisa, tradução, formação e
-          colaboração em território para apoiar o cuidado em saúde e ampliar o acesso à informação em contexto indígena.
+          O produto está acompanhado por um estudo de caso sobre o uso de RAG para mediação linguística na saúde
+          indígena Guarani Kaiowá. O documento descreve a arquitetura com Google Drive, n8n, Pinecone, OpenAI e o
+          fluxo de revisão humana que sustenta a confiabilidade das respostas.
         </p>
         <div class="mt-8 flex flex-wrap gap-3">
-          <a href={chatbotWhatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">
-            Conversar no WhatsApp
+          <a href="/docs/estudo-de-caso-chatbot-rag-guarani-kaiowa.docx" class="btn-primary" target="_blank" rel="noopener noreferrer">
+            Abrir estudo de caso
           </a>
-          <a href="mailto:contato@mbirui.ia.br" class="btn-secondary">E-mail institucional</a>
+          <a href={chatbotWhatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-secondary">
+            Testar no WhatsApp
+          </a>
         </div>
       </div>
     </div>
