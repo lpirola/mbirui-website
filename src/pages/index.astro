@@ -5,90 +5,129 @@ import { chatbotWhatsappUrl } from '~/utils/chatbot';
 
 const email = 'contato@mbirui.ia.br';
 
-const projetos = (await getCollection('projetos')).filter((item) => item.data.status === 'ativo').slice(0, 2);
-const resultados = (await getCollection('resultados'))
-  .filter((item) => item.data.destaque || ['pdf', 'apresentacao', 'material-publico'].includes(item.data.categoria))
-  .slice(0, 3);
-const pages = await getCollection('pages');
+const projetos = (await getCollection('projetos'))
+  .filter((item) => item.data.status === 'ativo')
+  .sort((a, b) => a.data.title.localeCompare(b.data.title, 'pt-BR'));
 
-const objetivosPage = pages.find((page) => page.slug === 'objetivos');
-const objetivos = (objetivosPage?.body.split('\n').filter((line) => /^\d+\./.test(line)) ?? [])
-  .slice(0, 3)
-  .map((line) => line.replace(/^\d+\.\s*/, ''));
+const equipeAtual = (await getCollection('equipe')).filter((item) => item.data.periodo === 'atual');
 
-const metadata = {
-  title: "Projeto Mbiru'i — portal institucional",
-  description:
-    'Projeto de saúde indígena que articula pesquisa, tradução e tecnologia para ampliar o acesso à informação sobre tuberculose entre comunidades Guarani Kaiowá.',
-};
+const resultadosPublicos = (await getCollection('resultados'))
+  .filter(({ data }) => {
+    const arquivo = data.arquivo?.toLowerCase() ?? '';
+    return !arquivo.endsWith('.ppt') && !arquivo.endsWith('.pptx') && data.categoria !== 'apresentacao';
+  })
+  .map((item) => ({
+    title: item.data.title,
+    ano: item.data.ano,
+    descricao: item.data.descricao,
+    href: item.data.link ?? item.data.arquivo,
+    tipo:
+      item.data.categoria === 'pdf'
+        ? 'PDF'
+        : item.data.categoria === 'workshop'
+          ? 'Workshop'
+          : item.data.categoria === 'instagram'
+            ? 'Instagram'
+            : 'Material público',
+  }));
 
-const problemPoints = [
-  'A língua ainda é uma barreira prática para acessar informação e cuidado em saúde.',
-  'A tuberculose segue pesando mais onde o diagnóstico chega tarde e o cuidado é desigual.',
-  'Os AIS são centrais para mediar informação, território e atenção cotidiana, mas precisam de apoio contínuo.',
-] as const;
+const producoesPublicas = (await getCollection('producoes'))
+  .map((item) => ({
+    title: item.data.title,
+    ano: item.data.ano,
+    descricao: item.data.descricao,
+    href: item.data.arquivo,
+    tipo:
+      item.data.tipo === 'cartilha'
+        ? 'Cartilha'
+        : item.data.tipo === 'livro'
+          ? 'Livro'
+          : item.data.tipo === 'relatorio'
+            ? 'Relatório'
+            : 'Documento',
+  }));
 
-const responsePoints = [
+const materiais = [...producoesPublicas, ...resultadosPublicos]
+  .filter((item) => Boolean(item.href))
+  .sort((a, b) => b.ano - a.ano)
+  .slice(0, 6);
+
+const eixosPesquisa = [
   {
-    title: 'IA e linguagem',
-    text: 'Desenvolvemos ferramentas para traduzir, explicar e adaptar informação em saúde ao contexto Guarani Kaiowá.',
+    title: 'Pesquisa em IA e linguagem',
+    text: 'Investiga tradução, mediação linguística e produção de materiais em saúde adaptados aos contextos culturais e linguísticos Guarani Kaiowá.',
   },
   {
-    title: 'Pesquisa aplicada e cuidado',
-    text: 'O projeto articula campo, formação e investigação para apoiar decisões melhores no território.',
+    title: 'Pesquisa em meta-genômica',
+    text: 'Articula coleta, processamento, formação e investigação aplicada para fortalecer diagnóstico, trabalho de campo e produção de evidências.',
+  },
+  {
+    title: 'Integração com território',
+    text: 'Os dois projetos dialogam com agentes indígenas de saúde, equipes locais e circulação responsável de conhecimento sem antecipar resultados preliminares.',
   },
 ] as const;
 
-const chatbotPoints = [
-  'Fala Guarani Kaiowá e ajuda a explicar tuberculose com linguagem mais acessível.',
-  'Funciona no WhatsApp, um canal simples para uso cotidiano.',
-  'Foi pensado para apoiar AIS, comunidade e mediação local sem substituir atendimento profissional.',
+const integrantesProjetos = [
+  {
+    title: 'Projeto de inteligência artificial',
+    count: 13,
+    text: 'Equipe de pesquisadores e colaboradores de campo vinculada ao eixo de IA, tradução e acesso à informação em saúde indígena.',
+  },
+  {
+    title: 'Projeto de meta-genômica',
+    count: 7,
+    text: 'Equipe de pesquisadores vinculada ao eixo de meta-genômica, diagnóstico e fortalecimento técnico.',
+  },
 ] as const;
 
 const heroGallery = [
   {
     src: '/media/galeria/capacitacao-ais-coleta-sertao-amambai.jpeg',
     alt: 'Atividade de capacitação com agentes indígenas de saúde para coleta em mNGS no posto Sertão Amambai.',
-    caption: 'AIS e formação prática',
+    caption: 'Formação em campo',
     classes: 'lg:col-span-8 lg:row-span-2',
     imageClass: 'h-72 sm:h-[22rem] lg:h-full',
   },
   {
     src: '/media/galeria/processo-mngs-coleta-amostras.jpg',
     alt: 'Profissionais do projeto durante coleta de amostras com participantes em campo.',
-    caption: 'Cuidado em campo',
+    caption: 'Meta-genômica',
     classes: 'lg:col-span-4',
     imageClass: 'h-44 sm:h-48 lg:h-40',
   },
   {
-    src: '/media/galeria/rezadores-amambai-rezadoras-parteiras.jpeg',
-    alt: 'Grupo de rezadoras e parteiras reunidas em atividade comunitária em Amambai.',
-    caption: 'Comunidade e território',
+    src: '/media/galeria/bolsistas-processo-traducao-equipe.jpeg',
+    alt: 'Equipe em atividade de tradução e revisão de conteúdo em saúde.',
+    caption: 'IA e tradução',
     classes: 'lg:col-span-4',
     imageClass: 'h-44 sm:h-48 lg:h-40',
   },
 ] as const;
+
+const metadata = {
+  title: "Projeto Mbiru'i — portal institucional",
+  description:
+    'Portal institucional com visão geral dos projetos, pesquisa, materiais públicos, equipe e contato do Projeto Mbiru’i.',
+};
 ---
 
 <Layout metadata={metadata}>
   <section class="relative overflow-hidden pb-16 pt-16 sm:pb-20 sm:pt-20 lg:pb-24 lg:pt-24">
     <div class="container relative mx-auto px-4">
-      <div class="grid gap-6 lg:grid-cols-[minmax(0,1.18fr)_minmax(17rem,0.82fr)] lg:items-stretch">
+      <div class="grid gap-6 lg:grid-cols-[minmax(0,1.16fr)_minmax(17rem,0.84fr)] lg:items-stretch">
         <div class="flex h-full max-w-4xl flex-col justify-center">
           <p class="section-kicker mb-4">Projeto Mbiru'i</p>
-          <h1 class="max-w-[44rem] text-5xl leading-[0.9] sm:text-[4.5rem] lg:text-[5.2rem]">
-            Saúde indígena, linguagem e tecnologia para enfrentar a tuberculose.
+          <h1 class="max-w-[46rem] text-5xl leading-[0.9] sm:text-[4.5rem] lg:text-[5.15rem]">
+            Dois projetos, uma agenda de pesquisa em saúde indígena.
           </h1>
-          <p class="mt-4 max-w-[38rem] text-lg leading-8 text-[color:var(--aw-color-text-default)] sm:text-[1.15rem]">
-            O Projeto Mbiru'i articula pesquisa aplicada, tradução, formação e colaboração em território para apoiar o
-            cuidado em saúde entre comunidades Guarani Kaiowá. Um dos desdobramentos públicos do projeto é um agente no
-            WhatsApp que explica tuberculose em Guarani Kaiowá.
+          <p class="mt-4 max-w-[40rem] text-lg leading-8 text-[color:var(--aw-color-text-default)] sm:text-[1.15rem]">
+            O site passa a organizar com clareza duas frentes distintas, com financiamentos e objetivos próprios:
+            inteligência artificial para tradução e acesso à informação em saúde, e meta-genômica aplicada ao
+            diagnóstico, à formação e ao trabalho de campo.
           </p>
           <div class="mt-7 flex flex-wrap gap-3">
-            <a href={chatbotWhatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">
-              Conversar no WhatsApp
-            </a>
-            <a href="#como-funciona" class="btn-secondary">Entender o projeto</a>
+            <a href="#projetos" class="btn-primary">Ver projetos</a>
+            <a href="#materiais" class="btn-secondary">Explorar materiais públicos</a>
           </div>
         </div>
 
@@ -103,12 +142,7 @@ const heroGallery = [
                       'overflow-hidden rounded-[1.6rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)]',
                     ]}
                   >
-                    <img
-                      src={item.src}
-                      alt={item.alt}
-                      class:list={[item.imageClass, 'w-full object-cover']}
-                      loading="lazy"
-                    />
+                    <img src={item.src} alt={item.alt} class:list={[item.imageClass, 'w-full object-cover']} loading="lazy" />
                     <figcaption class="px-4 py-2.5">
                       <p class="font-mono text-[0.62rem] uppercase tracking-[0.12em] text-[color:var(--aw-color-accent)]/80">
                         {item.caption}
@@ -120,10 +154,10 @@ const heroGallery = [
             </div>
           </div>
           <div class="editorial-frame rounded-[1.9rem] px-5 py-5 sm:px-6">
-            <p class="section-kicker">Tese pública</p>
+            <p class="section-kicker">Leitura pública</p>
             <p class="mt-3 text-base leading-7 text-[color:var(--aw-color-text-default)]">
-              A tecnologia não é o fim do projeto. Ela é uma ferramenta para tradução, cuidado e produção de
-              conhecimento útil no território.
+              A navegação desta versão prioriza entendimento institucional: projetos, pesquisa, materiais públicos,
+              equipe e contato em uma única página.
             </p>
           </div>
         </aside>
@@ -131,28 +165,42 @@ const heroGallery = [
     </div>
   </section>
 
-  <section class="pb-16 sm:pb-20" id="problema">
+  <section class="pb-16 sm:pb-20" id="projetos">
     <div class="container mx-auto px-4">
-      <div class="grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
-        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-          <p class="section-kicker">O problema</p>
-          <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-            O projeto existe porque informação, diagnóstico e cuidado ainda não chegam da mesma forma para todos.
-          </h2>
-          <p class="mt-4 text-base leading-8 text-muted">
-            No contexto Guarani Kaiowá, língua, território e desigualdade de acesso afetam a forma como a tuberculose e
-            outras questões de saúde são explicadas e enfrentadas.
+      <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
+        <div class="flex flex-col gap-4 border-b border-[color:var(--aw-color-line)] pb-7 sm:flex-row sm:items-end sm:justify-between">
+          <div class="max-w-3xl">
+            <p class="section-kicker">Projetos</p>
+            <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
+              As duas frentes precisam aparecer separadas porque têm escopo, financiamento e entregas distintos.
+            </h2>
+          </div>
+          <p class="max-w-sm text-sm leading-7 text-muted">
+            A conexão entre elas existe na agenda institucional, mas não substitui a identidade própria de cada projeto.
           </p>
-        </article>
+        </div>
 
-        <div class="grid gap-4">
+        <div class="mt-8 grid gap-5 lg:grid-cols-2">
           {
-            problemPoints.map((item, index) => (
-              <article class="rounded-[1.6rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
-                <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
-                  Ponto {String(index + 1).padStart(2, '0')}
-                </p>
-                <p class="mt-3 text-sm leading-7 text-muted">{item}</p>
+            projetos.map(({ slug, data }) => (
+              <article class="rounded-[1.85rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] p-6">
+                <div class="flex items-center justify-between gap-3">
+                  <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
+                    {data.inicio}
+                  </p>
+                  <span class="rounded-full border border-[color:var(--aw-color-line)] px-3 py-1 text-xs uppercase tracking-[0.12em] text-muted">
+                    {data.status}
+                  </span>
+                </div>
+                <h3 class="mt-4 text-2xl leading-tight">{data.title}</h3>
+                <p class="mt-4 text-base leading-8 text-muted">{data.descricao_curta}</p>
+                <a
+                  href={`/projetos/${slug}`}
+                  class="mt-7 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-primary"
+                >
+                  Abrir projeto
+                  <span aria-hidden="true">→</span>
+                </a>
               </article>
             ))
           }
@@ -161,25 +209,30 @@ const heroGallery = [
     </div>
   </section>
 
-  <section class="pb-16 sm:pb-20" id="como-funciona">
+  <section class="pb-16 sm:pb-20" id="pesquisa">
     <div class="container mx-auto px-4">
-      <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
-        <div class="max-w-3xl">
-          <p class="section-kicker">A resposta do projeto</p>
+      <div class="grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
+        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
+          <p class="section-kicker">Pesquisa</p>
           <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-            O projeto combina linguagem, cuidado e pesquisa em uma mesma arquitetura de trabalho.
+            Projetos e pesquisa não são a mesma coisa: os projetos organizam frentes financiadas, e a pesquisa organiza
+            as perguntas, métodos e vínculos com o território.
           </h2>
-        </div>
+          <p class="mt-4 text-base leading-8 text-muted">
+            Nesta leitura pública, a seção de pesquisa mostra o programa científico compartilhado entre as frentes sem
+            apagar suas diferenças institucionais.
+          </p>
+        </article>
 
-        <div class="mt-9 grid gap-4 lg:grid-cols-2">
+        <div class="grid gap-4">
           {
-            responsePoints.map((item, index) => (
-              <article class="rounded-[1.7rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-6">
+            eixosPesquisa.map((item, index) => (
+              <article class="rounded-[1.6rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
                 <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
                   Eixo {String(index + 1).padStart(2, '0')}
                 </p>
-                <h3 class="mt-4 text-2xl leading-tight">{item.title}</h3>
-                <p class="mt-4 text-sm leading-7 text-muted">{item.text}</p>
+                <h3 class="mt-3 text-xl font-semibold text-heading">{item.title}</h3>
+                <p class="mt-3 text-sm leading-7 text-muted">{item.text}</p>
               </article>
             ))
           }
@@ -188,101 +241,37 @@ const heroGallery = [
     </div>
   </section>
 
-  <section class="pb-16 sm:pb-20" id="produto">
-    <div class="container mx-auto px-4">
-      <div
-        class="rounded-[2.35rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-text-heading)] px-7 py-8 text-[color:var(--aw-color-bg-page)] shadow-[0_1.75rem_5rem_rgba(26,22,18,0.2)] sm:px-9 sm:py-10"
-      >
-        <div class="max-w-3xl">
-          <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-secondary)]">
-            Produto em destaque
-          </p>
-          <h2 class="mt-4 text-3xl leading-tight text-[color:var(--aw-color-bg-page)] sm:text-4xl">
-            Um agente no WhatsApp para explicar tuberculose em Guarani Kaiowá.
-          </h2>
-          <p class="mt-5 text-base leading-8 text-[color:rgb(245_241_232_/_0.82)]">
-            Desenvolvido no contexto do Projeto Mbiru'i, o agente ajuda a explicar tuberculose de forma mais acessível
-            em um canal simples de usar no dia a dia.
-          </p>
-        </div>
-
-        <div class="mt-9 grid gap-5 lg:grid-cols-3">
-          {
-            chatbotPoints.map((item) => (
-              <figure class="overflow-hidden rounded-[1.7rem] border border-[color:rgb(245_241_232_/_0.12)] bg-[color:rgb(245_241_232_/_0.06)]">
-                <figcaption class="p-5">
-                  <p class="text-base leading-7 text-[color:var(--aw-color-bg-page)]">{item}</p>
-                </figcaption>
-              </figure>
-            ))
-          }
-        </div>
-          <div class="mt-7">
-            <a href={chatbotWhatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">
-              Conversar no WhatsApp
-            </a>
-          </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="pb-16 sm:pb-20" id="credibilidade">
-    <div class="container mx-auto px-4">
-      <div class="grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
-        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-          <p class="section-kicker">Como o projeto trabalha</p>
-          <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-            A proposta pública se apoia em método, colaboração e circulação responsável do conhecimento.
-          </h2>
-          <p class="mt-4 text-base leading-8 text-muted">
-            O trabalho combina campo, formação, grupos focais, tradução e produção de materiais para sustentar o que o
-            projeto aprende, testa e compartilha.
-          </p>
-          <p class="mt-7 text-sm leading-7 text-muted">
-            A página de pesquisa aprofunda esses eixos para quem quiser mais detalhes sobre método, campo e
-            investigação.
-          </p>
-        </article>
-
-        <div class="grid gap-4">
-          {
-            objetivos.map((item, index) => (
-              <article class="rounded-[1.6rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
-                <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
-                  Compromisso {String(index + 1).padStart(2, '0')}
-                </p>
-                <p class="mt-3 text-sm leading-7 text-muted">{item}</p>
-              </article>
-            ))
-          }
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="pb-16 sm:pb-20" id="resultados-selecionados">
+  <section class="pb-16 sm:pb-20" id="materiais">
     <div class="container mx-auto px-4">
       <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
-        <div class="max-w-3xl">
-          <p class="section-kicker">Evidências e resultados</p>
-          <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-            O projeto também aparece em apresentações, publicações e materiais públicos já curados para esta versão do
-            site.
-          </h2>
+        <div class="flex flex-col gap-4 border-b border-[color:var(--aw-color-line)] pb-7 sm:flex-row sm:items-end sm:justify-between">
+          <div class="max-w-3xl">
+            <p class="section-kicker">Materiais</p>
+            <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
+              Produções e resultados públicos aparecem juntos aqui para facilitar acesso, sem expor apresentações com
+              conteúdo preliminar.
+            </h2>
+          </div>
+          <p class="max-w-sm text-sm leading-7 text-muted">
+            Foram removidos da vitrine pública os arquivos em PowerPoint e materiais de apresentação ainda não
+            publicados.
+          </p>
         </div>
 
         <div class="mt-8 grid gap-5 lg:grid-cols-3">
           {
-            resultados.map(({ data }) => (
+            materiais.map((item) => (
               <a
-                href={data.link ?? data.arquivo ?? '/resultados'}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 class="group rounded-[1.8rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-6 py-6 transition hover:-translate-y-0.5 hover:border-primary/40"
               >
                 <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
-                  {data.ano}
+                  {item.tipo} · {item.ano}
                 </p>
-                <h3 class="mt-4 text-2xl leading-tight">{data.title}</h3>
-                {data.descricao && <p class="mt-4 text-sm leading-7 text-muted">{data.descricao}</p>}
+                <h3 class="mt-4 text-2xl leading-tight">{item.title}</h3>
+                {item.descricao && <p class="mt-4 text-sm leading-7 text-muted">{item.descricao}</p>}
               </a>
             ))
           }
@@ -291,32 +280,69 @@ const heroGallery = [
     </div>
   </section>
 
-  <section class="pb-20 sm:pb-24" id="contato">
+  <section class="pb-20 sm:pb-24" id="equipe">
     <div class="container mx-auto px-4">
-      <div class="grid gap-6 lg:grid-cols-[1.02fr_0.98fr]">
+      <div class="grid gap-6 lg:grid-cols-[1.08fr_0.92fr]">
         <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-          <p class="section-kicker">Contato</p>
+          <p class="section-kicker">Equipe</p>
           <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-            Se quiser conversar sobre pesquisa, circulação de materiais ou apoio ao projeto, este é o melhor ponto de
-            contato.
+            A equipe atual aparece junto da composição mais ampla dos dois projetos.
           </h2>
+
+          <div class="mt-7 grid gap-4 md:grid-cols-2">
+            {
+              equipeAtual.map(({ data, slug }) => (
+                <a
+                  href={`/equipe/${slug}`}
+                  class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5 transition hover:border-primary/40"
+                >
+                  <p class="text-lg font-semibold text-heading">{data.nome}</p>
+                  <p class="mt-1 text-sm font-medium text-primary">{data.papel}</p>
+                  {data.instituicao && <p class="mt-2 text-sm text-muted">{data.instituicao}</p>}
+                </a>
+              ))
+            }
+          </div>
+
+          <div class="mt-7 grid gap-4">
+            {
+              integrantesProjetos.map((item) => (
+                <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+                  <div class="flex items-center justify-between gap-4">
+                    <p class="text-lg font-semibold text-heading">{item.title}</p>
+                    <span class="text-sm font-semibold uppercase tracking-[0.16em] text-primary">
+                      {String(item.count).padStart(2, '0')} integrantes
+                    </span>
+                  </div>
+                  <p class="mt-3 text-sm leading-7 text-muted">{item.text}</p>
+                </div>
+              ))
+            }
+          </div>
+        </article>
+
+        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8" id="contato">
+          <p class="section-kicker">Contato</p>
+          <h3 class="mt-4 text-3xl leading-tight">
+            Conversas sobre pesquisa, parceria institucional e circulação de materiais começam aqui.
+          </h3>
+          <p class="mt-4 text-base leading-8 text-muted">
+            O contato foi mantido na mesma página para apoiar leitura rápida e facilitar acesso a quem chega procurando
+            informação específica.
+          </p>
           <div class="mt-7 flex flex-wrap gap-3">
             <a href={`mailto:${email}`} class="btn-primary">{email}</a>
             <a href={chatbotWhatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-secondary">
               Conversar no WhatsApp
             </a>
           </div>
-        </article>
 
-        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-          <div
-            class="mt-8 rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5"
-          >
-            <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">O foco</p>
+          <div class="mt-8 rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+            <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">Escopo</p>
             <div class="mt-4 space-y-3 text-sm leading-7 text-muted">
               <p>Projetos ativos: {projetos.map((item) => item.data.title).join(' · ')}</p>
-              <p>Canal institucional para conversa, articulação e novos apoios.</p>
-              <p>Versão pública mais seletiva, com menos ruído e mais ação.</p>
+              <p>Materiais públicos selecionados para esta fase do site, sem apresentações preliminares.</p>
+              <p>Equipe e frentes de pesquisa apresentadas em leitura única com navegação por âncoras.</p>
             </div>
           </div>
         </article>

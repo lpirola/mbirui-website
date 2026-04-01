@@ -6,6 +6,42 @@ const equipe = await getCollection('equipe');
 const equipeAtual = equipe.filter((pessoa) => pessoa.data.periodo === 'atual');
 const equipeAnterior = equipe.filter((pessoa) => pessoa.data.periodo === 'anterior');
 
+const equipesProjeto = [
+  {
+    title: 'Projeto de inteligência artificial',
+    description: 'Integrantes que contribuíram como pesquisadores e equipe de campo no eixo de IA.',
+    membros: [
+      'Lucia Pereira',
+      'Jhon Tailor Chamorro de Aquino',
+      'Sidinei Vilhalva',
+      'Gésica Aquino Martins',
+      'Aparecida Benites',
+      'Catiane Benites',
+      'Anayni Carmona Cáceres',
+      'Isidéria Carmona',
+      'Cecilia Lemes Vasques',
+      'Luciana Batista Martins',
+      'Arthur Chachamovitz Ng',
+      'Lucas Pirola',
+      'João Vitor Diniz Martins',
+    ],
+    nota: 'João Vitor Diniz Martins prestou suporte ao trabalho de campo em articulação com o outro projeto.',
+  },
+  {
+    title: 'Projeto de meta-genômica',
+    description: 'Equipe de pesquisadores vinculada ao eixo de meta-genômica.',
+    membros: [
+      'João Diniz Victor Martins',
+      'Ana Olivia Pascoto Esposito',
+      'Gislene Garcia de Castro Lichs',
+      'Eunice Atsuko Totumi Cunha',
+      'Marina Castilhos Souza Umaki',
+      'Paulo Cesar Basta',
+      'Rosa Juliana Gil Urbano',
+    ],
+  },
+] as const;
+
 const colaboradores = [
   {
     title: 'Agentes indígenas de saúde',
@@ -23,7 +59,7 @@ const colaboradores = [
 
 const metadata = {
   title: "Equipe — Projeto Mbiru'i",
-  description: 'Equipe atual, memória institucional e rede de colaboradores do Projeto Mbiru’i.',
+  description: 'Equipe atual, integrantes dos projetos e rede de colaboradores do Projeto Mbiru’i.',
 };
 ---
 
@@ -32,10 +68,11 @@ const metadata = {
     <div class="container mx-auto max-w-5xl px-4">
       <p class="section-kicker">Equipe</p>
       <h1 class="mt-4 text-4xl leading-tight sm:text-5xl">
-        Equipe atual, trajetória institucional e rede de colaboração do projeto.
+        Equipe atual, integrantes dos projetos e rede de colaboração do projeto.
       </h1>
       <p class="mt-6 text-lg leading-8 text-muted">
-        A página separa núcleo atual, memória institucional e colaboradores para dar clareza aos diferentes papéis.
+        A página reúne o núcleo atual, a memória institucional e os integrantes vinculados aos diferentes eixos de
+        pesquisa do projeto.
       </p>
     </div>
   </section>
@@ -103,6 +140,28 @@ const metadata = {
             }
           </div>
         </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-16 sm:pb-20">
+    <div class="container mx-auto px-4">
+      <div class="editorial-frame rounded-[2rem] p-7 sm:p-9">
+        <p class="section-kicker">Integrantes dos projetos</p>
+        <div class="mt-6 grid gap-6 lg:grid-cols-2">
+          {
+            equipesProjeto.map((equipeProjeto) => (
+              <article class="rounded-[1.75rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] p-6">
+                <h2 class="text-2xl font-semibold text-[color:var(--aw-color-text-heading)]">{equipeProjeto.title}</h2>
+                <p class="mt-3 text-sm leading-7 text-muted">{equipeProjeto.description}</p>
+                <ul class="mt-5 space-y-3 text-sm leading-7 text-[color:var(--aw-color-text-default)]">
+                  {equipeProjeto.membros.map((membro) => <li>{membro}</li>)}
+                </ul>
+                {equipeProjeto.nota && <p class="mt-5 text-sm leading-7 text-muted">{equipeProjeto.nota}</p>}
+              </article>
+            ))
+          }
+        </div>
       </div>
     </div>
   </section>

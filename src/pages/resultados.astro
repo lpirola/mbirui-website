@@ -2,15 +2,20 @@
 import { getCollection } from 'astro:content';
 import Layout from '~/layouts/PageLayout.astro';
 
-const resultados = (await getCollection('resultados')).sort((a, b) => b.data.ano - a.data.ano);
+const resultados = (await getCollection('resultados'))
+  .filter(({ data }) => {
+    const arquivo = data.arquivo?.toLowerCase() ?? '';
+    return !arquivo.endsWith('.ppt') && !arquivo.endsWith('.pptx') && data.categoria !== 'apresentacao';
+  })
+  .sort((a, b) => b.data.ano - a.data.ano);
 const galeria = (await getCollection('galeria')).filter(({ data }) =>
   ['congressos', 'eventos', 'produtos'].includes(data.categoria)
 );
 
 const grupos = [
   {
-    title: 'Apresentações e PDFs',
-    categorias: ['apresentacao', 'pdf'] as string[],
+    title: 'PDFs e documentos públicos',
+    categorias: ['pdf'] as string[],
   },
   {
     title: 'Workshops e eventos',
@@ -28,7 +33,7 @@ const grupos = [
 
 const metadata = {
   title: "Resultados — Projeto Mbiru'i",
-  description: 'Apresentações, materiais, workshops e registros públicos do Projeto Mbiru’i.',
+  description: 'Materiais, workshops e registros públicos do Projeto Mbiru’i.',
 };
 
 const email = 'contato@mbirui.ia.br';
@@ -41,7 +46,7 @@ const email = 'contato@mbirui.ia.br';
         <div class="max-w-4xl">
           <p class="section-kicker">Resultados</p>
           <h1 class="mt-4 max-w-4xl text-5xl leading-[0.94] sm:text-6xl">
-            Materiais públicos, apresentações e registros de circulação do projeto.
+            Materiais públicos e registros de circulação do projeto.
           </h1>
           <p class="mt-6 max-w-2xl text-lg leading-8 text-muted sm:text-xl">
             Esta página reúne documentos e registros públicos curados a partir do acervo do projeto. Os itens foram
@@ -61,7 +66,7 @@ const email = 'contato@mbirui.ia.br';
               </p>
               <p class="mt-3 text-3xl font-semibold text-heading">{resultados.length}</p>
               <p class="mt-2 text-sm leading-7 text-muted">
-                Itens curados entre PDFs, apresentações, workshops e materiais públicos.
+                Itens curados entre PDFs, workshops e materiais públicos.
               </p>
             </div>
             <div

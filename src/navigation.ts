@@ -22,9 +22,11 @@ type FooterSection = {
 
 export const headerData = {
   links: [
-    { text: 'Início', href: getPermalink('/') },
-    { text: 'O Projeto', href: getPermalink('/projetos') },
-    { text: 'Resultados', href: getPermalink('/resultados') },
+    { text: 'Projetos', href: '/#projetos' },
+    { text: 'Pesquisa', href: '/#pesquisa' },
+    { text: 'Materiais', href: '/#materiais' },
+    { text: 'Equipe', href: '/#equipe' },
+    { text: 'Contato', href: '/#contato' },
   ],
   actions: [
     {
@@ -45,10 +47,11 @@ export const footerData = {
     {
       title: 'Navegação',
       links: [
-        { text: 'Início', href: getPermalink('/') },
-        { text: 'O Projeto', href: getPermalink('/projetos') },
-        { text: 'Resultados', href: getPermalink('/resultados') },
-        { text: 'Contato', href: getPermalink('/contato') },
+        { text: 'Projetos', href: '/#projetos' },
+        { text: 'Pesquisa', href: '/#pesquisa' },
+        { text: 'Materiais', href: '/#materiais' },
+        { text: 'Equipe', href: '/#equipe' },
+        { text: 'Contato', href: '/#contato' },
       ],
     },
     {
