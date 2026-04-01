@@ -3,35 +3,9 @@ import { getCollection } from 'astro:content';
 import Layout from '~/layouts/PageLayout.astro';
 import { chatbotWhatsappUrl } from '~/utils/chatbot';
 
-const email = 'contato@mbirui.ia.br';
+const email = 'Projetoiatuberculose@gmail.com';
 
-const projetos = (await getCollection('projetos'))
-  .filter((item) => item.data.status === 'ativo')
-  .sort((a, b) => a.data.title.localeCompare(b.data.title, 'pt-BR'));
-
-const equipeAtual = (await getCollection('equipe')).filter((item) => item.data.periodo === 'atual');
-
-const resultadosPublicos = (await getCollection('resultados'))
-  .filter(({ data }) => {
-    const arquivo = data.arquivo?.toLowerCase() ?? '';
-    return !arquivo.endsWith('.ppt') && !arquivo.endsWith('.pptx') && data.categoria !== 'apresentacao';
-  })
-  .map((item) => ({
-    title: item.data.title,
-    ano: item.data.ano,
-    descricao: item.data.descricao,
-    href: item.data.link ?? item.data.arquivo,
-    tipo:
-      item.data.categoria === 'pdf'
-        ? 'PDF'
-        : item.data.categoria === 'workshop'
-          ? 'Workshop'
-          : item.data.categoria === 'instagram'
-            ? 'Instagram'
-            : 'Material público',
-  }));
-
-const producoesPublicas = (await getCollection('producoes'))
+const producoes = (await getCollection('producoes'))
   .map((item) => ({
     title: item.data.title,
     ano: item.data.ano,
@@ -45,46 +19,54 @@ const producoesPublicas = (await getCollection('producoes'))
           : item.data.tipo === 'relatorio'
             ? 'Relatório'
             : 'Documento',
-  }));
-
-const materiais = [...producoesPublicas, ...resultadosPublicos]
+  }))
   .filter((item) => Boolean(item.href))
   .sort((a, b) => b.ano - a.ano)
-  .slice(0, 6);
+  .slice(0, 4);
 
-const eixosPesquisa = [
+const premios = [
   {
-    title: 'Pesquisa em IA e linguagem',
-    text: 'Investiga tradução, mediação linguística e produção de materiais em saúde adaptados aos contextos culturais e linguísticos Guarani Kaiowá.',
+    ano: 2022,
+    financiador: 'Fundação Gates Global Grand Challenges',
+    titulo: 'Sequenciamento Metagenômico de Nova Geração para Detectar, Identificar e Caracterizar Patógenos',
+    link: 'https://gcgh.grandchallenges.org/grant/implementing-metagenomic-next-generation-sequencing-management-lung-infections-high-risk',
   },
   {
-    title: 'Pesquisa em meta-genômica',
-    text: 'Articula coleta, processamento, formação e investigação aplicada para fortalecer diagnóstico, trabalho de campo e produção de evidências.',
-  },
-  {
-    title: 'Integração com território',
-    text: 'Os dois projetos dialogam com agentes indígenas de saúde, equipes locais e circulação responsável de conhecimento sem antecipar resultados preliminares.',
+    ano: 2024,
+    financiador: 'Fundação Gates Grand Challenges Brasil, Inteligência Artificial, INOVA FIOCRUZ',
+    titulo:
+      'Investigando o potencial de inteligência artificial para facilitar acesso à informação culturalmente adaptada sobre a tuberculose em línguas de recursos limitados no Brasil e no Moçambique',
+    link: 'https://www.grandchallengesbrazil.org/projetos/investigando-o-potencial-de-inteligencia-artificial-para-facilitar-acesso-a-informacao-culturalmente-adaptada-sobre-a-tuberculose-em-linguas-de-recursos-limitados-no-brasil-e-no-mocambique/',
   },
 ] as const;
 
-const integrantesProjetos = [
-  {
-    title: 'Projeto de inteligência artificial',
-    count: 13,
-    text: 'Equipe de pesquisadores e colaboradores de campo vinculada ao eixo de IA, tradução e acesso à informação em saúde indígena.',
-  },
-  {
-    title: 'Projeto de meta-genômica',
-    count: 7,
-    text: 'Equipe de pesquisadores vinculada ao eixo de meta-genômica, diagnóstico e fortalecimento técnico.',
-  },
+const equipe = [
+  'Ida Viktoria Kolte',
+  'Lúcia Pereira',
+  'Jhon Tailor Chamorro de Aquino',
+  'Gésica Aquino Martins',
+  'Sidinei Vilhalva',
+  'Aparecida Benites',
+  'Catiane Benites',
+  'Cecilia Lemes Vasques',
+  'Luciana Batista Martins',
+  'Isidéria Carmona',
+  'Anayni Carmona Cáceres',
+  'Arthur Chachamowitz Ng',
+  'João Vitor Diniz Martins',
+  'Ana Olivia Pascoto Esposito',
+  'Gislene Garcia de Castro',
+  'Eunice Atsuko Totumi Cunha',
+  'Marina Castilhos Souza Umaki Zardin',
+  'Lucas Pirola',
+  'Paulo Cesar Basta',
 ] as const;
 
 const heroGallery = [
   {
     src: '/media/galeria/capacitacao-ais-coleta-sertao-amambai.jpeg',
     alt: 'Atividade de capacitação com agentes indígenas de saúde para coleta em mNGS no posto Sertão Amambai.',
-    caption: 'Formação em campo',
+    caption: 'Pesquisa em campo',
     classes: 'lg:col-span-8 lg:row-span-2',
     imageClass: 'h-72 sm:h-[22rem] lg:h-full',
   },
@@ -98,7 +80,7 @@ const heroGallery = [
   {
     src: '/media/galeria/bolsistas-processo-traducao-equipe.jpeg',
     alt: 'Equipe em atividade de tradução e revisão de conteúdo em saúde.',
-    caption: 'IA e tradução',
+    caption: 'IA e linguagem',
     classes: 'lg:col-span-4',
     imageClass: 'h-44 sm:h-48 lg:h-40',
   },
@@ -107,7 +89,7 @@ const heroGallery = [
 const metadata = {
   title: "Projeto Mbiru'i — portal institucional",
   description:
-    'Portal institucional com visão geral dos projetos, pesquisa, materiais públicos, equipe e contato do Projeto Mbiru’i.',
+    'Portal institucional do Mbiru’i com visão e missão, pesquisa, produções, prêmios, equipe e contato.',
 };
 ---
 
@@ -116,18 +98,17 @@ const metadata = {
     <div class="container relative mx-auto px-4">
       <div class="grid gap-6 lg:grid-cols-[minmax(0,1.16fr)_minmax(17rem,0.84fr)] lg:items-stretch">
         <div class="flex h-full max-w-4xl flex-col justify-center">
-          <p class="section-kicker mb-4">Projeto Mbiru'i</p>
+          <p class="section-kicker mb-4">Mbirui.ai</p>
           <h1 class="max-w-[46rem] text-5xl leading-[0.9] sm:text-[4.5rem] lg:text-[5.15rem]">
-            Dois projetos, uma agenda de pesquisa em saúde indígena.
+            Pesquisa, justiça em saúde e inovação com os territórios Guarani Kaiowá.
           </h1>
           <p class="mt-4 max-w-[40rem] text-lg leading-8 text-[color:var(--aw-color-text-default)] sm:text-[1.15rem]">
-            O site passa a organizar com clareza duas frentes distintas, com financiamentos e objetivos próprios:
-            inteligência artificial para tradução e acesso à informação em saúde, e meta-genômica aplicada ao
-            diagnóstico, à formação e ao trabalho de campo.
+            Esta versão do site organiza em uma única leitura os fundamentos institucionais do Mbiru’i, suas frentes
+            de pesquisa, produções públicas, prêmios, equipe e canais de contato.
           </p>
           <div class="mt-7 flex flex-wrap gap-3">
-            <a href="#projetos" class="btn-primary">Ver projetos</a>
-            <a href="#materiais" class="btn-secondary">Explorar materiais públicos</a>
+            <a href="#visao-missao" class="btn-primary">Ler visão e missão</a>
+            <a href="#pesquisa" class="btn-secondary">Ver pesquisa</a>
           </div>
         </div>
 
@@ -153,57 +134,70 @@ const metadata = {
               }
             </div>
           </div>
-          <div class="editorial-frame rounded-[1.9rem] px-5 py-5 sm:px-6">
-            <p class="section-kicker">Leitura pública</p>
-            <p class="mt-3 text-base leading-7 text-[color:var(--aw-color-text-default)]">
-              A navegação desta versão prioriza entendimento institucional: projetos, pesquisa, materiais públicos,
-              equipe e contato em uma única página.
-            </p>
-          </div>
         </aside>
       </div>
     </div>
   </section>
 
-  <section class="pb-16 sm:pb-20" id="projetos">
+  <section class="pb-16 sm:pb-20" id="visao-missao">
     <div class="container mx-auto px-4">
       <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
-        <div class="flex flex-col gap-4 border-b border-[color:var(--aw-color-line)] pb-7 sm:flex-row sm:items-end sm:justify-between">
-          <div class="max-w-3xl">
-            <p class="section-kicker">Projetos</p>
-            <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-              As duas frentes precisam aparecer separadas porque têm escopo, financiamento e entregas distintos.
-            </h2>
-          </div>
-          <p class="max-w-sm text-sm leading-7 text-muted">
-            A conexão entre elas existe na agenda institucional, mas não substitui a identidade própria de cada projeto.
-          </p>
+        <div class="max-w-4xl">
+          <p class="section-kicker">Visão e Missão</p>
+          <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
+            A pesquisa busca reduzir a carga desproporcional da tuberculose e ampliar acesso a cuidados culturalmente
+            seguros nos territórios Guarani Kaiowá.
+          </h2>
         </div>
 
-        <div class="mt-8 grid gap-5 lg:grid-cols-2">
-          {
-            projetos.map(({ slug, data }) => (
-              <article class="rounded-[1.85rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] p-6">
-                <div class="flex items-center justify-between gap-3">
-                  <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
-                    {data.inicio}
-                  </p>
-                  <span class="rounded-full border border-[color:var(--aw-color-line)] px-3 py-1 text-xs uppercase tracking-[0.12em] text-muted">
-                    {data.status}
-                  </span>
-                </div>
-                <h3 class="mt-4 text-2xl leading-tight">{data.title}</h3>
-                <p class="mt-4 text-base leading-8 text-muted">{data.descricao_curta}</p>
-                <a
-                  href={`/projetos/${slug}`}
-                  class="mt-7 inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-[0.14em] text-primary"
-                >
-                  Abrir projeto
-                  <span aria-hidden="true">→</span>
-                </a>
-              </article>
-            ))
-          }
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <article class="rounded-[1.8rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] p-6">
+            <p class="section-kicker">Nossa visão</p>
+            <div class="mt-4 space-y-4 text-sm leading-7 text-muted">
+              <p>
+                A atenção primária à saúde nos territórios indígenas no Brasil é prestada pela Secretaria Especial de
+                Saúde Indígena (SESAI), criada em 2010 como subsistema do SUS para oferecer cuidados adaptados às
+                características culturais e logísticas dos territórios indígenas, promovendo também a articulação da
+                medicina tradicional.
+              </p>
+              <p>
+                Embora a tuberculose seja curável, ela continua sendo a doença infecciosa que mais mata no planeta. O
+                Brasil segue entre os 30 países com maior carga da doença, e o acesso desigual ao diagnóstico e ao
+                tratamento é uma das principais razões. As populações indígenas continuam apresentando taxas
+                desproporcionalmente altas de infecções pulmonares e mortalidade associada a infecções não confirmadas.
+              </p>
+              <p>
+                Os Guarani e Kaiowá, em Mato Grosso do Sul, constituem um dos maiores grupos indígenas do Brasil, com
+                cerca de 50.000 pessoas vivendo na região sul do estado, na fronteira com o Paraguai. Condições como
+                moradias superlotadas, insegurança alimentar e acesso limitado ao saneamento favorecem a transmissão da
+                tuberculose, com taxas de incidência de até dez vezes a média nacional.
+              </p>
+              <p>
+                Vislumbramos um futuro em que a tuberculose deixe de representar uma carga desproporcional nos
+                territórios Guarani Kaiowá e em que as comunidades indígenas tenham acesso equitativo a serviços de
+                saúde de alta qualidade e culturalmente seguros.
+              </p>
+            </div>
+          </article>
+
+          <article class="rounded-[1.8rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] p-6">
+            <p class="section-kicker">Nossa missão</p>
+            <div class="mt-4 space-y-4 text-sm leading-7 text-muted">
+              <p>
+                Nossa missão é reduzir a tuberculose nos territórios Guarani Kaiowá. Enfrentar a tuberculose nesse
+                contexto exige mais do que soluções biomédicas: requer parceria, inovação e respeito.
+              </p>
+              <p>
+                Nosso trabalho baseia-se em intervenções de saúde lideradas pela comunidade e fundamentadas em
+                pesquisa, desenvolvidas em estreita colaboração com as comunidades indígenas e o sistema público de
+                saúde, incluindo a SESAI e o SUS.
+              </p>
+              <p>
+                Buscamos um modelo de saúde que respeite os conhecimentos, a língua e a autonomia indígenas, e no qual
+                a pesquisa sirva como instrumento de justiça social, dignidade e melhoria do bem-estar.
+              </p>
+            </div>
+          </article>
         </div>
       </div>
     </div>
@@ -211,56 +205,145 @@ const metadata = {
 
   <section class="pb-16 sm:pb-20" id="pesquisa">
     <div class="container mx-auto px-4">
-      <div class="grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
+      <div class="grid gap-6">
         <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
           <p class="section-kicker">Pesquisa</p>
           <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-            Projetos e pesquisa não são a mesma coisa: os projetos organizam frentes financiadas, e a pesquisa organiza
-            as perguntas, métodos e vínculos com o território.
+            Duas frentes de pesquisa respondem a barreiras linguísticas, diagnósticas e institucionais no cuidado à
+            tuberculose e a outras infecções pulmonares.
           </h2>
-          <p class="mt-4 text-base leading-8 text-muted">
-            Nesta leitura pública, a seção de pesquisa mostra o programa científico compartilhado entre as frentes sem
-            apagar suas diferenças institucionais.
-          </p>
         </article>
 
-        <div class="grid gap-4">
-          {
-            eixosPesquisa.map((item, index) => (
-              <article class="rounded-[1.6rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+        <div class="grid gap-6 lg:grid-cols-2">
+          <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
+            <p class="section-kicker">Projeto Mbiru’i</p>
+            <h3 class="mt-4 text-3xl leading-tight">IA, tradução e acesso à informação em saúde</h3>
+            <div class="mt-6 space-y-4 text-sm leading-7 text-muted">
+              <p>
+                Em entrevistas e grupos focais com profissionais de saúde e com a comunidade Guarani Kaiowá, foi
+                relatado que a língua constitui uma grande barreira para a oferta de cuidados de saúde e de informações
+                em saúde. A estigmatização e as diferenças culturais entre os conceitos biomédicos e os princípios da
+                medicina tradicional também representam barreiras significativas ao cuidado.
+              </p>
+              <p>
+                Os Agentes Indígenas de Saúde são o primeiro, e às vezes o único, ponto de contato com o sistema de
+                saúde. Assim, desempenham papel fundamental na superação dessas barreiras, porém recebem treinamento
+                limitado e têm poucas oportunidades de capacitação contínua.
+              </p>
+              <p>
+                Um modelo de tradução baseado em IA bem-sucedido abre perspectivas para outras áreas de doenças,
+                comunicação na atenção secundária e terciária, contato com serviços públicos, promoção dos direitos
+                civis e humanos e valorização das línguas indígenas.
+              </p>
+            </div>
+
+            <div class="mt-7 grid gap-4">
+              <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
                 <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
-                  Eixo {String(index + 1).padStart(2, '0')}
+                  Modelo de IA texto-para-texto
                 </p>
-                <h3 class="mt-3 text-xl font-semibold text-heading">{item.title}</h3>
-                <p class="mt-3 text-sm leading-7 text-muted">{item.text}</p>
-              </article>
-            ))
-          }
+                <p class="mt-3 text-sm leading-7 text-muted">
+                  Financiado pelo Ministério da Saúde do Brasil e apoiado pelo programa Grand Challenges Brazil da
+                  Fundação Gates, o projeto buscou desenvolver um chatbot para fornecer informações e orientações sobre
+                  tuberculose aos Agentes Indígenas de Saúde Guarani e Kaiowá em língua Guarani Kaiowá.
+                </p>
+                <p class="mt-3 text-sm leading-7 text-muted">
+                  Em prazo limitado e sem experiência prévia em IA, a equipe optou inicialmente por um modelo
+                  texto-para-texto, com avaliação por métricas RAGAS e avaliação humana. Foi a primeira iniciativa de
+                  desenvolvimento de um modelo de IA em uma língua indígena no Brasil.
+                </p>
+              </div>
+              <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+                <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
+                  Modelo de reconhecimento automático de fala
+                </p>
+                <p class="mt-3 text-sm leading-7 text-muted">
+                  Após a prova de conceito bem-sucedida do modelo texto-para-texto, o projeto avança no
+                  desenvolvimento de um modelo de tradução por voz entre português e Guarani Kaiowá, com potencial para
+                  impacto muito mais amplo.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
+            <p class="section-kicker">Superando barreiras ao diagnóstico e tratamento</p>
+            <h3 class="mt-4 text-3xl leading-tight">TB e outras infecções pulmonares</h3>
+            <div class="mt-6 space-y-4 text-sm leading-7 text-muted">
+              <p>
+                Nos três anos que antecederam a pandemia de COVID-19, 8,5% dos óbitos indígenas foram registrados como
+                causas mal definidas, e outros 20% decorreram de doenças infecciosas, parasitárias e respiratórias.
+                Tuberculose, pneumonia e septicemia sem patógeno especificado estiveram entre as principais causas de
+                morte por agente infeccioso.
+              </p>
+              <p>
+                Entre 2015 e 2020, apenas cerca de 60% dos casos notificados de TB em indígenas foram confirmados
+                laboratorialmente por baciloscopia, GeneXpert ou cultura. Coinfecções bacterianas, virais e fúngicas
+                ampliam a complexidade dos quadros graves e mostram os limites dos métodos diagnósticos convencionais.
+              </p>
+              <p>
+                Com este projeto, financiado por um edital Grand Challenges da Fundação Gates, acompanhamos a jornada da
+                TB para pacientes, familiares e comunidade, investigando o panorama de patógenos, mapeando o processo
+                diagnóstico e terapêutico, documentando o estigma e avaliando os desfechos do tratamento em pessoas
+                sobreviventes da TB.
+              </p>
+            </div>
+
+            <div class="mt-7 grid gap-4">
+              <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+                <p class="text-lg font-semibold text-heading">Sequenciamento metagenômico</p>
+                <p class="mt-3 text-sm leading-7 text-muted">
+                  Utiliza sequenciamento metagenômico shotgun para identificar quais patógenos são mais prevalentes em
+                  casos com sintomas de TB entre os povos Guarani e Kaiowá em Mato Grosso do Sul e orientar novos
+                  algoritmos diagnósticos e terapêuticos.
+                </p>
+              </div>
+              <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+                <p class="text-lg font-semibold text-heading">Mapeamento do processo diagnóstico e terapêutico</p>
+                <p class="mt-3 text-sm leading-7 text-muted">
+                  Entrevistas e grupos focais com pacientes, comunidade, lideranças religiosas, profissionais e
+                  gestores de saúde permitem redesenhar algoritmos de diagnóstico e tratamento adaptados ao contexto
+                  cultural e logístico.
+                </p>
+              </div>
+              <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+                <p class="text-lg font-semibold text-heading">Estigma e sequelas da TB</p>
+                <p class="mt-3 text-sm leading-7 text-muted">
+                  O projeto traduz e valida instrumentos de mensuração do estigma, desenvolve ações de disseminação de
+                  informação e coleta dados para formular recomendações de cuidado pós-TB para sobreviventes Guarani
+                  Kaiowá.
+                </p>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="pb-16 sm:pb-20" id="materiais">
+  <section class="pb-16 sm:pb-20" id="producoes">
     <div class="container mx-auto px-4">
       <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
         <div class="flex flex-col gap-4 border-b border-[color:var(--aw-color-line)] pb-7 sm:flex-row sm:items-end sm:justify-between">
           <div class="max-w-3xl">
-            <p class="section-kicker">Materiais</p>
+            <p class="section-kicker">Produções</p>
             <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-              Produções e resultados públicos aparecem juntos aqui para facilitar acesso, sem expor apresentações com
-              conteúdo preliminar.
+              As produções públicas concentram materiais já apropriados para circulação aberta.
             </h2>
           </div>
-          <p class="max-w-sm text-sm leading-7 text-muted">
-            Foram removidos da vitrine pública os arquivos em PowerPoint e materiais de apresentação ainda não
-            publicados.
-          </p>
+          <a
+            href="https://www.instagram.com/mbiru_i/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-sm font-semibold uppercase tracking-[0.14em] text-primary"
+          >
+            Instagram ↗
+          </a>
         </div>
 
-        <div class="mt-8 grid gap-5 lg:grid-cols-3">
+        <div class="mt-8 grid gap-5 lg:grid-cols-2">
           {
-            materiais.map((item) => (
+            producoes.map((item) => (
               <a
                 href={item.href}
                 target="_blank"
@@ -280,41 +363,52 @@ const metadata = {
     </div>
   </section>
 
+  <section class="pb-16 sm:pb-20" id="premios">
+    <div class="container mx-auto px-4">
+      <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
+        <div class="max-w-3xl">
+          <p class="section-kicker">Prêmios</p>
+          <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
+            Os financiamentos ajudam a explicar por que as frentes de pesquisa aparecem separadas no site.
+          </h2>
+        </div>
+
+        <div class="mt-8 grid gap-5 lg:grid-cols-2">
+          {
+            premios.map((item) => (
+              <a
+                href={item.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="rounded-[1.8rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-6 py-6 transition hover:-translate-y-0.5 hover:border-primary/40"
+              >
+                <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
+                  {item.ano}
+                </p>
+                <h3 class="mt-4 text-2xl leading-tight">{item.financiador}</h3>
+                <p class="mt-4 text-sm leading-7 text-muted">{item.titulo}</p>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="pb-20 sm:pb-24" id="equipe">
     <div class="container mx-auto px-4">
-      <div class="grid gap-6 lg:grid-cols-[1.08fr_0.92fr]">
+      <div class="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
         <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
           <p class="section-kicker">Equipe</p>
           <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-            A equipe atual aparece junto da composição mais ampla dos dois projetos.
+            A equipe reúne pesquisadoras, pesquisadores e colaboradoras vinculados às diferentes frentes do trabalho.
           </h2>
 
           <div class="mt-7 grid gap-4 md:grid-cols-2">
             {
-              equipeAtual.map(({ data, slug }) => (
-                <a
-                  href={`/equipe/${slug}`}
-                  class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5 transition hover:border-primary/40"
-                >
-                  <p class="text-lg font-semibold text-heading">{data.nome}</p>
-                  <p class="mt-1 text-sm font-medium text-primary">{data.papel}</p>
-                  {data.instituicao && <p class="mt-2 text-sm text-muted">{data.instituicao}</p>}
-                </a>
-              ))
-            }
-          </div>
-
-          <div class="mt-7 grid gap-4">
-            {
-              integrantesProjetos.map((item) => (
+              equipe.map((nome) => (
                 <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
-                  <div class="flex items-center justify-between gap-4">
-                    <p class="text-lg font-semibold text-heading">{item.title}</p>
-                    <span class="text-sm font-semibold uppercase tracking-[0.16em] text-primary">
-                      {String(item.count).padStart(2, '0')} integrantes
-                    </span>
-                  </div>
-                  <p class="mt-3 text-sm leading-7 text-muted">{item.text}</p>
+                  <p class="text-base font-semibold text-heading">{nome}</p>
                 </div>
               ))
             }
@@ -324,27 +418,17 @@ const metadata = {
         <article class="editorial-frame rounded-[2rem] p-7 sm:p-8" id="contato">
           <p class="section-kicker">Contato</p>
           <h3 class="mt-4 text-3xl leading-tight">
-            Conversas sobre pesquisa, parceria institucional e circulação de materiais começam aqui.
+            O contato foi mantido no mesmo fluxo da home para facilitar acesso a quem busca informação específica.
           </h3>
           <p class="mt-4 text-base leading-8 text-muted">
-            O contato foi mantido na mesma página para apoiar leitura rápida e facilitar acesso a quem chega procurando
-            informação específica.
+            Se quiser entrar em contato sobre pesquisa, colaborações, materiais ou circulação pública do projeto,
+            escreva para o e-mail institucional.
           </p>
+
           <div class="mt-7 flex flex-wrap gap-3">
             <a href={`mailto:${email}`} class="btn-primary">{email}</a>
-            <a href={chatbotWhatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-secondary">
-              Conversar no WhatsApp
-            </a>
           </div>
 
-          <div class="mt-8 rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
-            <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">Escopo</p>
-            <div class="mt-4 space-y-3 text-sm leading-7 text-muted">
-              <p>Projetos ativos: {projetos.map((item) => item.data.title).join(' · ')}</p>
-              <p>Materiais públicos selecionados para esta fase do site, sem apresentações preliminares.</p>
-              <p>Equipe e frentes de pesquisa apresentadas em leitura única com navegação por âncoras.</p>
-            </div>
-          </div>
         </article>
       </div>
     </div>

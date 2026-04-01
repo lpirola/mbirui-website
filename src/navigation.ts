@@ -22,9 +22,10 @@ type FooterSection = {
 
 export const headerData = {
   links: [
-    { text: 'Projetos', href: '/#projetos' },
+    { text: 'Visão e Missão', href: '/#visao-missao' },
     { text: 'Pesquisa', href: '/#pesquisa' },
-    { text: 'Materiais', href: '/#materiais' },
+    { text: 'Produções', href: '/#producoes' },
+    { text: 'Prêmios', href: '/#premios' },
     { text: 'Equipe', href: '/#equipe' },
     { text: 'Contato', href: '/#contato' },
   ],
@@ -47,9 +48,10 @@ export const footerData = {
     {
       title: 'Navegação',
       links: [
-        { text: 'Projetos', href: '/#projetos' },
+        { text: 'Visão e Missão', href: '/#visao-missao' },
         { text: 'Pesquisa', href: '/#pesquisa' },
-        { text: 'Materiais', href: '/#materiais' },
+        { text: 'Produções', href: '/#producoes' },
+        { text: 'Prêmios', href: '/#premios' },
         { text: 'Equipe', href: '/#equipe' },
         { text: 'Contato', href: '/#contato' },
       ],
