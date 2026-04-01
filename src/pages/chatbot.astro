@@ -3,15 +3,46 @@ import Layout from '~/layouts/PageLayout.astro';
 import { chatbotWhatsappUrl } from '~/utils/chatbot';
 
 const metadata = {
-  title: "Chatbot — Projeto Mbiru'i",
+  title: "Chatbot no WhatsApp — Projeto Mbiru'i",
   description:
-    'Chatbot no WhatsApp com n8n, OpenAI e Pinecone para mediação linguística em saúde indígena Guarani Kaiowá.',
+    'Chatbot no WhatsApp com informações sobre tuberculose em Guarani Kaiowá e português, com base em documentos revisados no contexto do Projeto Mbiru’i.',
 };
 
 const productPoints = [
-  'Atende no WhatsApp como ponto de entrada simples para Agentes Indígenas de Saúde e comunidade.',
-  'Usa RAG para responder com base em documentos revisados, dicionários, traduções e FAQs.',
-  'Combina mediação linguística e apoio informacional em saúde sem substituir avaliação clínica.',
+  'Responde no WhatsApp em um canal já conhecido por Agentes Indígenas de Saúde e comunidade.',
+  'Usa documentos revisados, dicionários, traduções e FAQs para orientar com mais segurança.',
+  'Apoia a comunicação em Guarani Kaiowá e português sem substituir avaliação clínica.',
+] as const;
+
+const audiencePoints = [
+  'Agentes Indígenas de Saúde que precisam de apoio inicial para explicar informações sobre tuberculose.',
+  'Comunidade Guarani Kaiowá em busca de informações mais acessíveis sobre saúde.',
+  'Pessoas e equipes que precisam iniciar uma conversa com mais clareza antes de buscar atendimento.',
+] as const;
+
+const usageSteps = [
+  'Abra o WhatsApp pelo botão da página.',
+  'Envie sua dúvida em Guarani Kaiowá ou português.',
+  'Use a resposta como apoio inicial e procure atendimento profissional em caso de sintomas, urgência ou necessidade de diagnóstico.',
+] as const;
+
+const useCases = [
+  'Entender melhor a tuberculose e seus cuidados.',
+  'Consultar informações iniciais em linguagem mais acessível.',
+  'Apoiar conversas entre comunidade e agentes de saúde.',
+] as const;
+
+const avoidUseCases = [
+  'Situações de urgência ou emergência.',
+  'Receber diagnóstico ou conduta clínica.',
+  'Substituir consulta, avaliação ou atendimento profissional.',
+] as const;
+
+const trustPoints = [
+  'Documentos passam por revisão humana antes de entrar na base vetorial.',
+  'O fluxo prioriza fontes aprovadas, não resposta livre sem contexto.',
+  'O chatbot explicita seus limites e oferece apoio informacional, não cuidado clínico.',
+  'O produto está acompanhado por estudo de caso técnico e científico disponível publicamente.',
 ] as const;
 
 const stackPoints = [
@@ -78,37 +109,26 @@ const pipelineCards = [
       'Replica a lógica do atendimento em um ambiente de teste dentro do ecossistema do n8n, sem depender da Evolution API.',
   },
 ] as const;
-
-const usageSteps = [
-  'Abra o WhatsApp pelo botão da página.',
-  'Envie sua dúvida em Guarani Kaiowá ou português.',
-  'Use a resposta como apoio inicial e procure atendimento profissional em caso de sintomas, urgência ou necessidade de diagnóstico.',
-] as const;
-
-const governancePoints = [
-  'Documentos passam por revisão humana antes de entrar na base vetorial.',
-  'O fluxo prioriza fontes aprovadas, não resposta livre sem contexto.',
-  'O chatbot oferece apoio informacional e não substitui cuidado clínico.',
-] as const;
 ---
 
 <Layout metadata={metadata}>
   <section class="py-16 sm:py-20 lg:py-24">
     <div class="container mx-auto max-w-5xl px-4">
-      <p class="section-kicker">Produto</p>
+      <p class="section-kicker">Chatbot no WhatsApp</p>
       <h1 class="mt-4 text-4xl leading-tight sm:text-5xl">
-        Chatbot no WhatsApp com n8n, OpenAI e RAG para mediação linguística em saúde indígena.
+        Um canal simples para acessar informações sobre tuberculose em Guarani Kaiowá.
       </h1>
       <p class="mt-6 max-w-3xl text-lg leading-8 text-muted">
-        O produto foi desenhado para apoiar a comunicação em Guarani Kaiowá entre comunidade e Agentes Indígenas de
-        Saúde, usando recuperação semântica sobre documentos curados e resposta contextualizada no WhatsApp.
+        Desenvolvido no contexto do Projeto Mbiru'i, o chatbot apoia Agentes Indígenas de Saúde e comunidade com
+        respostas baseadas em documentos revisados. Ele oferece apoio informacional em Guarani Kaiowá e português, sem
+        substituir avaliação clínica.
       </p>
       <div class="mt-8 flex flex-wrap gap-3">
         <a href={chatbotWhatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">
-          Conversar no WhatsApp
+          Testar no WhatsApp
         </a>
         <a href="/docs/estudo-de-caso-chatbot-rag-guarani-kaiowa.docx" class="btn-secondary" target="_blank" rel="noopener noreferrer">
-          Baixar estudo de caso
+          Ler estudo de caso
         </a>
       </div>
     </div>
@@ -118,7 +138,7 @@ const governancePoints = [
     <div class="container mx-auto px-4">
       <div class="grid gap-6 lg:grid-cols-[1fr_1fr]">
         <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-          <p class="section-kicker">O que o produto entrega</p>
+          <p class="section-kicker">O que este chatbot faz</p>
           <div class="mt-4 grid gap-4">
             {
               productPoints.map((item) => (
@@ -131,10 +151,10 @@ const governancePoints = [
         </article>
 
         <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-          <p class="section-kicker">Stack do sistema</p>
+          <p class="section-kicker">Para quem foi pensado</p>
           <div class="mt-4 grid gap-4">
             {
-              stackPoints.map((item) => (
+              audiencePoints.map((item) => (
                 <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
                   <p class="text-base leading-7 text-[color:var(--aw-color-text-default)]">{item}</p>
                 </div>
@@ -148,8 +168,111 @@ const governancePoints = [
 
   <section class="pb-20 sm:pb-24">
     <div class="container mx-auto px-4">
+      <div class="grid gap-6 lg:grid-cols-[1fr_1fr]">
+        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
+          <p class="section-kicker">Como funciona na prática</p>
+          <div class="mt-6 grid gap-4">
+            {
+              usageSteps.map((item, index) => (
+                <article class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+                  <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
+                    Passo {String(index + 1).padStart(2, '0')}
+                  </p>
+                  <p class="mt-3 text-base leading-7 text-[color:var(--aw-color-text-default)]">{item}</p>
+                </article>
+              ))
+            }
+          </div>
+        </article>
+
+        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
+          <p class="section-kicker">Quando usar</p>
+          <div class="mt-4 grid gap-4">
+            {
+              useCases.map((item) => (
+                <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+                  <p class="text-base leading-7 text-[color:var(--aw-color-text-default)]">{item}</p>
+                </div>
+              ))
+            }
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-20 sm:pb-24">
+    <div class="container mx-auto px-4">
+      <div class="grid gap-6 lg:grid-cols-[1fr_1fr]">
+        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
+          <p class="section-kicker">Quando não usar</p>
+          <div class="mt-4 grid gap-4">
+            {
+              avoidUseCases.map((item) => (
+                <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+                  <p class="text-base leading-7 text-[color:var(--aw-color-text-default)]">{item}</p>
+                </div>
+              ))
+            }
+          </div>
+        </article>
+
+        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
+          <p class="section-kicker">Por que confiar</p>
+          <div class="mt-4 grid gap-4">
+            {
+              trustPoints.map((item) => (
+                <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+                  <p class="text-base leading-7 text-[color:var(--aw-color-text-default)]">{item}</p>
+                </div>
+              ))
+            }
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-20 sm:pb-24">
+    <div class="container mx-auto px-4">
+      <div class="grid gap-6 lg:grid-cols-[1fr_1fr]">
+        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
+          <p class="section-kicker">Base técnica</p>
+          <div class="mt-4 grid gap-4">
+            {
+              stackPoints.map((item) => (
+                <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
+                  <p class="text-base leading-7 text-[color:var(--aw-color-text-default)]">{item}</p>
+                </div>
+              ))
+            }
+          </div>
+        </article>
+
+        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
+          <p class="section-kicker">Base científica</p>
+          <p class="mt-4 text-base leading-8 text-muted">
+            O produto está acompanhado por um estudo de caso sobre o uso de RAG para mediação linguística na saúde
+            indígena Guarani Kaiowá. O documento descreve a arquitetura com Google Drive, n8n, Pinecone, OpenAI e o
+            fluxo de revisão humana que sustenta a confiabilidade das respostas.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="/docs/estudo-de-caso-chatbot-rag-guarani-kaiowa.docx" class="btn-primary" target="_blank" rel="noopener noreferrer">
+              Ler estudo de caso
+            </a>
+            <a href={chatbotWhatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-secondary">
+              Testar no WhatsApp
+            </a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="pb-20 sm:pb-24">
+    <div class="container mx-auto px-4">
       <div class="editorial-frame rounded-[2rem] p-7 sm:p-9">
-        <p class="section-kicker">Pipelines do repositório n8n</p>
+        <p class="section-kicker">Como o sistema opera</p>
         <div class="mt-6 grid gap-4 lg:grid-cols-3">
           {
             pipelineCards.map((pipeline) => (
@@ -166,62 +289,6 @@ const governancePoints = [
               </article>
             ))
           }
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="pb-20 sm:pb-24">
-    <div class="container mx-auto px-4">
-      <div class="grid gap-6 lg:grid-cols-[1fr_1fr]">
-        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-          <p class="section-kicker">Como usar</p>
-          <div class="mt-6 grid gap-4">
-            {
-              usageSteps.map((item, index) => (
-                <article class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
-                  <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
-                    Passo {String(index + 1).padStart(2, '0')}
-                  </p>
-                  <p class="mt-3 text-base leading-7 text-[color:var(--aw-color-text-default)]">{item}</p>
-                </article>
-              ))
-            }
-          </div>
-        </article>
-
-        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-          <p class="section-kicker">Governança e uso responsável</p>
-          <div class="mt-4 grid gap-4">
-            {
-              governancePoints.map((item) => (
-                <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
-                  <p class="text-base leading-7 text-[color:var(--aw-color-text-default)]">{item}</p>
-                </div>
-              ))
-            }
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <section class="pb-20 sm:pb-24">
-    <div class="container mx-auto px-4">
-      <div class="editorial-frame rounded-[2rem] p-7 sm:p-9">
-        <p class="section-kicker">Base científica</p>
-        <p class="mt-4 max-w-3xl text-base leading-8 text-muted">
-          O produto está acompanhado por um estudo de caso sobre o uso de RAG para mediação linguística na saúde
-          indígena Guarani Kaiowá. O documento descreve a arquitetura com Google Drive, n8n, Pinecone, OpenAI e o
-          fluxo de revisão humana que sustenta a confiabilidade das respostas.
-        </p>
-        <div class="mt-8 flex flex-wrap gap-3">
-          <a href="/docs/estudo-de-caso-chatbot-rag-guarani-kaiowa.docx" class="btn-primary" target="_blank" rel="noopener noreferrer">
-            Abrir estudo de caso
-          </a>
-          <a href={chatbotWhatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-secondary">
-            Testar no WhatsApp
-          </a>
         </div>
       </div>
     </div>

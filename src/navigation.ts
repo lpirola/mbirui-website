@@ -31,7 +31,7 @@ export const headerData = {
   ],
   actions: [
     {
-      text: 'Conversar no WhatsApp',
+      text: 'Testar no WhatsApp',
       href: chatbotWhatsappUrl,
       target: '_blank',
       variant: 'primary',
@@ -59,7 +59,8 @@ export const footerData = {
     {
       title: 'Acesso',
       links: [
-        { text: 'Chatbot no WhatsApp', href: chatbotWhatsappUrl },
+        { text: 'Testar no WhatsApp', href: chatbotWhatsappUrl },
+        { text: 'Como funciona o chatbot', href: getPermalink('/chatbot') },
         { text: 'E-mail institucional', href: 'mailto:contato@mbirui.ia.br' },
       ],
     },
@@ -73,7 +74,7 @@ export const footerData = {
   ],
   secondaryLinks: [
     { text: 'contato@mbirui.ia.br', href: 'mailto:contato@mbirui.ia.br' },
-    { text: 'Conversar no WhatsApp', href: chatbotWhatsappUrl },
+    { text: 'Testar no WhatsApp', href: chatbotWhatsappUrl },
   ],
   socialLinks: [
     {
