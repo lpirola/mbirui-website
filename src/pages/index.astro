@@ -5,25 +5,6 @@ import { chatbotWhatsappUrl } from '~/utils/chatbot';
 
 const email = 'Projetoiatuberculose@gmail.com';
 
-const producoes = (await getCollection('producoes'))
-  .map((item) => ({
-    title: item.data.title,
-    ano: item.data.ano,
-    descricao: item.data.descricao,
-    href: item.data.arquivo,
-    tipo:
-      item.data.tipo === 'cartilha'
-        ? 'Cartilha'
-        : item.data.tipo === 'livro'
-          ? 'Livro'
-          : item.data.tipo === 'relatorio'
-            ? 'Relatório'
-            : 'Documento',
-  }))
-  .filter((item) => Boolean(item.href))
-  .sort((a, b) => b.ano - a.ano)
-  .slice(0, 4);
-
 const premios = [
   {
     ano: 2022,
@@ -62,79 +43,118 @@ const equipe = [
   'Paulo Cesar Basta',
 ] as const;
 
-const heroGallery = [
-  {
-    src: '/media/galeria/capacitacao-ais-coleta-sertao-amambai.jpeg',
-    alt: 'Atividade de capacitação com agentes indígenas de saúde para coleta em mNGS no posto Sertão Amambai.',
-    caption: 'Pesquisa em campo',
-    classes: 'lg:col-span-8 lg:row-span-2',
-    imageClass: 'h-72 sm:h-[22rem] lg:h-full',
-  },
-  {
-    src: '/media/galeria/processo-mngs-coleta-amostras.jpg',
-    alt: 'Profissionais do projeto durante coleta de amostras com participantes em campo.',
-    caption: 'Meta-genômica',
-    classes: 'lg:col-span-4',
-    imageClass: 'h-44 sm:h-48 lg:h-40',
-  },
-  {
-    src: '/media/galeria/bolsistas-processo-traducao-equipe.jpeg',
-    alt: 'Equipe em atividade de tradução e revisão de conteúdo em saúde.',
-    caption: 'IA e linguagem',
-    classes: 'lg:col-span-4',
-    imageClass: 'h-44 sm:h-48 lg:h-40',
-  },
-] as const;
+function getInitials(name: string) {
+  const parts = name.trim().split(/\s+/);
+  if (parts.length === 1) return parts[0][0];
+  return parts[0][0] + parts[parts.length - 1][0];
+}
 
 const metadata = {
   title: "Projeto Mbiru'i — portal institucional",
   description:
-    'Projeto Mbiru’i: pesquisa, cuidado em saúde e chatbot no WhatsApp para ampliar o acesso à informação sobre tuberculose em Guarani Kaiowá.',
+    "Projeto Mbiru'i: pesquisa, cuidado em saúde e chatbot no WhatsApp para ampliar o acesso à informação sobre tuberculose em Guarani Kaiowá.",
 };
 ---
 
 <Layout metadata={metadata}>
-  <section class="relative overflow-hidden pb-16 pt-16 sm:pb-20 sm:pt-20 lg:pb-24 lg:pt-24">
-    <div class="container relative mx-auto px-4">
-      <div class="grid gap-6 lg:grid-cols-[minmax(0,1.16fr)_minmax(17rem,0.84fr)] lg:items-stretch">
-        <div class="flex h-full max-w-4xl flex-col justify-center">
-          <p class="section-kicker mb-4">Projeto Mbiru'i</p>
-          <h1 class="max-w-[46rem] text-5xl leading-[0.9] sm:text-[4.5rem] lg:text-[5.15rem]">
-            Pesquisa, cuidado em saúde e acesso à informação para os territórios Guarani Kaiowá.
-          </h1>
-          <p class="mt-4 max-w-[40rem] text-lg leading-8 text-[color:var(--aw-color-text-default)] sm:text-[1.15rem]">
-            O Mbiru’i articula pesquisa aplicada, tradução, formação e colaboração em território para reduzir barreiras
-            no cuidado à tuberculose. Entre seus desdobramentos públicos está um chatbot no WhatsApp com informações em
-            Guarani Kaiowá e português.
+  <!-- Cap 1: Hero -->
+  <section class="hero-viewport">
+    <img
+      src="/media/galeria/capacitacao-ais-coleta-sertao-amambai.jpeg"
+      alt="Atividade de capacitação com agentes indígenas de saúde para coleta em mNGS no posto Sertão Amambai."
+      loading="eager"
+    />
+    <div class="hero-content">
+      <div class="container mx-auto px-4 pb-16 pt-16 sm:pb-20 sm:pt-20 lg:pb-28 lg:pt-28">
+        <p class="section-kicker mb-5">Projeto Mbiru'i</p>
+        <h1 class="max-w-[44rem] text-[2.75rem] leading-[0.92] sm:text-[3.75rem] lg:text-[4.5rem]">
+          Pesquisa, cuidado em saúde e acesso à informação para os territórios Guarani Kaiowá.
+        </h1>
+        <p class="mt-5 max-w-[36rem] text-base leading-7 sm:text-lg sm:leading-8">
+          O Mbiru'i articula pesquisa aplicada, tradução, formação e colaboração em território para reduzir barreiras
+          no cuidado à tuberculose. Entre seus desdobramentos públicos está um chatbot no WhatsApp com informações em
+          Guarani Kaiowá e português.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href={chatbotWhatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">
+            Testar no WhatsApp
+          </a>
+          <a href="#visao-missao" class="btn-secondary">Entender o projeto</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cap 2: Chatbot -->
+  <section class="pb-20 pt-20 sm:pb-24 sm:pt-24">
+    <div class="container mx-auto px-4">
+      <div class="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
+        <div class="max-w-2xl">
+          <p class="section-kicker">Destaque público</p>
+          <h2 class="mt-5 text-3xl leading-tight sm:text-4xl">
+            Um caminho público de acesso já está disponível.
+          </h2>
+          <p class="mt-5 text-base leading-8 text-muted">
+            O principal produto público do projeto é um chatbot no WhatsApp que responde com base em documentos
+            revisados e ajuda a ampliar o acesso à informação sobre tuberculose em Guarani Kaiowá.
           </p>
-          <div class="mt-7 flex flex-wrap gap-3">
+          <div class="mt-8 space-y-5">
+            <div class="flex gap-3.5">
+              <span class="mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[color:var(--aw-color-primary)] text-xs font-bold text-white">
+                1
+              </span>
+              <div>
+                <p class="text-base font-semibold text-heading">Funciona no WhatsApp</p>
+                <p class="mt-1 text-sm leading-7 text-muted">
+                  O acesso acontece em um canal simples de usar, sem exigir conta nova ou instalação de outro aplicativo.
+                </p>
+              </div>
+            </div>
+            <div class="flex gap-3.5">
+              <span class="mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[color:var(--aw-color-primary)] text-xs font-bold text-white">
+                2
+              </span>
+              <div>
+                <p class="text-base font-semibold text-heading">Usa fontes revisadas</p>
+                <p class="mt-1 text-sm leading-7 text-muted">
+                  As respostas se apoiam em documentos aprovados e em um fluxo de revisão humana antes da indexação.
+                </p>
+              </div>
+            </div>
+            <div class="flex gap-3.5">
+              <span class="mt-1 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[color:var(--aw-color-primary)] text-xs font-bold text-white">
+                3
+              </span>
+              <div>
+                <p class="text-base font-semibold text-heading">Não substitui atendimento profissional</p>
+                <p class="mt-1 text-sm leading-7 text-muted">
+                  O chatbot oferece apoio informacional inicial e reforça a necessidade de procurar atendimento em
+                  situações de sintomas, urgência ou diagnóstico.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-8 flex flex-wrap gap-3">
             <a href={chatbotWhatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">
               Testar no WhatsApp
             </a>
-            <a href="#visao-missao" class="btn-secondary">Entender o projeto</a>
+            <a href="/chatbot" class="btn-secondary">Como funciona o chatbot</a>
           </div>
         </div>
 
-        <aside class="flex h-full flex-col gap-4 lg:pt-2">
-          <div class="editorial-frame flex-1 rounded-[2.25rem] p-4 sm:p-5">
-            <div class="grid gap-4 lg:grid-cols-12 lg:grid-rows-2">
-              {
-                heroGallery.map((item) => (
-                  <figure
-                    class:list={[
-                      item.classes,
-                      'overflow-hidden rounded-[1.6rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)]',
-                    ]}
-                  >
-                    <img src={item.src} alt={item.alt} class:list={[item.imageClass, 'w-full object-cover']} loading="lazy" />
-                    <figcaption class="px-4 py-2.5">
-                      <p class="font-mono text-[0.62rem] uppercase tracking-[0.12em] text-[color:var(--aw-color-accent)]/80">
-                        {item.caption}
-                      </p>
-                    </figcaption>
-                  </figure>
-                ))
-              }
+        <aside class="hidden lg:block">
+          <div class="relative">
+            <div class="overflow-hidden rounded-[2rem] border border-[color:var(--aw-color-line)] shadow-[0_1.25rem_4rem_rgb(26_22_18/0.12)]">
+              <img
+                src="/media/galeria/bolsistas-processo-traducao-equipe.jpeg"
+                alt="Equipe em atividade de tradução e revisão de conteúdo em saúde."
+                class="h-[28rem] w-full object-cover"
+                loading="lazy"
+              />
+            </div>
+            <div class="absolute -right-4 -bottom-4 rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-4 backdrop-blur-md">
+              <p class="font-mono text-xs uppercase tracking-[0.14em] text-[color:var(--aw-color-accent)]">IA e linguagem</p>
+              <p class="mt-1 text-sm font-semibold text-heading">Guarani Kaiowá e português</p>
             </div>
           </div>
         </aside>
@@ -142,308 +162,192 @@ const metadata = {
     </div>
   </section>
 
-  <section class="pb-16 sm:pb-20">
-    <div class="container mx-auto px-4">
-      <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
-        <div class="grid gap-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(18rem,0.95fr)] lg:items-start">
-          <div class="max-w-3xl">
-            <p class="section-kicker">Destaque público</p>
-            <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-              Um caminho público de acesso já está disponível.
-            </h2>
-            <p class="mt-4 text-base leading-8 text-muted">
-              O principal produto público do projeto é um chatbot no WhatsApp que responde com base em documentos
-              revisados e ajuda a ampliar o acesso à informação sobre tuberculose em Guarani Kaiowá.
+  <!-- Cap 3: Visão e Missão (dark section) -->
+  <section class="section-dark" id="visao-missao">
+    <div class="container mx-auto px-4 py-20 sm:py-24">
+      <div class="mx-auto max-w-3xl text-center">
+        <p class="section-kicker">Visão e Missão</p>
+        <h2 class="mt-5 text-3xl leading-tight sm:text-4xl">
+          A pesquisa busca reduzir a carga desproporcional da tuberculose e ampliar acesso a cuidados culturalmente
+          seguros nos territórios Guarani Kaiowá.
+        </h2>
+      </div>
+
+      <div class="mx-auto mt-10 grid max-w-4xl gap-8 sm:grid-cols-3">
+        <div class="text-center">
+          <p class="stat-number">10x</p>
+          <p class="stat-label">Taxa de TB acima da média nacional</p>
+        </div>
+        <div class="text-center">
+          <p class="stat-number">50 mil</p>
+          <p class="stat-label">Guarani e Kaiowá em Mato Grosso do Sul</p>
+        </div>
+        <div class="text-center">
+          <p class="stat-number">60%</p>
+          <p class="stat-label">Casos de TB confirmados laboratorialmente</p>
+        </div>
+      </div>
+
+      <div class="mx-auto mt-12 grid max-w-4xl gap-8 lg:grid-cols-2">
+        <div class="border-l-2 border-[rgb(207_137_99/0.5)] pl-6">
+          <p class="section-kicker">Nossa visão</p>
+          <div class="mt-4 space-y-4 text-sm leading-7">
+            <p>
+              A atenção primária à saúde nos territórios indígenas no Brasil é prestada pela Secretaria Especial de
+              Saúde Indígena (SESAI), criada em 2010 como subsistema do SUS para oferecer cuidados adaptados às
+              características culturais e logísticas dos territórios indígenas, promovendo também a articulação da
+              medicina tradicional.
+            </p>
+            <p>
+              Embora a tuberculose seja curável, ela continua sendo a doença infecciosa que mais mata no planeta. O
+              Brasil segue entre os 30 países com maior carga da doença, e o acesso desigual ao diagnóstico e ao
+              tratamento é uma das principais razões.
+            </p>
+            <p>
+              Vislumbramos um futuro em que a tuberculose deixe de representar uma carga desproporcional nos
+              territórios Guarani Kaiowá e em que as comunidades indígenas tenham acesso equitativo a serviços de
+              saúde de alta qualidade e culturalmente seguros.
             </p>
           </div>
+        </div>
 
-          <div class="grid gap-4">
-            <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
-              <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
-                Funciona no WhatsApp
-              </p>
-              <p class="mt-3 text-sm leading-7 text-muted">
-                O acesso acontece em um canal simples de usar, sem exigir conta nova ou instalação de outro aplicativo.
-              </p>
-            </div>
-            <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
-              <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
-                Usa fontes revisadas
-              </p>
-              <p class="mt-3 text-sm leading-7 text-muted">
-                As respostas se apoiam em documentos aprovados e em um fluxo de revisão humana antes da indexação.
-              </p>
-            </div>
-            <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
-              <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
-                Não substitui atendimento profissional
-              </p>
-              <p class="mt-3 text-sm leading-7 text-muted">
-                O chatbot oferece apoio informacional inicial e reforça a necessidade de procurar atendimento em
-                situações de sintomas, urgência ou diagnóstico.
-              </p>
+        <div class="border-l-2 border-[rgb(207_137_99/0.5)] pl-6">
+          <p class="section-kicker">Nossa missão</p>
+          <div class="mt-4 space-y-4 text-sm leading-7">
+            <p>
+              Nossa missão é reduzir a tuberculose nos territórios Guarani Kaiowá. Enfrentar a tuberculose nesse
+              contexto exige mais do que soluções biomédicas: requer parceria, inovação e respeito.
+            </p>
+            <p>
+              Nosso trabalho baseia-se em intervenções de saúde lideradas pela comunidade e fundamentadas em
+              pesquisa, desenvolvidas em estreita colaboração com as comunidades indígenas e o sistema público de
+              saúde, incluindo a SESAI e o SUS.
+            </p>
+            <p>
+              Buscamos um modelo de saúde que respeite os conhecimentos, a língua e a autonomia indígenas, e no qual
+              a pesquisa sirva como instrumento de justiça social, dignidade e melhoria do bem-estar.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cap 4: Pesquisa -->
+  <section class="pb-20 pt-20 sm:pb-24 sm:pt-24" id="pesquisa">
+    <div class="container mx-auto px-4">
+      <div class="mx-auto max-w-3xl">
+        <p class="section-kicker">Pesquisa</p>
+        <h2 class="mt-5 text-3xl leading-tight sm:text-4xl">
+          Duas frentes de pesquisa respondem a barreiras linguísticas, diagnósticas e institucionais no cuidado à
+          tuberculose e a outras infecções pulmonares.
+        </h2>
+      </div>
+
+      <div class="mt-12 space-y-16">
+        <div class="research-split">
+          <div class="research-split-image">
+            <img
+              src="/media/galeria/bolsistas-processo-traducao-equipe.jpeg"
+              alt="Equipe em atividade de tradução e revisão de conteúdo em saúde."
+              loading="lazy"
+            />
+          </div>
+          <div>
+            <p class="section-kicker">Projeto Mbiru'i</p>
+            <h3 class="mt-4 text-2xl leading-tight sm:text-3xl">IA, tradução e acesso à informação em saúde</h3>
+            <p class="mt-4 text-sm leading-7 text-muted">
+              Em entrevistas e grupos focais com profissionais de saúde e com a comunidade Guarani Kaiowá, foi
+              relatado que a língua constitui uma grande barreira para a oferta de cuidados de saúde. Os Agentes
+              Indígenas de Saúde são o primeiro, e às vezes o único, ponto de contato com o sistema de saúde.
+            </p>
+            <div class="research-points">
+              <div class="research-point">
+                <p class="text-sm leading-7">
+                  <strong class="text-heading">Modelo texto-para-texto</strong> financiado pelo Ministério da Saúde
+                  e apoiado pelo programa Grand Challenges Brazil da Fundação Gates. Primeira iniciativa de IA em
+                  língua indígena no Brasil.
+                </p>
+              </div>
+              <div class="research-point">
+                <p class="text-sm leading-7">
+                  <strong class="text-heading">Reconhecimento automático de fala</strong> para tradução por voz
+                  entre português e Guarani Kaiowá, com potencial de impacto muito mais amplo.
+                </p>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="mt-8 flex flex-wrap gap-3">
-          <a href={chatbotWhatsappUrl} target="_blank" rel="noopener noreferrer" class="btn-primary">
-            Testar no WhatsApp
-          </a>
-          <a href="/chatbot" class="btn-secondary">Como funciona o chatbot</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="pb-16 sm:pb-20" id="visao-missao">
-    <div class="container mx-auto px-4">
-      <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
-        <div class="max-w-4xl">
-          <p class="section-kicker">Visão e Missão</p>
-          <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-            A pesquisa busca reduzir a carga desproporcional da tuberculose e ampliar acesso a cuidados culturalmente
-            seguros nos territórios Guarani Kaiowá.
-          </h2>
-        </div>
-
-        <div class="mt-8 grid gap-6 lg:grid-cols-2">
-          <article class="rounded-[1.8rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] p-6">
-            <p class="section-kicker">Nossa visão</p>
-            <div class="mt-4 space-y-4 text-sm leading-7 text-muted">
-              <p>
-                A atenção primária à saúde nos territórios indígenas no Brasil é prestada pela Secretaria Especial de
-                Saúde Indígena (SESAI), criada em 2010 como subsistema do SUS para oferecer cuidados adaptados às
-                características culturais e logísticas dos territórios indígenas, promovendo também a articulação da
-                medicina tradicional.
-              </p>
-              <p>
-                Embora a tuberculose seja curável, ela continua sendo a doença infecciosa que mais mata no planeta. O
-                Brasil segue entre os 30 países com maior carga da doença, e o acesso desigual ao diagnóstico e ao
-                tratamento é uma das principais razões. As populações indígenas continuam apresentando taxas
-                desproporcionalmente altas de infecções pulmonares e mortalidade associada a infecções não confirmadas.
-              </p>
-              <p>
-                Os Guarani e Kaiowá, em Mato Grosso do Sul, constituem um dos maiores grupos indígenas do Brasil, com
-                cerca de 50.000 pessoas vivendo na região sul do estado, na fronteira com o Paraguai. Condições como
-                moradias superlotadas, insegurança alimentar e acesso limitado ao saneamento favorecem a transmissão da
-                tuberculose, com taxas de incidência de até dez vezes a média nacional.
-              </p>
-              <p>
-                Vislumbramos um futuro em que a tuberculose deixe de representar uma carga desproporcional nos
-                territórios Guarani Kaiowá e em que as comunidades indígenas tenham acesso equitativo a serviços de
-                saúde de alta qualidade e culturalmente seguros.
-              </p>
-            </div>
-          </article>
-
-          <article class="rounded-[1.8rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] p-6">
-            <p class="section-kicker">Nossa missão</p>
-            <div class="mt-4 space-y-4 text-sm leading-7 text-muted">
-              <p>
-                Nossa missão é reduzir a tuberculose nos territórios Guarani Kaiowá. Enfrentar a tuberculose nesse
-                contexto exige mais do que soluções biomédicas: requer parceria, inovação e respeito.
-              </p>
-              <p>
-                Nosso trabalho baseia-se em intervenções de saúde lideradas pela comunidade e fundamentadas em
-                pesquisa, desenvolvidas em estreita colaboração com as comunidades indígenas e o sistema público de
-                saúde, incluindo a SESAI e o SUS.
-              </p>
-              <p>
-                Buscamos um modelo de saúde que respeite os conhecimentos, a língua e a autonomia indígenas, e no qual
-                a pesquisa sirva como instrumento de justiça social, dignidade e melhoria do bem-estar.
-              </p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="pb-16 sm:pb-20" id="pesquisa">
-    <div class="container mx-auto px-4">
-      <div class="grid gap-6">
-        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-          <p class="section-kicker">Pesquisa</p>
-          <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-            Duas frentes de pesquisa respondem a barreiras linguísticas, diagnósticas e institucionais no cuidado à
-            tuberculose e a outras infecções pulmonares.
-          </h2>
-        </article>
-
-        <div class="grid gap-6 lg:grid-cols-2">
-          <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-            <p class="section-kicker">Projeto Mbiru’i</p>
-            <h3 class="mt-4 text-3xl leading-tight">IA, tradução e acesso à informação em saúde</h3>
-            <div class="mt-6 space-y-4 text-sm leading-7 text-muted">
-              <p>
-                Em entrevistas e grupos focais com profissionais de saúde e com a comunidade Guarani Kaiowá, foi
-                relatado que a língua constitui uma grande barreira para a oferta de cuidados de saúde e de informações
-                em saúde. A estigmatização e as diferenças culturais entre os conceitos biomédicos e os princípios da
-                medicina tradicional também representam barreiras significativas ao cuidado.
-              </p>
-              <p>
-                Os Agentes Indígenas de Saúde são o primeiro, e às vezes o único, ponto de contato com o sistema de
-                saúde. Assim, desempenham papel fundamental na superação dessas barreiras, porém recebem treinamento
-                limitado e têm poucas oportunidades de capacitação contínua.
-              </p>
-              <p>
-                Um modelo de tradução baseado em IA bem-sucedido abre perspectivas para outras áreas de doenças,
-                comunicação na atenção secundária e terciária, contato com serviços públicos, promoção dos direitos
-                civis e humanos e valorização das línguas indígenas.
-              </p>
-            </div>
-
-            <div class="mt-7 grid gap-4">
-              <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
-                <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
-                  Modelo de IA texto-para-texto
-                </p>
-                <p class="mt-3 text-sm leading-7 text-muted">
-                  Financiado pelo Ministério da Saúde do Brasil e apoiado pelo programa Grand Challenges Brazil da
-                  Fundação Gates, o projeto buscou desenvolver um chatbot para fornecer informações e orientações sobre
-                  tuberculose aos Agentes Indígenas de Saúde Guarani e Kaiowá em língua Guarani Kaiowá.
-                </p>
-                <p class="mt-3 text-sm leading-7 text-muted">
-                  Em prazo limitado e sem experiência prévia em IA, a equipe optou inicialmente por um modelo
-                  texto-para-texto, com avaliação por métricas RAGAS e avaliação humana. Foi a primeira iniciativa de
-                  desenvolvimento de um modelo de IA em uma língua indígena no Brasil.
-                </p>
-              </div>
-              <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
-                <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
-                  Modelo de reconhecimento automático de fala
-                </p>
-                <p class="mt-3 text-sm leading-7 text-muted">
-                  Após a prova de conceito bem-sucedida do modelo texto-para-texto, o projeto avança no
-                  desenvolvimento de um modelo de tradução por voz entre português e Guarani Kaiowá, com potencial para
-                  impacto muito mais amplo.
-                </p>
-              </div>
-            </div>
-          </article>
-
-          <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-            <p class="section-kicker">Superando barreiras ao diagnóstico e tratamento</p>
-            <h3 class="mt-4 text-3xl leading-tight">TB e outras infecções pulmonares</h3>
-            <div class="mt-6 space-y-4 text-sm leading-7 text-muted">
-              <p>
-                Nos três anos que antecederam a pandemia de COVID-19, 8,5% dos óbitos indígenas foram registrados como
-                causas mal definidas, e outros 20% decorreram de doenças infecciosas, parasitárias e respiratórias.
-                Tuberculose, pneumonia e septicemia sem patógeno especificado estiveram entre as principais causas de
-                morte por agente infeccioso.
-              </p>
-              <p>
-                Entre 2015 e 2020, apenas cerca de 60% dos casos notificados de TB em indígenas foram confirmados
-                laboratorialmente por baciloscopia, GeneXpert ou cultura. Coinfecções bacterianas, virais e fúngicas
-                ampliam a complexidade dos quadros graves e mostram os limites dos métodos diagnósticos convencionais.
-              </p>
-              <p>
-                Com este projeto, financiado por um edital Grand Challenges da Fundação Gates, acompanhamos a jornada da
-                TB para pacientes, familiares e comunidade, investigando o panorama de patógenos, mapeando o processo
-                diagnóstico e terapêutico, documentando o estigma e avaliando os desfechos do tratamento em pessoas
-                sobreviventes da TB.
-              </p>
-            </div>
-
-            <div class="mt-7 grid gap-4">
-              <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
-                <p class="text-lg font-semibold text-heading">Sequenciamento metagenômico</p>
-                <p class="mt-3 text-sm leading-7 text-muted">
-                  Utiliza sequenciamento metagenômico shotgun para identificar quais patógenos são mais prevalentes em
-                  casos com sintomas de TB entre os povos Guarani e Kaiowá em Mato Grosso do Sul e orientar novos
-                  algoritmos diagnósticos e terapêuticos.
-                </p>
-              </div>
-              <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
-                <p class="text-lg font-semibold text-heading">Mapeamento do processo diagnóstico e terapêutico</p>
-                <p class="mt-3 text-sm leading-7 text-muted">
-                  Entrevistas e grupos focais com pacientes, comunidade, lideranças religiosas, profissionais e
-                  gestores de saúde permitem redesenhar algoritmos de diagnóstico e tratamento adaptados ao contexto
-                  cultural e logístico.
-                </p>
-              </div>
-              <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
-                <p class="text-lg font-semibold text-heading">Estigma e sequelas da TB</p>
-                <p class="mt-3 text-sm leading-7 text-muted">
-                  O projeto traduz e valida instrumentos de mensuração do estigma, desenvolve ações de disseminação de
-                  informação e coleta dados para formular recomendações de cuidado pós-TB para sobreviventes Guarani
-                  Kaiowá.
-                </p>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!--section class="pb-16 sm:pb-20" id="producoes">
-    <div class="container mx-auto px-4">
-      <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
-        <div class="flex flex-col gap-4 border-b border-[color:var(--aw-color-line)] pb-7 sm:flex-row sm:items-end sm:justify-between">
-          <div class="max-w-3xl">
-            <p class="section-kicker">Produções</p>
-            <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-              As produções públicas concentram materiais já apropriados para circulação aberta.
-            </h2>
+        <div class="research-split">
+          <div class="research-split-image lg:order-2">
+            <img
+              src="/media/galeria/processo-mngs-coleta-amostras.jpg"
+              alt="Profissionais do projeto durante coleta de amostras com participantes em campo."
+              loading="lazy"
+            />
           </div>
-          <a
-            href="https://www.instagram.com/mbiru_i/"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-sm font-semibold uppercase tracking-[0.14em] text-primary"
-          >
-            Instagram ↗
-          </a>
-        </div>
-
-        <div class="mt-8 grid gap-5 lg:grid-cols-2">
-          {
-            producoes.map((item) => (
-              <a
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="group rounded-[1.8rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-6 py-6 transition hover:-translate-y-0.5 hover:border-primary/40"
-              >
-                <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
-                  {item.tipo} · {item.ano}
+          <div class="lg:order-1">
+            <p class="section-kicker">Superando barreiras ao diagnóstico</p>
+            <h3 class="mt-4 text-2xl leading-tight sm:text-3xl">TB e outras infecções pulmonares</h3>
+            <p class="mt-4 text-sm leading-7 text-muted">
+              Nos três anos antes da pandemia de COVID-19, 8,5% dos óbitos indígenas foram registrados como causas
+              mal definidas. Tuberculose, pneumonia e septicemia estiveram entre as principais causas de morte por
+              agente infeccioso.
+            </p>
+            <div class="research-points">
+              <div class="research-point">
+                <p class="text-sm leading-7">
+                  <strong class="text-heading">Sequenciamento metagenômico</strong> para identificar patógenos
+                  prevalentes em casos com sintomas de TB entre os povos Guarani e Kaiowá.
                 </p>
-                <h3 class="mt-4 text-2xl leading-tight">{item.title}</h3>
-                {item.descricao && <p class="mt-4 text-sm leading-7 text-muted">{item.descricao}</p>}
-              </a>
-            ))
-          }
+              </div>
+              <div class="research-point">
+                <p class="text-sm leading-7">
+                  <strong class="text-heading">Mapeamento diagnóstico e terapêutico</strong> com entrevistas e
+                  grupos focais para redesenhar algoritmos adaptados ao contexto cultural.
+                </p>
+              </div>
+              <div class="research-point">
+                <p class="text-sm leading-7">
+                  <strong class="text-heading">Estigma e sequelas da TB</strong> com tradução e validação de
+                  instrumentos, ações de disseminação e recomendações de cuidado pós-TB.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </section-->
+  </section>
 
-  <section class="pb-16 sm:pb-20" id="premios">
+  <!-- Cap 5: Prêmios (timeline) -->
+  <section class="border-t border-[color:var(--aw-color-line)] pb-20 pt-20 sm:pb-24 sm:pt-24" id="premios">
     <div class="container mx-auto px-4">
-      <div class="editorial-frame rounded-[2.25rem] p-7 sm:p-9">
-        <div class="max-w-3xl">
+      <div class="grid gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
+        <div>
           <p class="section-kicker">Prêmios</p>
-          <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
+          <h2 class="mt-5 text-3xl leading-tight sm:text-4xl">
             Os financiamentos ajudam a explicar por que as frentes de pesquisa aparecem separadas no site.
           </h2>
         </div>
 
-        <div class="mt-8 grid gap-5 lg:grid-cols-2">
+        <div class="timeline-track">
           {
             premios.map((item) => (
               <a
                 href={item.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                class="rounded-[1.8rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-6 py-6 transition hover:-translate-y-0.5 hover:border-primary/40"
+                class="timeline-item group block transition hover:opacity-80"
               >
                 <p class="font-mono text-xs uppercase tracking-[0.16em] text-[color:var(--aw-color-accent)]">
                   {item.ano}
                 </p>
-                <h3 class="mt-4 text-2xl leading-tight">{item.financiador}</h3>
-                <p class="mt-4 text-sm leading-7 text-muted">{item.titulo}</p>
+                <h3 class="mt-3 text-xl font-semibold leading-tight text-heading group-hover:text-primary">
+                  {item.financiador}
+                </h3>
+                <p class="mt-2 text-sm leading-7 text-muted">{item.titulo}</p>
               </a>
             ))
           }
@@ -452,41 +356,41 @@ const metadata = {
     </div>
   </section>
 
-  <section class="pb-20 sm:pb-24" id="equipe">
+  <!-- Cap 6: Equipe + Contato -->
+  <section class="border-t border-[color:var(--aw-color-line)] pb-20 pt-20 sm:pb-24 sm:pt-24" id="equipe">
     <div class="container mx-auto px-4">
-      <div class="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8">
-          <p class="section-kicker">Equipe</p>
-          <h2 class="mt-4 text-3xl leading-tight sm:text-4xl">
-            A equipe reúne pesquisadoras, pesquisadores e colaboradoras vinculados às diferentes frentes do trabalho.
-          </h2>
+      <div class="mx-auto max-w-3xl">
+        <p class="section-kicker">Equipe</p>
+        <h2 class="mt-5 text-3xl leading-tight sm:text-4xl">
+          A equipe reúne pesquisadoras, pesquisadores e colaboradoras vinculados às diferentes frentes do trabalho.
+        </h2>
+      </div>
 
-          <div class="mt-7 grid gap-4 md:grid-cols-2">
-            {
-              equipe.map((nome) => (
-                <div class="rounded-[1.5rem] border border-[color:var(--aw-color-line)] bg-[color:var(--aw-color-surface)] px-5 py-5">
-                  <p class="text-base font-semibold text-heading">{nome}</p>
-                </div>
-              ))
-            }
-          </div>
-        </article>
+      <div class="equipe-grid mx-auto mt-12 max-w-5xl">
+        {
+          equipe.map((nome) => (
+            <div class="equipe-card">
+              <div class="equipe-avatar">
+                <span class="initials">{getInitials(nome)}</span>
+              </div>
+              <p class="text-sm font-medium text-heading">{nome}</p>
+            </div>
+          ))
+        }
+      </div>
 
-        <article class="editorial-frame rounded-[2rem] p-7 sm:p-8" id="contato">
-          <p class="section-kicker">Contato</p>
-          <h3 class="mt-4 text-3xl leading-tight">
-            Para facilitar acesso a quem busca informação específica.
-          </h3>
-          <p class="mt-4 text-base leading-8 text-muted">
-            Se quiser entrar em contato sobre pesquisa, colaborações, materiais ou circulação pública do projeto,
-            escreva para o e-mail institucional.
-          </p>
-
-          <div class="mt-7 flex flex-wrap gap-3">
-            <a href={`mailto:${email}`} class="btn-primary">{email}</a>
-          </div>
-
-        </article>
+      <div class="mx-auto mt-16 max-w-xl text-center" id="contato">
+        <p class="section-kicker">Contato</p>
+        <h3 class="mt-4 text-2xl leading-tight">
+          Para facilitar acesso a quem busca informação específica.
+        </h3>
+        <p class="mt-3 text-sm leading-7 text-muted">
+          Se quiser entrar em contato sobre pesquisa, colaborações, materiais ou circulação pública do projeto,
+          escreva para o e-mail institucional.
+        </p>
+        <div class="mt-6">
+          <a href={`mailto:${email}`} class="btn-primary">{email}</a>
+        </div>
       </div>
     </div>
   </section>
