@@ -24,7 +24,7 @@ export const headerData = {
   links: [
     { text: 'Visão e Missão', href: '/#visao-missao' },
     { text: 'Pesquisa', href: '/#pesquisa' },
-    { text: 'Produções', href: '/#producoes' },
+    // { text: 'Produções', href: '/#producoes' },
     { text: 'Prêmios', href: '/#premios' },
     { text: 'Equipe', href: '/#equipe' },
     { text: 'Contato', href: '/#contato' },
@@ -50,7 +50,7 @@ export const footerData = {
       links: [
         { text: 'Visão e Missão', href: '/#visao-missao' },
         { text: 'Pesquisa', href: '/#pesquisa' },
-        { text: 'Produções', href: '/#producoes' },
+        // { text: 'Produções', href: '/#producoes' },
         { text: 'Prêmios', href: '/#premios' },
         { text: 'Equipe', href: '/#equipe' },
         { text: 'Contato', href: '/#contato' },
